@@ -2440,9 +2440,12 @@
                                 if (data[id]) deletedSessionIds.add(id);
                             });
                             localStorage.setItem('cookierun_deleted_sessions_' + pairingKey, JSON.stringify([...deletedSessionIds]));
-                            if (latestBotData) {
-                                applyBotData(latestBotData);
-                            }
+                        } else if (!data) {
+                            deletedSessionIds.clear();
+                            localStorage.removeItem('cookierun_deleted_sessions_' + pairingKey);
+                        }
+                        if (latestBotData) {
+                            applyBotData(latestBotData);
                         }
                     })
                     .catch(() => {});
@@ -2455,9 +2458,9 @@
             lastBotSeenTime = Date.now();
             updateBotOnlineStatus(true);
 
-            // Filter out any deleted sessions so they never reappear
+            // Filter out any deleted sessions so they never reappear (except active session)
             if (data.sessions && Array.isArray(data.sessions)) {
-                data.sessions = data.sessions.filter(s => s && s.sessionId && !deletedSessionIds.has(s.sessionId));
+                data.sessions = data.sessions.filter(s => s && s.sessionId && (!deletedSessionIds.has(s.sessionId) || s.isCurrent));
             }
 
             const setTxt = (id, val) => {
