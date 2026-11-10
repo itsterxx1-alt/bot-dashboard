@@ -885,7 +885,367 @@
         .btn-google-login-primary:active {
             transform: translateY(0);
         }
-    </style>
+    
+        /* ===================================================================
+           RESPONSIVE MOBILE VIEW (Optimized specifically for Smartphones)
+           iPad & Desktop retain their original full-featured view
+           =================================================================== */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+
+            .main-container {
+                padding: 0 10px 24px 10px;
+            }
+
+            /* Topbar Compact */
+            .topbar {
+                padding: 8px 10px;
+            }
+
+            .topbar-header-row {
+                gap: 6px;
+            }
+
+            .brand-logo {
+                width: 32px;
+                height: 32px;
+                font-size: 18px;
+                border-radius: 8px;
+            }
+
+            .brand-text h1 {
+                font-size: 0.98rem;
+                letter-spacing: -0.01em;
+            }
+
+            .brand-text span {
+                display: none; /* Hide subtitle to keep header on 1 clean row */
+            }
+
+            .header-actions {
+                gap: 5px;
+            }
+
+            .btn-download-apk {
+                padding: 4px 9px !important;
+                font-size: 0.72rem !important;
+                gap: 4px !important;
+            }
+
+            .cloud-status-badge {
+                padding: 3px 8px;
+                font-size: 0.7rem;
+                gap: 4px;
+            }
+
+            .cloud-pulse {
+                width: 6px;
+                height: 6px;
+            }
+
+            .btn-google {
+                padding: 4px 6px;
+                font-size: 0.75rem;
+                gap: 4px;
+            }
+
+            .btn-google #googleBtnLabel {
+                display: none; /* Icon-only on mobile */
+            }
+
+            .btn-logout-header {
+                padding: 4px 8px !important;
+                font-size: 0.72rem !important;
+            }
+
+            /* Top Action Buttons (Start / Stop / Reset) */
+            .topbar-action-row {
+                gap: 6px;
+                margin-top: 6px;
+                padding-top: 6px;
+            }
+
+            .btn-act {
+                min-height: 38px;
+                font-size: 0.82rem;
+                padding: 0 6px;
+                gap: 4px;
+                border-radius: 8px;
+            }
+
+            /* Nav Tabs Scrollable */
+            .nav-tabs {
+                padding: 6px 10px;
+                gap: 4px;
+            }
+
+            .nav-tab-btn {
+                padding: 6px 10px;
+                font-size: 0.78rem;
+                border-radius: 6px;
+            }
+
+            .nav-tab-label-full {
+                display: none;
+            }
+
+            .nav-tab-label-short {
+                display: inline;
+            }
+
+            /* User Account Banner */
+            .user-account-banner {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 10px 12px;
+                gap: 8px;
+                border-radius: 12px;
+                margin-bottom: 12px;
+            }
+
+            .user-account-info {
+                gap: 8px;
+            }
+
+            .google-avatar-badge {
+                width: 34px;
+                height: 34px;
+                font-size: 1rem;
+            }
+
+            .banner-actions-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 6px !important;
+                width: 100%;
+            }
+
+            .banner-actions-grid .btn-download-banner {
+                grid-column: span 2;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .btn-copy-code {
+                justify-content: center;
+                padding: 7px 8px;
+                font-size: 0.76rem;
+                border-radius: 6px;
+            }
+
+            /* Device & Permissions Status Strip - 2x2 Grid */
+            .device-status-strip {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 6px !important;
+                padding: 8px 10px !important;
+                background: rgba(15, 23, 42, 0.7) !important;
+                border: 1px solid var(--border-card) !important;
+                border-radius: 10px !important;
+                margin-bottom: 12px !important;
+            }
+
+            .device-status-perms {
+                display: contents !important;
+            }
+
+            .device-status-item, .perm-pill {
+                display: flex !important;
+                align-items: center;
+                gap: 5px;
+                font-size: 0.72rem !important;
+                background: rgba(255, 255, 255, 0.04);
+                padding: 5px 8px;
+                border-radius: 6px;
+                border: 1px solid rgba(255, 255, 255, 0.05);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            /* Mobile Section Cards (ชัดเจน แยกสัดส่วน) */
+            .mobile-section-card {
+                display: block;
+                border-radius: 14px;
+                padding: 12px 10px;
+                margin-bottom: 14px;
+                box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+            }
+
+            .session-section-box {
+                background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(16, 24, 39, 0.98));
+                border: 1px solid rgba(16, 185, 129, 0.35);
+            }
+
+            .lifetime-section-box {
+                background: linear-gradient(145deg, rgba(30, 27, 75, 0.45), rgba(15, 23, 42, 0.95));
+                border: 1px solid rgba(245, 158, 11, 0.38);
+                margin-top: 0 !important;
+            }
+
+            /* Overview Section Headers */
+            .overview-section-header {
+                margin-bottom: 8px !important;
+                gap: 6px;
+            }
+
+            .overview-icon-badge {
+                width: 28px;
+                height: 28px;
+                font-size: 0.95rem;
+                border-radius: 7px;
+            }
+
+            .overview-section-title > div > div:first-child {
+                font-size: 0.85rem !important;
+            }
+
+            .overview-section-title > div > div:last-child {
+                font-size: 0.68rem !important;
+            }
+
+            .overview-section-tag {
+                font-size: 0.68rem;
+                padding: 2px 7px;
+            }
+
+            /* Stats Grids - 2x2 Clean Balanced Tiles */
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 6px !important;
+                margin-bottom: 0 !important;
+            }
+
+            .stat-card {
+                padding: 8px 10px !important;
+                min-height: 74px;
+                border-radius: 8px;
+                gap: 3px;
+            }
+
+            .stat-header {
+                font-size: 0.72rem;
+            }
+
+            .stat-value {
+                font-size: 1.25rem !important;
+            }
+
+            .stat-sub {
+                font-size: 0.68rem !important;
+            }
+
+            /* Stream & Gamepad Card */
+            .stream-card {
+                border-radius: 12px;
+                margin-bottom: 12px;
+            }
+
+            .card-header {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+
+            .gamepad-bar {
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 6px;
+                padding: 8px 10px;
+            }
+
+            .btn-gamepad {
+                padding: 8px 4px;
+                font-size: 0.76rem;
+                border-radius: 8px;
+            }
+
+            /* Round History Container */
+            #roundHistoryContainer {
+                padding: 8px;
+                gap: 6px;
+                max-height: 400px;
+            }
+
+            .round-history-item {
+                padding: 10px !important;
+                font-size: 0.78rem;
+                border-radius: 8px;
+            }
+
+            /* Settings Tab Mobile Polish */
+            .config-card {
+                padding: 12px !important;
+                border-radius: 12px !important;
+                margin-bottom: 12px !important;
+            }
+
+            .config-sec-title {
+                font-size: 0.88rem !important;
+                margin-bottom: 8px !important;
+            }
+
+            .pills-grid {
+                grid-template-columns: 1fr !important;
+                gap: 6px !important;
+            }
+
+            .check-pill {
+                padding: 9px 10px !important;
+                font-size: 0.82rem !important;
+                border-radius: 8px !important;
+            }
+
+            .config-select, .config-input {
+                font-size: 16px !important; /* iOS Safari zoom prevention */
+                min-height: 40px;
+            }
+
+            /* Sessions Tab Mobile Polish */
+            .lifetime-summary-bar {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 6px !important;
+                padding: 8px 10px !important;
+            }
+
+            .lifetime-summary-item {
+                font-size: 0.78rem !important;
+            }
+
+            .session-item-row {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 8px !important;
+            }
+
+            .session-actions-row {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 6px !important;
+                width: 100%;
+            }
+
+            .session-actions-row .btn-act {
+                width: 100% !important;
+                font-size: 0.78rem !important;
+                min-height: 36px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-section-card {
+                display: block;
+                margin-bottom: 20px;
+            }
+            .nav-tab-label-full {
+                display: inline;
+            }
+            .nav-tab-label-short {
+                display: none;
+            }
+        }
+</style>
     <script>
         // Check saved session immediately to prevent flashing login screen on page refresh
         (function() {
@@ -1060,7 +1420,7 @@
                         <div class="google-avatar" id="googleAvatarBox">G</div>
                         <span id="googleBtnLabel">เข้าสู่ระบบ</span>
                     </button>
-                    <button class="btn-copy-code" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; padding: 6px 12px; font-size: 0.78rem;" onclick="handleLogout()" title="ออกจากระบบ Google">
+                    <button class="btn-copy-code btn-logout-header" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; padding: 6px 12px; font-size: 0.78rem;" onclick="handleLogout()" title="ออกจากระบบ Google">
                         🚪 ออกจากระบบ
                     </button>
                 </div>
@@ -1083,16 +1443,16 @@
     <!-- Nav Tabs -->
     <nav class="nav-tabs">
         <button class="nav-tab-btn active" onclick="switchTab('overview')">
-            <span>📊</span> ภาพรวม & สตรีมสด
+            <span>📊</span> <span class="nav-tab-label-full">ภาพรวม & สตรีมสด</span><span class="nav-tab-label-short">ภาพรวม & จอสด</span>
         </button>
         <button class="nav-tab-btn" onclick="switchTab('settings')">
-            <span>⚙️</span> การตั้งค่าฟาร์ม (cookierunbot.com)
+            <span>⚙️</span> <span class="nav-tab-label-full">การตั้งค่าฟาร์ม (cookierunbot.com)</span><span class="nav-tab-label-short">ตั้งค่าบอท</span>
         </button>
         <button class="nav-tab-btn" onclick="switchTab('activity')">
-            <span>📜</span> บันทึกสด (Logs)
+            <span>📜</span> <span class="nav-tab-label-full">บันทึกสด (Logs)</span><span class="nav-tab-label-short">บันทึกสด</span>
         </button>
         <button class="nav-tab-btn" onclick="switchTab('history')">
-            <span>📁</span> ประวัติเซสชัน (History)
+            <span>📁</span> <span class="nav-tab-label-full">ประวัติเซสชัน (History)</span><span class="nav-tab-label-short">เซสชัน</span>
         </button>
     </nav>
 
@@ -1113,33 +1473,33 @@
                     </div>
                 </div>
             </div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+            <div class="banner-actions-grid" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
                 <button class="btn-copy-code" onclick="openGoogleAuthModal()" style="background: #3b82f6;">
-                    🔄 สลับบัญชี Google
+                    🔄 สลับบัญชี
                 </button>
                 <button class="btn-copy-code" onclick="sendCloudCommand('PING')" style="background: #7c3aed;">
-                    🔔 ส่งสัญญาณทดสอบ (Ping)
+                    🔔 ทดสอบ Ping
                 </button>
-                <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-copy-code" style="background: #059669; text-decoration: none;">
+                <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-copy-code btn-download-banner" style="background: #059669; text-decoration: none;">
                     📥 ดาวน์โหลด APK (ตัวล่าสุด)
                 </a>
             </div>
         </div>
 
         <!-- Device & Permissions Realtime Status Strip -->
-        <div style="background: var(--bg-surface); border: 1px solid var(--border-card); border-radius: var(--radius-sm); padding: 8px 14px; margin-bottom: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.8rem;">
-            <div style="display: flex; align-items: center; gap: 6px; color: var(--text-muted);">
-                <span>📱 อุปกรณ์:</span>
+        <div class="device-status-strip" style="background: var(--bg-surface); border: 1px solid var(--border-card); border-radius: var(--radius-sm); padding: 8px 14px; margin-bottom: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.8rem;">
+            <div class="device-status-item main-status" style="display: flex; align-items: center; gap: 6px; color: var(--text-muted);">
+                <span>📱 บอท:</span>
                 <span id="pillBotRunning" style="color: #94a3b8; font-weight: 600;">⏹ บอทหยุด</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
-                <span id="pillAccessStatus" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
-                    <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #94a3b8;"></span> บริการการเข้าถึง (Accessibility)
+            <div class="device-status-perms" style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                <span id="pillAccessStatus" class="perm-pill" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
+                    <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #94a3b8;"></span> การเข้าถึง (Accessibility)
                 </span>
-                <span id="pillCaptureStatus" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
+                <span id="pillCaptureStatus" class="perm-pill" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
                     <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #94a3b8;"></span> บันทึกหน้าจอ (Capture)
                 </span>
-                <span id="pillOverlayStatus" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
+                <span id="pillOverlayStatus" class="perm-pill" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
                     <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #94a3b8;"></span> หน้าต่างลอย (Overlay)
                 </span>
             </div>
@@ -1148,7 +1508,9 @@
         <!-- TAB: OVERVIEW & STREAM -->
         <div class="tab-content active" id="tab-overview">
 
-            <!-- SECTION 1: ภาพรวมการวิ่งในเซสชันปัจจุบัน (Current Session Overview) -->
+                        <!-- SECTION 1 (Card Wrapper for Mobile) -->
+            <div class="mobile-section-card session-section-box">
+<!-- SECTION 1: ภาพรวมการวิ่งในเซสชันปัจจุบัน (Current Session Overview) -->
             <div class="overview-section-header">
                 <div class="overview-section-title">
                     <span class="overview-icon-badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35);">🏃</span>
@@ -1205,8 +1567,11 @@
                     <div class="stat-sub" id="valBoxTypes">🪵0 🥈0 🥇0 🌈0</div>
                 </div>
             </div>
+            </div>
 
-            <!-- SECTION 2: ภาพรวมสะสมตลอดการวิ่งทั้งหมดทุก session (All-Time Lifetime Overview) -->
+            <!-- SECTION 2 (Card Wrapper for Mobile) -->
+            <div class="mobile-section-card lifetime-section-box">
+<!-- SECTION 2: ภาพรวมสะสมตลอดการวิ่งทั้งหมดทุก session (All-Time Lifetime Overview) -->
             <div class="overview-section-header" style="margin-top: 20px;">
                 <div class="overview-section-title">
                     <span class="overview-icon-badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4);">🏆</span>
@@ -1266,8 +1631,9 @@
                     <div class="stat-sub" id="valAllTimeBoxTypes">🪵0 🥈0 🥇0 🌈0</div>
                 </div>
             </div>
+            </div>
 
-            <!-- Remote Screen Stream & Gamepad -->
+<!-- Remote Screen Stream & Gamepad -->
             <div class="stream-card">
                 <div class="card-header">
                     <div style="font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
@@ -2592,7 +2958,7 @@
                 }).join(' ') : '<span style="font-size: 0.75rem; color: var(--text-subtle);">-</span>';
 
                 return `
-                    <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-card); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;">
+                    <div class="round-history-item" style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-card); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
                             <div style="display: flex; align-items: center; gap: 8px;">
                                 <span style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; font-weight: 700; font-size: 0.82rem; padding: 3px 10px; border-radius: 6px; font-family: var(--font-mono);">
@@ -2686,16 +3052,16 @@
                             <span style="color: #34d399;">⭐ +${(s.sessionXpEarned || 0).toLocaleString()}</span>
                             <span>📦 ${s.mysteryBoxes || 0} กล่อง</span>
                         </div>
-                        <div style="margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-                            <button class="btn-act btn-act-start" style="padding: 4px 14px; font-size: 0.8rem; width: auto;" onclick="sendCloudCommand('RESUME_SESSION', {sessionId: '${s.sessionId}'})">
-                                ▶️ วิ่งต่อจากรอบนี้ (Resume)
+                        <div class="session-actions-row" style="margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                            <button class="btn-act btn-act-start" style="padding: 6px 14px; font-size: 0.8rem; width: auto;" onclick="sendCloudCommand('RESUME_SESSION', {sessionId: '${s.sessionId}'})">
+                                ▶️ วิ่งต่อจากเซสชันนี้
                             </button>
                             ${hasRounds ? `
-                                <button class="btn-act btn-act-reset" id="btn_toggle_${s.sessionId}" style="padding: 4px 12px; font-size: 0.8rem; width: auto;" onclick="toggleSessionRounds('${s.sessionId}')">
-                                    ${isExp ? '🔼 ซ่อนรายละเอียดรอบ' : `👁️ ดูรอบการวิ่ง (${roundCount} รอบ)`}
+                                <button class="btn-act btn-act-reset" id="btn_toggle_${s.sessionId}" style="padding: 6px 12px; font-size: 0.8rem; width: auto;" onclick="toggleSessionRounds('${s.sessionId}')">
+                                    ${isExp ? '🔼 ซ่อนรายละเอียด' : `👁️ ดูรอบวิ่ง (${roundCount} รอบ)`}
                                 </button>
                             ` : ''}
-                            <button class="btn-act btn-act-stop" style="padding: 4px 12px; font-size: 0.8rem; width: auto; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171;" onclick="deleteSessionConfirm('${s.sessionId}', '${escapeHtml(s.title || '')}')">
+                            <button class="btn-act btn-act-stop" style="padding: 6px 12px; font-size: 0.8rem; width: auto; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171;" onclick="deleteSessionConfirm('${s.sessionId}', '${escapeHtml(s.title || '')}')">
                                 🗑️ ลบเซสชัน
                             </button>
                         </div>
