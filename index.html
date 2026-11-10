@@ -771,6 +771,25 @@
             </div>
         </div>
 
+        <!-- Device & Permissions Realtime Status Strip -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-card); border-radius: var(--radius-sm); padding: 8px 14px; margin-bottom: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.8rem;">
+            <div style="display: flex; align-items: center; gap: 6px; color: var(--text-muted);">
+                <span>📱 อุปกรณ์:</span>
+                <span id="pillBotRunning" style="color: #94a3b8; font-weight: 600;">⏹ บอทหยุด</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+                <span id="pillAccessStatus" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
+                    <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #94a3b8;"></span> บริการการเข้าถึง (Accessibility)
+                </span>
+                <span id="pillCaptureStatus" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
+                    <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #94a3b8;"></span> บันทึกหน้าจอ (Capture)
+                </span>
+                <span id="pillOverlayStatus" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
+                    <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #94a3b8;"></span> หน้าต่างลอย (Overlay)
+                </span>
+            </div>
+        </div>
+
         <!-- TAB: OVERVIEW & STREAM -->
         <div class="tab-content active" id="tab-overview">
             <!-- Stats Grid -->
@@ -803,7 +822,7 @@
                         <span>⭐</span>
                     </div>
                     <div class="stat-value" id="valXp" style="color: #34d399;">0</div>
-                    <div class="stat-sub">รอบล่าสุด: +<span id="valLastXp">0</span></div>
+                    <div class="stat-sub">รอบล่าสุด: 🪙 +<span id="valLastCoins">0</span> | ⭐ +<span id="valLastXp">0</span> | 📦 <span id="valLastBoxes">0</span></div>
                 </div>
 
                 <div class="stat-card">
@@ -854,15 +873,15 @@
                 </div>
                 <div class="pills-grid" style="margin-bottom: 12px;">
                     <label class="check-pill">
-                        <input type="checkbox" id="chkUseDesiredRandomBoost">
+                        <input type="checkbox" id="chkUseDesiredRandomBoost" onchange="autoSyncSetting()">
                         สุ่มหาบูสต์ที่ต้องการก่อนเริ่มเกม
                     </label>
                     <label class="check-pill">
-                        <input type="checkbox" id="chkUseFastStart">
+                        <input type="checkbox" id="chkUseFastStart" onchange="autoSyncSetting()">
                         ใช้ Fast Start (วิ่งผลัดต้นเกม)
                     </label>
                     <label class="check-pill">
-                        <input type="checkbox" id="chkUseCookieRelay">
+                        <input type="checkbox" id="chkUseCookieRelay" onchange="autoSyncSetting()">
                         ใช้ Cookie Relay (วิ่งไม้ผลัด)
                     </label>
                 </div>
@@ -871,7 +890,7 @@
                     <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 6px; font-weight: 500;">
                         เลือกบูสต์ที่ต้องการสุ่มหา (Desired Boost):
                     </label>
-                    <select id="selDesiredBoostId" class="config-select">
+                    <select id="selDesiredBoostId" class="config-select" onchange="autoSyncSetting()">
                         <option value="double_coins">🪙 Double Coins (เหรียญ x2)</option>
                         <option value="score_15">🏆 +15% Score Bonus (คะแนน +15%)</option>
                         <option value="hp_drain_15">🧪 -15% HP Drain (ลดเลือดไหลช้าลง 15%)</option>
@@ -894,26 +913,26 @@
                 </div>
                 <div style="margin-bottom: 12px;">
                     <label class="check-pill" style="width: 100%;">
-                        <input type="checkbox" id="chkJumpEnabled">
+                        <input type="checkbox" id="chkJumpEnabled" onchange="autoSyncSetting()">
                         เปิดระบบกระโดดอัตโนมัติระหว่างเล่น (Auto Jump)
                     </label>
                 </div>
                 <div class="config-inputs-grid">
                     <div class="config-input-box">
                         <label>กระโดดเดี่ยว Single Jump (%)</label>
-                        <input type="number" id="numJumpSinglePercent" value="70" min="0" max="100">
+                        <input type="number" id="numJumpSinglePercent" oninput="debounceAutoSync()" value="70" min="0" max="100">
                     </div>
                     <div class="config-input-box">
                         <label>กระโดด 2 จังหวะ Double Jump (%)</label>
-                        <input type="number" id="numJumpDoublePercent" value="30" min="0" max="100">
+                        <input type="number" id="numJumpDoublePercent" oninput="debounceAutoSync()" value="30" min="0" max="100">
                     </div>
                     <div class="config-input-box">
                         <label>ความถี่กระโดด Interval (ms)</label>
-                        <input type="number" id="numJumpIntervalMs" value="500" min="100" max="1500" step="50">
+                        <input type="number" id="numJumpIntervalMs" oninput="debounceAutoSync()" value="500" min="100" max="1500" step="50">
                     </div>
                     <div class="config-input-box">
                         <label>กระโดดสูงสุด (0 = ไม่จำกัด)</label>
-                        <input type="number" id="numJumpMaxCount" value="0" min="0">
+                        <input type="number" id="numJumpMaxCount" oninput="debounceAutoSync()" value="0" min="0">
                     </div>
                 </div>
             </div>
@@ -925,21 +944,21 @@
                 </div>
                 <div class="pills-grid" style="margin-bottom: 12px;">
                     <label class="check-pill">
-                        <input type="checkbox" id="chkSendFriendLives">
+                        <input type="checkbox" id="chkSendFriendLives" onchange="autoSyncSetting()">
                         ส่งหัวใจให้เพื่อนทุกคนอัตโนมัติ
                     </label>
                     <label class="check-pill">
-                        <input type="checkbox" id="chkSendFriendLivesIndividualEnabled">
+                        <input type="checkbox" id="chkSendFriendLivesIndividualEnabled" onchange="autoSyncSetting()">
                         เลื่อนส่งหัวใจทีละคนแบบละเอียด
                     </label>
                     <label class="check-pill">
-                        <input type="checkbox" id="chkDetectRelic">
+                        <input type="checkbox" id="chkDetectRelic" onchange="autoSyncSetting()">
                         ตรวจจับชิ้นส่วนโบราณวัตถุ (Relic)
                     </label>
                 </div>
                 <div class="config-input-box" style="max-width: 320px;">
                     <label>รอบเวลาส่งหัวใจซ้ำ (ชั่วโมง):</label>
-                    <input type="number" id="numSendFriendLivesIntervalHours" value="3.0" min="0.5" max="24.0" step="0.5">
+                    <input type="number" id="numSendFriendLivesIntervalHours" oninput="debounceAutoSync()" value="3.0" min="0.5" max="24.0" step="0.5">
                 </div>
             </div>
 
@@ -951,20 +970,20 @@
                 <div style="display: flex; flex-direction: column; gap: 12px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
                         <label class="check-pill" style="flex: 1; min-width: 200px;">
-                            <input type="checkbox" id="chkStopGoalRoundsEnabled">
+                            <input type="checkbox" id="chkStopGoalRoundsEnabled" onchange="autoSyncSetting()">
                             หยุดเมื่อครบจำนวนรอบ (Rounds Target)
                         </label>
                         <div class="config-input-box" style="width: 140px;">
-                            <input type="number" id="numStopGoalRoundsTarget" value="50" min="1">
+                            <input type="number" id="numStopGoalRoundsTarget" oninput="debounceAutoSync()" value="50" min="1">
                         </div>
                     </div>
                     <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
                         <label class="check-pill" style="flex: 1; min-width: 200px;">
-                            <input type="checkbox" id="chkStopGoalTimeEnabled">
+                            <input type="checkbox" id="chkStopGoalTimeEnabled" onchange="autoSyncSetting()">
                             หยุดเมื่อครบระยะเวลา (Hours Target)
                         </label>
                         <div class="config-input-box" style="width: 140px;">
-                            <input type="number" id="numStopGoalTimeHours" value="2.0" min="0.1" step="0.5">
+                            <input type="number" id="numStopGoalTimeHours" oninput="debounceAutoSync()" value="2.0" min="0.1" step="0.5">
                         </div>
                     </div>
                 </div>
@@ -977,7 +996,7 @@
                 </div>
                 <div style="margin-bottom: 12px;">
                     <label class="check-pill" style="width: 100%;">
-                        <input type="checkbox" id="chkDiscordEnabled">
+                        <input type="checkbox" id="chkDiscordEnabled" onchange="autoSyncSetting()">
                         เปิดใช้งานการแจ้งเตือน Discord
                     </label>
                 </div>
@@ -985,23 +1004,23 @@
                     <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 6px; font-weight: 500;">
                         Discord Webhook URL:
                     </label>
-                    <input type="text" id="txtDiscordWebhookUrl" placeholder="https://discord.com/api/webhooks/..." class="config-text-input">
+                    <input type="text" id="txtDiscordWebhookUrl" oninput="debounceAutoSync()" placeholder="https://discord.com/api/webhooks/..." class="config-text-input">
                 </div>
                 <div class="pills-grid" style="margin-bottom: 12px;">
                     <label class="check-pill">
-                        <input type="checkbox" id="chkAttachScreenshot">
+                        <input type="checkbox" id="chkAttachScreenshot" onchange="autoSyncSetting()">
                         แนบรูปภาพหน้าจอขณะแจ้งเตือน
                     </label>
                     <label class="check-pill">
-                        <input type="checkbox" id="chkNotifyRounds">
+                        <input type="checkbox" id="chkNotifyRounds" onchange="autoSyncSetting()">
                         แจ้งเตือนเมื่อจบแต่ละรอบ
                     </label>
                     <label class="check-pill">
-                        <input type="checkbox" id="chkNotifyBoxes">
+                        <input type="checkbox" id="chkNotifyBoxes" onchange="autoSyncSetting()">
                         แจ้งเตือนเมื่อได้กล่องปริศนา
                     </label>
                     <label class="check-pill">
-                        <input type="checkbox" id="chkNotifyAntibot">
+                        <input type="checkbox" id="chkNotifyAntibot" onchange="autoSyncSetting()">
                         แจ้งเตือนเมื่อพบระบบ Anti-Bot
                     </label>
                 </div>
@@ -1362,6 +1381,19 @@
 
                 if (s.lastRound) {
                     setTxt('valLastXp', (s.lastRound.xp || 0).toLocaleString());
+                    setTxt('valLastCoins', (s.lastRound.coins || 0).toLocaleString());
+                    setTxt('valLastBoxes', s.lastRound.boxes || 0);
+                }
+
+                const botPill = document.getElementById('pillBotRunning');
+                if (botPill) {
+                    if (s.isRunning) {
+                        botPill.style.color = '#34d399';
+                        botPill.innerText = '▶ กำลังทำงาน (' + (s.currentStage || 'RUNNING') + ')';
+                    } else {
+                        botPill.style.color = '#94a3b8';
+                        botPill.innerText = '⏹ บอทหยุด (' + (s.currentStage || 'IDLE') + ')';
+                    }
                 }
 
                 if (s.boxCounts) {
@@ -1380,6 +1412,10 @@
 
             if (data.config) {
                 applyBotConfig(data.config);
+            }
+
+            if (data.device) {
+                applyDeviceStatus(data.device);
             }
         }
 
@@ -1510,15 +1546,51 @@
             sendCloudCommand('TAP', { x: gameX, y: gameY });
         }
 
+        let autoSyncTimer = null;
+
+        function autoSyncSetting() {
+            saveFarmSettings(true);
+        }
+
+        function debounceAutoSync() {
+            if (autoSyncTimer) clearTimeout(autoSyncTimer);
+            autoSyncTimer = setTimeout(() => {
+                saveFarmSettings(true);
+            }, 600);
+        }
+
+        function applyDeviceStatus(dev) {
+            if (!dev) return;
+            const setPill = (id, active, activeText, inactiveText) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const dot = el.querySelector('span');
+                if (active) {
+                    el.style.color = '#34d399';
+                    if (dot) dot.style.background = '#10b981';
+                    el.title = activeText;
+                } else {
+                    el.style.color = '#94a3b8';
+                    if (dot) dot.style.background = '#64748b';
+                    el.title = inactiveText;
+                }
+            };
+            setPill('pillAccessStatus', dev.accessibility, 'เปิดใช้งานแล้ว', 'ยังไม่ได้เปิด');
+            setPill('pillCaptureStatus', dev.capture, 'บันทึกหน้าจอพร้อม', 'สแตนด์บาย');
+            setPill('pillOverlayStatus', dev.overlay, 'เปิดหน้าต่างลอย', 'ปิดหน้าต่างลอย');
+        }
+
         function applyBotConfig(cfg) {
             if (!cfg) return;
+            const isFocused = (id) => document.activeElement && document.activeElement.id === id;
+
             const setChk = (id, val) => {
                 const el = document.getElementById(id);
-                if (el) el.checked = !!val;
+                if (el && !isFocused(id)) el.checked = !!val;
             };
             const setVal = (id, val) => {
                 const el = document.getElementById(id);
-                if (el && val !== undefined && val !== null) el.value = val;
+                if (el && val !== undefined && val !== null && !isFocused(id)) el.value = val;
             };
 
             setChk('chkUseDesiredRandomBoost', cfg.useDesiredRandomBoost);
@@ -1546,7 +1618,7 @@
             setChk('chkNotifyAntibot', cfg.notifyAntibot);
         }
 
-        async function saveFarmSettings() {
+        async function saveFarmSettings(silent = false) {
             const configPayload = {
                 useDesiredRandomBoost: document.getElementById('chkUseDesiredRandomBoost').checked,
                 desiredBoostId: document.getElementById('selDesiredBoostId').value,
@@ -1584,7 +1656,9 @@
 
             // Send UPDATE_CONFIG command directly to bot
             sendCloudCommand('UPDATE_CONFIG', configPayload);
-            showToast('💾 ส่งการตั้งค่าไปยังบอทสำเร็จ!');
+            if (!silent) {
+                showToast('💾 ส่งการตั้งค่าไปยังบอทสำเร็จ!');
+            }
         }
 
         function testDiscordWebhook() {
