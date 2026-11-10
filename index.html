@@ -994,24 +994,31 @@
             });
         }
 
-        // ---------- Cloud Realtime Sync via Instant MQTT Broker (No 429 Limit) ----------
+        // ---------- Cloud Realtime Sync via Instant MQTT Broker (Multi-Broker Failover) ----------
+        const WSS_BROKERS = [
+            'wss://broker.hivemq.com:8884/mqtt',
+            'wss://broker.emqx.io:8084/mqtt'
+        ];
+        let currentBrokerIndex = 0;
+
         function startCloudSync() {
             stopCloudSync();
             if (!pairingKey) return;
 
+            const brokerUrl = WSS_BROKERS[currentBrokerIndex % WSS_BROKERS.length];
             const clientId = 'crbot_web_' + pairingKey + '_' + Math.random().toString(36).substr(2, 6);
 
             try {
                 if (typeof mqtt !== 'undefined') {
-                    mqttClient = mqtt.connect('wss://broker.hivemq.com:8884/mqtt', {
+                    mqttClient = mqtt.connect(brokerUrl, {
                         clientId: clientId,
                         clean: true,
-                        reconnectPeriod: 2000,
-                        connectTimeout: 10000
+                        reconnectPeriod: 2500,
+                        connectTimeout: 8000
                     });
 
                     mqttClient.on('connect', () => {
-                        console.log('✅ Connected to Cloud Relay WSS!');
+                        console.log('✅ Connected to Cloud Relay WSS via', brokerUrl);
                         mqttClient.subscribe(`crbot/${pairingKey}/stats`, { qos: 0 });
                         mqttClient.subscribe(`crbot/${pairingKey}/screen`, { qos: 0 });
                     });
@@ -1035,6 +1042,11 @@
 
                     mqttClient.on('close', () => {
                         updateBotOnlineStatus(false);
+                    });
+
+                    mqttClient.on('error', (err) => {
+                        console.warn('MQTT error, trying alternate broker:', err);
+                        currentBrokerIndex++;
                     });
                 }
             } catch (e) {
