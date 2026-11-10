@@ -1,0 +1,6 @@
+{
+  "versionCode": 7,
+  "versionName": "0.7.0",
+  "changelog": "- ระบบสำรองข้อมูลถาวรบนคลาวด์ (Permanent Cloud Vault)\n- ข้อมูลและสถิติการวิ่งไม่สูญหายแม้มีการอัปเดต\n- รองรับการอัปเดตในแอปโดยตรง (In-App OTA Update)",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
+}

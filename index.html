@@ -1480,6 +1480,9 @@
                 <button class="btn-copy-code" onclick="sendCloudCommand('PING')" style="background: #7c3aed;">
                     🔔 ทดสอบ Ping
                 </button>
+                <button class="btn-copy-code" onclick="triggerRemoteUpdate()" style="background: #0284c7;" title="สั่งให้อุปกรณ์ดาวน์โหลดและติดตั้งเวอร์ชันใหม่โดยตรง">
+                    🚀 อัปเดตแอป (OTA)
+                </button>
                 <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-copy-code btn-download-banner" style="background: #059669; text-decoration: none;">
                     📥 ดาวน์โหลด APK (ตัวล่าสุด)
                 </a>
@@ -2788,6 +2791,12 @@
             } catch (err) {
                 showToast('ส่งคำสั่งไม่สำเร็จ: ' + err.message);
             }
+        }
+
+        async function triggerRemoteUpdate() {
+            if (!confirm('ต้องการสั่งให้อุปกรณ์ดาวน์โหลดและอัปเดตแอป CookieRunBot เป็นเวอร์ชันล่าสุดโดยตรงหรือไม่? (ข้อมูลและเซสชันทั้งหมดจะไม่สูญหาย)')) return;
+            await sendCloudCommand('UPDATE_APP');
+            alert('🚀 ส่งคำสั่งอัปเดตไปยังมือถือแล้ว! แอปจะเริ่มดาวน์โหลดและแสดงหน้าต่างติดตั้งทันที');
         }
 
         // ===================================================================
