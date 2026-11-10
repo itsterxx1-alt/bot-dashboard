@@ -942,7 +942,11 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Logic Script (Pure Native HTTP / SSE - No External Libraries Required) -->
-    <script>
+        <script>
+        // ==========================================
+        // CONSTANTS & GLOBAL STATE (TOP OF SCRIPT)
+        // ==========================================
+        const BASE_RELAY_URL = "https://ntfy.sh";
         const DEFAULT_USER = {
             email: 'tititada@gmail.com',
             name: 'tititada'
@@ -968,17 +972,14 @@
         let pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
         let isStreamingActive = false;
         let lastBotSeenTime = 0;
+        let statsEventSource = null;
+        let screenEventSource = null;
+        let pollingTimer = null;
+        let screenPollTimer = null;
 
-        // Initialize UI safely on load
-        window.addEventListener('DOMContentLoaded', () => {
-            applyUser(currentUser);
-            startCloudSync();
-        });
-
-        // Also run immediately in case DOM is already ready
-        applyUser(currentUser);
-        startCloudSync();
-
+        // ==========================================
+        // USER AUTHENTICATION & PROFILE
+        // ==========================================
         function applyUser(user) {
             if (!user || !user.email) {
                 user = DEFAULT_USER;
@@ -1003,8 +1004,6 @@
 
             const mAvt = document.getElementById('modalAvatarBox');
             if (mAvt) mAvt.innerText = displayLetter;
-
-            // pairing code obsolete
 
             const dispEmail = document.getElementById('displayUserEmail');
             if (dispEmail) dispEmail.innerText = user.email;
@@ -1053,8 +1052,6 @@
             const avt = document.getElementById('googleAvatarBox');
             if (avt) avt.innerText = 'G';
 
-            // pairing code obsolete
-
             const loggedInView = document.getElementById('googleLoggedInView');
             if (loggedInView) loggedInView.style.display = 'none';
 
@@ -1078,30 +1075,17 @@
         function copyPairingKey() {
             const emailToCopy = (currentUser && currentUser.email) ? currentUser.email : 'tititada@gmail.com';
             navigator.clipboard.writeText(emailToCopy).then(() => {
-                showToast('คัดลอกรหัสจับคู่แล้ว นำไปวางในแอป CookieRun Bot ได้เลย!');
+                showToast('คัดลอกอีเมลสำเร็จ!');
             });
         }
 
-        // ---------- Cloud Realtime Sync via HTTP Server-Sent Events (SSE) & REST ----------
-        const BASE_RELAY_URL = "https://ntfy.sh";
-        let statsEventSource = null;
-        let screenEventSource = null;
-        let pollingTimer = null;
-
         function updateRelayStatusBadge(status) {
-            return;
-            if (status === 'connected') {
-                elem.style.color = '#34d399';
-                elem.innerText = 'HTTP Cloud Relay (🟢 เชื่อมต่อแล้ว พอร์ต 443)';
-            } else if (status === 'connecting') {
-                elem.style.color = '#fbbf24';
-                elem.innerText = 'HTTP Cloud Relay (กำลังต่อ...)';
-            } else {
-                elem.style.color = '#94a3b8';
-                elem.innerText = 'HTTP Cloud Relay (รอการเชื่อมต่อ)';
-            }
+            // legacy status updater
         }
 
+        // ==========================================
+        // CLOUD REALTIME SYNC (HTTP REST + SSE)
+        // ==========================================
         async function fetchInitialBotState() {
             if (!pairingKey) {
                 pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
@@ -1111,7 +1095,8 @@
                 const res = await fetch(`${BASE_RELAY_URL}/crbot_${pairingKey}_stats/json?poll=1`);
                 if (!res.ok) return;
                 const text = await res.text();
-                const lines = text.split('\n').filter(l => l.trim());
+                const lines = text.split('
+').filter(l => l.trim());
                 for (let i = lines.length - 1; i >= 0; i--) {
                     try {
                         const obj = JSON.parse(lines[i]);
@@ -1135,7 +1120,6 @@
             }
             if (!pairingKey) return;
 
-            updateRelayStatusBadge('connecting');
             const statsUrl = `${BASE_RELAY_URL}/crbot_${pairingKey}_stats/sse?since=2m`;
             const screenUrl = `${BASE_RELAY_URL}/crbot_${pairingKey}_screen/sse`;
 
@@ -1148,14 +1132,13 @@
 
                 statsEventSource.onopen = () => {
                     console.log('✅ Connected to HTTP Cloud SSE:', statsUrl);
-                    updateRelayStatusBadge('connected');
                 };
 
                 statsEventSource.onmessage = (event) => {
                     try {
                         const parsed = JSON.parse(event.data);
                         if (parsed.event === 'message' && parsed.message) {
-                            const data = JSON.parse(parsed.message);
+                            const data = (typeof parsed.message === 'string') ? JSON.parse(parsed.message) : parsed.message;
                             applyBotData(data);
                         }
                     } catch (e) {
@@ -1164,7 +1147,7 @@
                 };
 
                 statsEventSource.onerror = () => {
-                    updateRelayStatusBadge('connecting');
+                    // SSE reconnection handled automatically by browser
                 };
 
                 // Stream listener
@@ -1179,9 +1162,12 @@
                             }
                             if (frameStr.startsWith('data:image') || frameStr.startsWith('http')) {
                                 const img = document.getElementById('streamImage');
-                                img.src = frameStr;
-                                img.style.display = 'block';
-                                document.getElementById('streamPlaceholder').style.display = 'none';
+                                if (img) {
+                                    img.src = frameStr;
+                                    img.style.display = 'block';
+                                }
+                                const ph = document.getElementById('streamPlaceholder');
+                                if (ph) ph.style.display = 'none';
                             }
                         }
                     } catch (e) {}
@@ -1190,8 +1176,8 @@
                 console.error('EventSource error:', e);
             }
 
-            // 3. Keep-alive polling fallback every 4s (Safari background safe)
-            pollingTimer = setInterval(fetchInitialBotState, 4000);
+            // 3. Keep-alive polling fallback every 3s (guarantees sync on mobile Safari)
+            pollingTimer = setInterval(fetchInitialBotState, 3000);
 
             if (!window._heartbeatTimer) {
                 window._heartbeatTimer = setInterval(checkBotHeartbeat, 1500);
@@ -1211,7 +1197,10 @@
                 clearInterval(pollingTimer);
                 pollingTimer = null;
             }
-            updateRelayStatusBadge('disconnected');
+            if (screenPollTimer) {
+                clearInterval(screenPollTimer);
+                screenPollTimer = null;
+            }
             updateBotOnlineStatus(false);
         }
 
@@ -1264,6 +1253,7 @@
         function updateBotOnlineStatus(isOnline) {
             const badge = document.getElementById('cloudStatusBadge');
             const txt = document.getElementById('cloudStatusText');
+            if (!badge || !txt) return;
             if (isOnline) {
                 badge.className = 'cloud-status-badge';
                 const secAgo = Math.max(0, Math.floor((Date.now() - lastBotSeenTime) / 1000));
@@ -1274,11 +1264,12 @@
             }
         }
 
-        // ---------- Send Cloud Commands ----------
+        // ==========================================
+        // COMMAND SENDER (START / STOP / PING / GAMEPAD)
+        // ==========================================
         async function sendCloudCommand(action, params = {}) {
             if (!pairingKey) {
-                showToast('กรุณาเข้าสู่ระบบ Google ก่อน');
-                return;
+                pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
             }
 
             const cmdPayload = {
@@ -1299,7 +1290,7 @@
                 });
 
                 if (res.ok) {
-                    showToast(`ส่งคำสั่ง ${action} สำเร็จ 🚀 (HTTP Cloud)`);
+                    showToast(`ส่งคำสั่ง ${action} สำเร็จ 🚀`);
                 } else {
                     showToast(`ส่งคำสั่งไม่สำเร็จ (HTTP ${res.status})`);
                 }
@@ -1308,15 +1299,17 @@
             }
         }
 
-        let screenPollTimer = null;
-
+        // ==========================================
+        // SCREEN STREAMING & TOUCH CONTROL
+        // ==========================================
         async function fetchLatestScreenFrame() {
             if (!isStreamingActive || !pairingKey) return;
             try {
                 const res = await fetch(`${BASE_RELAY_URL}/crbot_${pairingKey}_screen/json?poll=1`);
                 if (!res.ok) return;
                 const text = await res.text();
-                const lines = text.split('\n').filter(l => l.trim());
+                const lines = text.split('
+').filter(l => l.trim());
                 for (let i = lines.length - 1; i >= 0; i--) {
                     try {
                         const obj = JSON.parse(lines[i]);
@@ -1369,6 +1362,7 @@
         function handleScreenTap(event) {
             if (!isStreamingActive) return;
             const container = document.getElementById('streamContainer');
+            if (!container) return;
             const rect = container.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
             const clickY = event.clientY - rect.top;
@@ -1385,6 +1379,7 @@
 
         function renderLogs(logs) {
             const panel = document.getElementById('logsPanel');
+            if (!panel) return;
             panel.innerHTML = logs.map(l => {
                 const cls = l.level === 'warn' ? 'warn' : l.level === 'error' ? 'error' : l.message.includes('✅') ? 'success' : 'info';
                 return `<div class="log-line ${cls}">[${l.time}] ${escapeHtml(l.message)}</div>`;
@@ -1392,11 +1387,13 @@
         }
 
         function clearLocalLogs() {
-            document.getElementById('logsPanel').innerHTML = '<div class="log-line info">ล้างบันทึกเรียบร้อย</div>';
+            const panel = document.getElementById('logsPanel');
+            if (panel) panel.innerHTML = '<div class="log-line info">ล้างบันทึกเรียบร้อย</div>';
         }
 
         function renderSessions(sessions) {
             const container = document.getElementById('sessionsListContainer');
+            if (!container) return;
             if (!sessions.length) {
                 container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">ยังไม่มีประวัติเซสชัน</div>';
                 return;
@@ -1440,6 +1437,7 @@
 
         function showToast(msg) {
             const container = document.getElementById('toastContainer');
+            if (!container) return;
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.innerText = msg;
@@ -1451,6 +1449,24 @@
             const div = document.createElement('div');
             div.innerText = text;
             return div.innerHTML;
+        }
+
+        // ==========================================
+        // INITIALIZATION (AT BOTTOM OF SCRIPT)
+        // ==========================================
+        function initDashboard() {
+            try {
+                applyUser(currentUser);
+                startCloudSync();
+            } catch (err) {
+                console.error("Dashboard init error:", err);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDashboard);
+        } else {
+            initDashboard();
         }
     </script>
 </body>
