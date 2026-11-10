@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Prompt:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Official Google Firebase App & Auth SDK (v9 compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <style>
         :root {
             --bg-base: #0f172a;
@@ -818,16 +821,10 @@
                 </div>
             </div>
 
-            <!-- Google Email Login Form -->
-            <div style="margin-bottom: 22px;">
-                <div style="text-align: left; margin-bottom: 6px;">
-                    <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">
-                        อีเมลบัญชี Google ที่เชื่อมโยงกับแอปบอท:
-                    </label>
-                </div>
-                <input type="email" id="txtCustomLoginEmail" placeholder="กรอกอีเมล Google เช่น example@gmail.com" class="config-text-input" style="text-align: left; margin-bottom: 12px; font-size: 0.95rem; padding: 13px 14px;" onkeydown="if(event.key==='Enter') handleCustomGoogleLogin()">
-                <button class="btn-google-login-primary" onclick="handleCustomGoogleLogin()">
-                    <svg width="20" height="20" viewBox="0 0 48 48">
+            <!-- Official Google Sign-In Action -->
+            <div style="margin-bottom: 24px;">
+                <button class="btn-google-login-primary" onclick="signInWithGoogleOfficial()" style="padding: 14px 20px; font-size: 0.98rem; box-shadow: 0 4px 18px rgba(0,0,0,0.35);">
+                    <svg width="22" height="22" viewBox="0 0 48 48">
                         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                         <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
                         <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
@@ -1344,12 +1341,17 @@
             </div>
 
             <div id="googleLoggedOutView" style="display: none; padding: 10px 0;">
-                <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 12px;">
-                    กรอกบัญชี Google เพื่อระบุตัวตนและจับคู่กับบอทของคุณ:
+                <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">
+                    เข้าสู่ระบบด้วยบัญชี Google เพื่อยืนยันตัวตนและจับคู่กับบอทของคุณ:
                 </p>
-                <input type="email" id="inputGoogleEmail" placeholder="example@gmail.com" value="" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-card); color: #fff; border-radius: 8px; margin-bottom: 12px;" onkeydown="if(event.key==='Enter') loginGoogleManual()">
-                <button class="btn-act btn-act-start" style="width: 100%;" onclick="loginGoogleManual()">
-                    เข้าสู่ระบบด้วยอีเมลนี้
+                <button class="btn-google-login-primary" onclick="signInWithGoogleOfficial()">
+                    <svg width="20" height="20" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    <span>เข้าสู่ระบบด้วยบัญชี Google</span>
                 </button>
             </div>
         </div>
@@ -1361,9 +1363,40 @@
     <!-- Logic Script (Pure Native HTTP / SSE - No External Libraries Required) -->
             <script>
         // ===================================================================
-        // GOOGLE FIREBASE REALTIME DATABASE CONFIG & GLOBAL STATE
+        // GOOGLE FIREBASE CONFIG & AUTHENTICATION
         // ===================================================================
-        const FIREBASE_RTDB_URL = "https://cookie-run-bot-default-rtdb.asia-southeast1.firebasedatabase.app";
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMbqwFc27QSk5s_K6bPXEX_7JxGkGavFw",
+            authDomain: "cookie-run-bot.firebaseapp.com",
+            databaseURL: "https://cookie-run-bot-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "cookie-run-bot",
+            storageBucket: "cookie-run-bot.firebasestorage.app",
+            messagingSenderId: "629352380936",
+            appId: "1:629352380936:web:c5c06a99ac83ddbc25afbd",
+            measurementId: "G-5SPS2SG2TC"
+        };
+
+        const FIREBASE_RTDB_URL = firebaseConfig.databaseURL;
+
+        // Initialize Firebase Web SDK & Google Provider
+        let fbApp = null;
+        let fbAuth = null;
+        let googleProvider = null;
+
+        try {
+            if (typeof firebase !== 'undefined') {
+                if (!firebase.apps.length) {
+                    fbApp = firebase.initializeApp(firebaseConfig);
+                } else {
+                    fbApp = firebase.app();
+                }
+                fbAuth = firebase.auth();
+                googleProvider = new firebase.auth.GoogleAuthProvider();
+                googleProvider.setCustomParameters({ prompt: 'select_account' });
+            }
+        } catch (e) {
+            console.error("Firebase Auth Init error:", e);
+        }
 
         function sanitizeKey(raw) {
             return (raw || '').toLowerCase().replace(/[^a-z0-9]/g, '').trim();
@@ -1407,8 +1440,18 @@
             const lbl = document.getElementById('googleBtnLabel');
             if (lbl) lbl.innerText = displayLabel;
 
-            const avt = document.getElementById('googleAvatarBox');
-            if (avt) avt.innerText = displayLetter;
+            const setAvatarContent = (el) => {
+                if (!el) return;
+                if (user.photo) {
+                    el.innerHTML = `<img src="${user.photo}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" referrerpolicy="no-referrer">`;
+                } else {
+                    el.innerText = displayLetter;
+                }
+            };
+
+            setAvatarContent(document.getElementById('googleAvatarBox'));
+            setAvatarContent(document.getElementById('modalAvatarBox'));
+            setAvatarContent(document.getElementById('bannerAvatar'));
 
             const mName = document.getElementById('modalUserName');
             if (mName) mName.innerText = displayLabel;
@@ -1416,17 +1459,8 @@
             const mEmail = document.getElementById('modalUserEmail');
             if (mEmail) mEmail.innerText = user.email;
 
-            const mAvt = document.getElementById('modalAvatarBox');
-            if (mAvt) mAvt.innerText = displayLetter;
-
             const dispEmail = document.getElementById('displayUserEmail');
             if (dispEmail) dispEmail.innerText = user.email;
-
-            const bAvt = document.getElementById('bannerAvatar');
-            if (bAvt) bAvt.innerText = displayLetter;
-
-            const inEmail = document.getElementById('inputGoogleEmail');
-            if (inEmail) inEmail.value = user.email;
 
             const loggedInView = document.getElementById('googleLoggedInView');
             if (loggedInView) loggedInView.style.display = 'block';
@@ -1488,7 +1522,13 @@
             const displayLetter = (email[0] || 'U').toUpperCase();
 
             const avt = document.getElementById('unlinkedUserAvatar');
-            if (avt) avt.innerText = displayLetter;
+            if (avt) {
+                if (currentUser && currentUser.photo) {
+                    avt.innerHTML = `<img src="${currentUser.photo}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" referrerpolicy="no-referrer">`;
+                } else {
+                    avt.innerText = displayLetter;
+                }
+            }
 
             const lbl = document.getElementById('unlinkedUserEmail');
             if (lbl) lbl.innerText = email;
@@ -1530,40 +1570,49 @@
             }, 3000);
         }
 
-        function handleGoogleLogin(email) {
-            if (!email) return;
-            currentUser = { email: email.trim(), name: email.split('@')[0] };
-            localStorage.setItem('cookierun_auth_user', JSON.stringify(currentUser));
-            localStorage.setItem('official_google_user', JSON.stringify(currentUser));
-            closeGoogleAuthModal();
-            checkBotLinkAndRender(true);
-        }
-
-        function handleCustomGoogleLogin() {
-            const input = document.getElementById('txtCustomLoginEmail');
-            const email = (input ? input.value : '').trim();
-            if (!email || !email.includes('@')) {
-                showToast('กรุณากรอกอีเมล Google ให้ถูกต้อง (เช่น example@gmail.com)');
+        async function signInWithGoogleOfficial() {
+            if (!fbAuth || !googleProvider) {
+                showToast("กำลังโหลดบริการ Google Login... กรุณารอสักครู่");
                 return;
             }
-            handleGoogleLogin(email);
-        }
 
-        function quickLoginEmail(email) {
-            handleGoogleLogin(email);
-        }
-
-        function loginGoogleManual() {
-            const input = document.getElementById('inputGoogleEmail');
-            const email = (input ? input.value : '').trim();
-            if (!email || !email.includes('@')) {
-                showToast('กรุณากรอกอีเมล Google ให้ถูกต้อง');
-                return;
+            try {
+                showToast("⏳ กำลังเปิดหน้าต่างยืนยันตัวตน Google...");
+                const result = await fbAuth.signInWithPopup(googleProvider);
+                const user = result.user;
+                if (user && user.email) {
+                    currentUser = {
+                        email: user.email.toLowerCase(),
+                        name: user.displayName || user.email.split('@')[0],
+                        photo: user.photoURL || '',
+                        uid: user.uid
+                    };
+                    localStorage.setItem('cookierun_auth_user', JSON.stringify(currentUser));
+                    localStorage.setItem('official_google_user', JSON.stringify(currentUser));
+                    closeGoogleAuthModal();
+                    showToast(`✅ ยืนยันตัวตนสำเร็จ: ยินดีต้อนรับ ${currentUser.name}!`);
+                    await checkBotLinkAndRender(true);
+                }
+            } catch (err) {
+                console.error("Google Sign-In Error:", err);
+                if (err.code === 'auth/popup-closed-by-user') {
+                    showToast("ยกเลิกการเข้าสู่ระบบ");
+                } else if (err.code === 'auth/unauthorized-domain') {
+                    alert("⚠️ โดเมน itsterxx1-alt.github.io ยังไม่ได้รับอนุญาตใน Firebase Console\n\nวิธีเปิดใช้งานง่ายๆ:\n1. เข้า Firebase Console > Authentication > Settings\n2. เลื่อนไปที่ Authorized domains > กด Add domain\n3. ใส่ itsterxx1-alt.github.io แล้วกดบันทึก");
+                    showToast("⚠️ โดเมนยังไม่ได้รับอนุญาตใน Firebase Console");
+                } else if (err.code === 'auth/operation-not-allowed') {
+                    alert("⚠️ ยังไม่ได้เปิดใช้งาน Google Sign-In Provider ใน Firebase Console\n\nวิธีเปิดใช้งาน:\n1. เข้า Firebase Console > Authentication > Sign-in method\n2. กดเลือก Google แล้วเปิดสวิตช์ Enable แล้วกด Save");
+                    showToast("⚠️ ยังไม่ได้เปิดใช้งาน Google Sign-In");
+                } else {
+                    showToast(`เข้าสู่ระบบไม่สำเร็จ (${err.message})`);
+                }
             }
-            handleGoogleLogin(email);
         }
 
-        function handleLogout() {
+        async function handleLogout() {
+            try {
+                if (fbAuth) await fbAuth.signOut();
+            } catch (e) {}
             localStorage.removeItem('cookierun_auth_user');
             localStorage.removeItem('official_google_user');
             if (unlinkedWatcherTimer) {
@@ -2116,23 +2165,52 @@
         // ===================================================================
         function initDashboard() {
             try {
-                const savedUserStr = localStorage.getItem('cookierun_auth_user') || localStorage.getItem('official_google_user');
-                if (savedUserStr) {
-                    try {
-                        const parsed = JSON.parse(savedUserStr);
-                        if (parsed && parsed.email) {
-                            currentUser = parsed;
-                            pairingKey = sanitizeKey(parsed.email);
-                            checkBotLinkAndRender(false);
-                            return;
+                if (fbAuth) {
+                    fbAuth.onAuthStateChanged(async (user) => {
+                        if (user && user.email) {
+                            currentUser = {
+                                email: user.email.toLowerCase(),
+                                name: user.displayName || user.email.split('@')[0],
+                                photo: user.photoURL || '',
+                                uid: user.uid
+                            };
+                            localStorage.setItem('cookierun_auth_user', JSON.stringify(currentUser));
+                            pairingKey = sanitizeKey(currentUser.email);
+                            await checkBotLinkAndRender(false);
+                        } else {
+                            const savedUserStr = localStorage.getItem('cookierun_auth_user');
+                            if (savedUserStr) {
+                                try {
+                                    const parsed = JSON.parse(savedUserStr);
+                                    if (parsed && parsed.email) {
+                                        currentUser = parsed;
+                                        pairingKey = sanitizeKey(parsed.email);
+                                        await checkBotLinkAndRender(false);
+                                        return;
+                                    }
+                                } catch (e) {}
+                            }
+                            currentUser = null;
+                            pairingKey = null;
+                            stopCloudSync();
+                            showView('login');
                         }
-                    } catch (e) {}
+                    });
+                } else {
+                    const savedUserStr = localStorage.getItem('cookierun_auth_user');
+                    if (savedUserStr) {
+                        try {
+                            const parsed = JSON.parse(savedUserStr);
+                            if (parsed && parsed.email) {
+                                currentUser = parsed;
+                                pairingKey = sanitizeKey(parsed.email);
+                                checkBotLinkAndRender(false);
+                                return;
+                            }
+                        } catch (e) {}
+                    }
+                    showView('login');
                 }
-
-                // If not logged in:
-                currentUser = null;
-                pairingKey = null;
-                showView('login');
             } catch (err) {
                 console.error("Dashboard init error:", err);
                 showView('login');
