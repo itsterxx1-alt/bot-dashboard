@@ -405,6 +405,95 @@
             color: var(--text-subtle);
         }
 
+        /* Overview Section Headers & Lifetime Stats */
+        .overview-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 4px 2px;
+        }
+
+        .overview-section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .overview-icon-badge {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .overview-section-tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 99px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-card-lifetime {
+            background: linear-gradient(145deg, rgba(30, 27, 75, 0.5), rgba(24, 34, 52, 0.9));
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            box-shadow: 0 4px 18px rgba(245, 158, 11, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card-lifetime::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 48px;
+            height: 48px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .lifetime-summary-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px;
+            background: linear-gradient(135deg, rgba(30, 27, 75, 0.65), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .lifetime-summary-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+        }
+
+        .lifetime-label {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        .lifetime-val {
+            font-weight: 700;
+            color: #fff;
+            font-family: var(--font-mono);
+        }
+
         /* cookierunbot.com Config Sections */
         .config-card {
             background: var(--bg-surface);
@@ -1033,11 +1122,27 @@
 
         <!-- TAB: OVERVIEW & STREAM -->
         <div class="tab-content active" id="tab-overview">
-            <!-- Stats Grid -->
+
+            <!-- SECTION 1: ภาพรวมการวิ่งในเซสชันปัจจุบัน (Current Session Overview) -->
+            <div class="overview-section-header">
+                <div class="overview-section-title">
+                    <span class="overview-icon-badge" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35);">🏃</span>
+                    <div>
+                        <div style="font-size: 0.95rem; font-weight: 700; color: #fff;">สถิติการวิ่งเซสชันปัจจุบัน (Current Session)</div>
+                        <div style="font-size: 0.74rem; color: #94a3b8;" id="txtCurrentSessionTitle">เซสชันที่กำลังเปิดใช้งาน</div>
+                    </div>
+                </div>
+                <div class="overview-section-tag" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3);">
+                    <span style="width: 7px; height: 7px; background: #34d399; border-radius: 50%; display: inline-block;"></span>
+                    <span>เซสชันปัจจุบัน</span>
+                </div>
+            </div>
+
+            <!-- Current Session Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-header">
-                        <span>รอบการวิ่งสะสม</span>
+                        <span>รอบวิ่งเซสชันนี้</span>
                         <span>🏃</span>
                     </div>
                     <div class="stat-value" id="valRounds">0</div>
@@ -1050,7 +1155,7 @@
 
                 <div class="stat-card">
                     <div class="stat-header">
-                        <span>เหรียญทั้งหมด (Coins)</span>
+                        <span>เหรียญเซสชันนี้ (Coins)</span>
                         <span>🪙</span>
                     </div>
                     <div class="stat-value" id="valCoins" style="color: #fbbf24;">0</div>
@@ -1059,7 +1164,7 @@
 
                 <div class="stat-card">
                     <div class="stat-header">
-                        <span>EXP ที่ได้รับ</span>
+                        <span>EXP เซสชันนี้</span>
                         <span>⭐</span>
                     </div>
                     <div class="stat-value" id="valXp" style="color: #34d399;">0</div>
@@ -1068,11 +1173,72 @@
 
                 <div class="stat-card">
                     <div class="stat-header">
-                        <span>กล่องปริศนา</span>
+                        <span>กล่องปริศนาเซสชันนี้</span>
                         <span>📦</span>
                     </div>
                     <div class="stat-value" id="valBoxes" style="color: #a78bfa;">0</div>
                     <div class="stat-sub" id="valBoxTypes">🪵0 🥈0 🥇0 🌈0</div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: ภาพรวมสะสมตลอดการวิ่งทั้งหมดทุก session (All-Time Lifetime Overview) -->
+            <div class="overview-section-header" style="margin-top: 20px;">
+                <div class="overview-section-title">
+                    <span class="overview-icon-badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4);">🏆</span>
+                    <div>
+                        <div style="font-size: 0.95rem; font-weight: 700; color: #fff;">ภาพรวมสะสมทั้งหมดตลอดการวิ่ง (All-Time Lifetime Stats)</div>
+                        <div style="font-size: 0.74rem; color: #94a3b8;">
+                            ยอดสะสมรวมทุกเซสชัน (<span id="valAllTimeSessionsCount" style="color: #fcd34d; font-weight: 600;">0</span> เซสชัน) • เวลารวม <span id="valAllTimeDuration" style="color: #cbd5e1; font-weight: 600;">0 นาที</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="overview-section-tag" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.35);">
+                    <span>⭐ ยอดสะสมตลอดชีพ</span>
+                </div>
+            </div>
+
+            <!-- All-Time Lifetime Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card stat-card-lifetime">
+                    <div class="stat-header">
+                        <span style="color: #cbd5e1; font-weight: 600;">รอบวิ่งสะสมรวมทุกเซสชัน</span>
+                        <span>🏃‍♂️</span>
+                    </div>
+                    <div class="stat-value" id="valAllTimeRounds" style="color: #38bdf8;">0</div>
+                    <div class="stat-sub">
+                        รวม <span id="valAllTimeSessionsSub" style="color: #93c5fd; font-weight: 600;">0</span> เซสชันที่บันทึกไว้
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card-lifetime">
+                    <div class="stat-header">
+                        <span style="color: #cbd5e1; font-weight: 600;">เหรียญสะสมรวมทั้งหมด</span>
+                        <span>💰</span>
+                    </div>
+                    <div class="stat-value" id="valAllTimeCoins" style="color: #f59e0b;">0</div>
+                    <div class="stat-sub">
+                        เฉลี่ย <span id="valAllTimeCoinsAvg" style="color: #fcd34d; font-weight: 600;">0</span> เหรียญ/รอบ
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card-lifetime">
+                    <div class="stat-header">
+                        <span style="color: #cbd5e1; font-weight: 600;">EXP สะสมรวมทั้งหมด</span>
+                        <span>🌟</span>
+                    </div>
+                    <div class="stat-value" id="valAllTimeXp" style="color: #10b981;">0</div>
+                    <div class="stat-sub">
+                        เฉลี่ย <span id="valAllTimeXpAvg" style="color: #6ee7b7; font-weight: 600;">0</span> EXP/รอบ
+                    </div>
+                </div>
+
+                <div class="stat-card stat-card-lifetime">
+                    <div class="stat-header">
+                        <span style="color: #cbd5e1; font-weight: 600;">กล่องสะสมรวมทั้งหมด</span>
+                        <span>🎁</span>
+                    </div>
+                    <div class="stat-value" id="valAllTimeBoxes" style="color: #c084fc;">0</div>
+                    <div class="stat-sub" id="valAllTimeBoxTypes">🪵0 🥈0 🥇0 🌈0</div>
                 </div>
             </div>
 
@@ -1314,14 +1480,41 @@
         <div class="tab-content" id="tab-history">
             <div class="stream-card">
                 <div class="card-header">
-                    <div style="font-size: 0.95rem; font-weight: 600;">
+                    <div style="font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
                         <span>📁</span> ประวัติเซสชันการเปิดบอท (Sessions)
                     </div>
                     <button class="btn-act btn-act-start" style="padding: 4px 12px; font-size: 0.8rem;" onclick="sendCloudCommand('NEW_SESSION')">
                         ➕ เริ่มเซสชันใหม่
                     </button>
                 </div>
-                <div id="sessionsListContainer" style="padding: 14px; display: flex; flex-direction: column; gap: 8px;">
+
+                <div style="padding: 14px 14px 4px 14px;">
+                    <!-- Lifetime Summary Banner in Sessions tab -->
+                    <div class="lifetime-summary-bar">
+                        <div class="lifetime-summary-item">
+                            <span class="lifetime-label">📁 เซสชันทั้งหมด:</span>
+                            <span class="lifetime-val" id="histLifetimeSessions">0 เซสชัน</span>
+                        </div>
+                        <div class="lifetime-summary-item">
+                            <span class="lifetime-label">🏃 รอบวิ่งรวม:</span>
+                            <span class="lifetime-val" id="histLifetimeRounds" style="color: #38bdf8;">0 รอบ</span>
+                        </div>
+                        <div class="lifetime-summary-item">
+                            <span class="lifetime-label">🪙 เหรียญสะสมรวม:</span>
+                            <span class="lifetime-val" id="histLifetimeCoins" style="color: #f59e0b;">0</span>
+                        </div>
+                        <div class="lifetime-summary-item">
+                            <span class="lifetime-label">⭐ EXP สะสมรวม:</span>
+                            <span class="lifetime-val" id="histLifetimeXp" style="color: #10b981;">0</span>
+                        </div>
+                        <div class="lifetime-summary-item">
+                            <span class="lifetime-label">📦 กล่องสะสมรวม:</span>
+                            <span class="lifetime-val" id="histLifetimeBoxes" style="color: #c084fc;">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sessionsListContainer" style="padding: 10px 14px 14px 14px; display: flex; flex-direction: column; gap: 8px;">
                     <div style="text-align: center; color: var(--text-muted); padding: 20px;">
                         กำลังโหลดประวัติเซสชัน...
                     </div>
@@ -1792,22 +1985,45 @@
             updateBotOnlineStatus(false);
         }
 
+        function uptimeToSec(uptimeStr) {
+            if (!uptimeStr || typeof uptimeStr !== 'string') return 0;
+            const parts = uptimeStr.split(':').map(Number);
+            if (parts.length === 3) {
+                return (parts[0] * 3600) + (parts[1] * 60) + parts[2];
+            } else if (parts.length === 2) {
+                return (parts[0] * 60) + parts[1];
+            }
+            return 0;
+        }
+
+        function formatDurationSec(totalSec) {
+            if (!totalSec || totalSec <= 0) return '0 นาที';
+            const hrs = Math.floor(totalSec / 3600);
+            const mins = Math.floor((totalSec % 3600) / 60);
+            if (hrs > 0) {
+                return `${hrs} ชม. ${mins} นาที`;
+            }
+            return `${mins} นาที`;
+        }
+
         function applyBotData(data) {
             if (!data) return;
             lastBotSeenTime = Date.now();
             updateBotOnlineStatus(true);
 
+            const setTxt = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = val;
+            };
+
+            // 1. Current Session Stats
             if (data.stats) {
                 const s = data.stats;
-                const setTxt = (id, val) => {
-                    const el = document.getElementById(id);
-                    if (el) el.innerText = val;
-                };
-                setTxt('valRounds', s.roundsPlayed || 0);
+                setTxt('valRounds', (s.roundsPlayed || 0).toLocaleString());
                 setTxt('valUptime', s.uptime || '00:00:00');
                 setTxt('valCoins', (s.sessionCoinsEarned || 0).toLocaleString());
                 setTxt('valXp', (s.sessionXpEarned || 0).toLocaleString());
-                setTxt('valBoxes', s.mysteryBoxes || 0);
+                setTxt('valBoxes', (s.mysteryBoxes || 0).toLocaleString());
                 setTxt('valStage', s.currentStage || (s.isRunning ? 'RUNNING' : 'STOPPED'));
                 setTxt('valCoinsPerHr', (s.coinsPerHour || 0).toLocaleString());
 
@@ -1833,6 +2049,118 @@
                     setTxt('valBoxTypes', `🪵${b.wood||0} 🥈${b.silver||0} 🥇${b.gold||0} 🌈${b.rainbow||0}`);
                 }
             }
+
+            // 2. All-Time Lifetime Stats across all sessions
+            let allTimeRounds = 0;
+            let allTimeCoins = 0;
+            let allTimeXp = 0;
+            let allTimeBoxes = 0;
+            let allTimeDurationSec = 0;
+            let allTimeWood = 0, allTimeSilver = 0, allTimeGold = 0, allTimeRainbow = 0;
+            let totalSessionsCount = 0;
+            let currentSessionTitle = 'เซสชันปัจจุบัน';
+
+            if (data.sessions && Array.isArray(data.sessions) && data.sessions.length > 0) {
+                totalSessionsCount = data.sessions.length;
+                let foundCurrentInSessions = false;
+
+                data.sessions.forEach(s => {
+                    if (s.isCurrent) {
+                        foundCurrentInSessions = true;
+                        if (s.title) currentSessionTitle = s.title;
+
+                        // Use live stats if it has higher or equal values
+                        const r = Math.max(s.roundsPlayed || 0, (data.stats && data.stats.roundsPlayed) || 0);
+                        const c = Math.max(s.sessionCoinsEarned || 0, (data.stats && data.stats.sessionCoinsEarned) || 0);
+                        const x = Math.max(s.sessionXpEarned || 0, (data.stats && data.stats.sessionXpEarned) || 0);
+                        const b = Math.max(s.mysteryBoxes || 0, (data.stats && data.stats.mysteryBoxes) || 0);
+                        
+                        allTimeRounds += r;
+                        allTimeCoins += c;
+                        allTimeXp += x;
+                        allTimeBoxes += b;
+
+                        let curSec = s.durationSec || 0;
+                        if (data.stats && data.stats.uptime) {
+                            curSec = Math.max(curSec, uptimeToSec(data.stats.uptime));
+                        }
+                        allTimeDurationSec += curSec;
+
+                        const liveBox = (data.stats && data.stats.boxCounts) || {};
+                        const sBox = s.boxCounts || {};
+                        allTimeWood += Math.max(sBox.wood || 0, liveBox.wood || 0);
+                        allTimeSilver += Math.max(sBox.silver || 0, liveBox.silver || 0);
+                        allTimeGold += Math.max(sBox.gold || 0, liveBox.gold || 0);
+                        allTimeRainbow += Math.max(sBox.rainbow || 0, liveBox.rainbow || 0);
+                    } else {
+                        allTimeRounds += (s.roundsPlayed || 0);
+                        allTimeCoins += (s.sessionCoinsEarned || 0);
+                        allTimeXp += (s.sessionXpEarned || 0);
+                        allTimeBoxes += (s.mysteryBoxes || 0);
+                        allTimeDurationSec += (s.durationSec || 0);
+
+                        if (s.boxCounts) {
+                            allTimeWood += (s.boxCounts.wood || 0);
+                            allTimeSilver += (s.boxCounts.silver || 0);
+                            allTimeGold += (s.boxCounts.gold || 0);
+                            allTimeRainbow += (s.boxCounts.rainbow || 0);
+                        }
+                    }
+                });
+
+                if (!foundCurrentInSessions && data.stats) {
+                    totalSessionsCount += 1;
+                    allTimeRounds += (data.stats.roundsPlayed || 0);
+                    allTimeCoins += (data.stats.sessionCoinsEarned || 0);
+                    allTimeXp += (data.stats.sessionXpEarned || 0);
+                    allTimeBoxes += (data.stats.mysteryBoxes || 0);
+                    allTimeDurationSec += uptimeToSec(data.stats.uptime);
+
+                    if (data.stats.boxCounts) {
+                        allTimeWood += (data.stats.boxCounts.wood || 0);
+                        allTimeSilver += (data.stats.boxCounts.silver || 0);
+                        allTimeGold += (data.stats.boxCounts.gold || 0);
+                        allTimeRainbow += (data.stats.boxCounts.rainbow || 0);
+                    }
+                }
+            } else if (data.stats) {
+                totalSessionsCount = 1;
+                allTimeRounds = data.stats.roundsPlayed || 0;
+                allTimeCoins = data.stats.sessionCoinsEarned || 0;
+                allTimeXp = data.stats.sessionXpEarned || 0;
+                allTimeBoxes = data.stats.mysteryBoxes || 0;
+                allTimeDurationSec = uptimeToSec(data.stats.uptime);
+
+                if (data.stats.boxCounts) {
+                    allTimeWood = data.stats.boxCounts.wood || 0;
+                    allTimeSilver = data.stats.boxCounts.silver || 0;
+                    allTimeGold = data.stats.boxCounts.gold || 0;
+                    allTimeRainbow = data.stats.boxCounts.rainbow || 0;
+                }
+            }
+
+            // Update All-Time Elements
+            setTxt('txtCurrentSessionTitle', currentSessionTitle);
+            setTxt('valAllTimeRounds', allTimeRounds.toLocaleString());
+            setTxt('valAllTimeCoins', allTimeCoins.toLocaleString());
+            setTxt('valAllTimeXp', allTimeXp.toLocaleString());
+            setTxt('valAllTimeBoxes', allTimeBoxes.toLocaleString());
+            setTxt('valAllTimeSessionsCount', totalSessionsCount);
+            setTxt('valAllTimeSessionsSub', totalSessionsCount);
+            setTxt('valAllTimeDuration', formatDurationSec(allTimeDurationSec));
+            setTxt('valAllTimeBoxTypes', `🪵${allTimeWood} 🥈${allTimeSilver} 🥇${allTimeGold} 🌈${allTimeRainbow}`);
+
+            const avgCoins = allTimeRounds > 0 ? Math.round(allTimeCoins / allTimeRounds) : 0;
+            const avgXp = allTimeRounds > 0 ? Math.round(allTimeXp / allTimeRounds) : 0;
+            setTxt('valAllTimeCoinsAvg', avgCoins.toLocaleString());
+            setTxt('valAllTimeXpAvg', avgXp.toLocaleString());
+
+            // History Tab Lifetime Summary
+            setTxt('histLifetimeSessions', totalSessionsCount + ' เซสชัน');
+            setTxt('histLifetimeRounds', allTimeRounds.toLocaleString() + ' รอบ');
+            setTxt('histLifetimeCoins', '+' + allTimeCoins.toLocaleString());
+            setTxt('histLifetimeXp', '+' + allTimeXp.toLocaleString());
+            setTxt('histLifetimeBoxes', allTimeBoxes.toLocaleString() + ' กล่อง');
 
             if (data.logs && Array.isArray(data.logs)) {
                 renderLogs(data.logs);
@@ -2304,7 +2632,8 @@
 
             const btns = document.querySelectorAll('.nav-tab-btn');
             btns.forEach(b => {
-                if (b.innerText.toLowerCase().includes(tabName)) b.classList.add('active');
+                const oc = b.getAttribute('onclick') || '';
+                if (oc.includes(`'${tabName}'`)) b.classList.add('active');
             });
         }
 
