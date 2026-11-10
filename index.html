@@ -909,12 +909,16 @@
             </div>
 
             <div id="googleLoggedOutView" style="display: none; padding: 10px 0;">
-                <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">
-                    กรอกอีเมล Google เพื่อระบุตัวตนและจับคู่กับบอทของคุณ
+                <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 12px;">
+                    เลือกบัญชี Google เพื่อระบุตัวตนและจับคู่กับบอทของคุณ:
                 </p>
+                <button class="btn-act btn-act-start" style="width: 100%; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="quickLoginEmail('tititada@gmail.com')">
+                    🍪 เข้าสู่ระบบด้วย tititada@gmail.com
+                </button>
+                <div style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-bottom: 10px;">หรือกรอกอีเมลอื่น:</div>
                 <input type="email" id="inputGoogleEmail" placeholder="tititada@gmail.com" value="tititada@gmail.com" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-card); color: #fff; border-radius: 8px; margin-bottom: 12px;">
-                <button class="btn-act btn-act-start" style="width: 100%;" onclick="loginGoogleManual()">
-                    เชื่อมต่อ Google ทันที
+                <button class="btn-act btn-act-reset" style="width: 100%;" onclick="loginGoogleManual()">
+                    เชื่อมต่ออีเมลนี้
                 </button>
             </div>
         </div>
@@ -925,82 +929,137 @@
 
     <!-- Logic Script (Pure Native HTTP / SSE - No External Libraries Required) -->
     <script>
-        let currentUser = {
+        const DEFAULT_USER = {
             email: 'tititada@gmail.com',
-            name: 'itster'
+            name: 'tititada'
         };
-
-        try {
-            const saved = localStorage.getItem('official_google_user');
-            if (saved) currentUser = JSON.parse(saved);
-        } catch (e) {}
-
-        let pairingKey = sanitizeKey(currentUser.email);
-        let isStreamingActive = false;
-        let mqttClient = null;
-        let lastBotSeenTime = 0;
 
         function sanitizeKey(raw) {
             return (raw || '').toLowerCase().replace(/[^a-z0-9]/g, '').trim();
         }
 
-        // Initialize UI
+        let currentUser = DEFAULT_USER;
+        try {
+            const savedStr = localStorage.getItem('official_google_user');
+            if (savedStr) {
+                const parsed = JSON.parse(savedStr);
+                if (parsed && parsed.email) {
+                    currentUser = parsed;
+                }
+            }
+        } catch (e) {
+            currentUser = DEFAULT_USER;
+        }
+
+        let pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
+        let isStreamingActive = false;
+        let lastBotSeenTime = 0;
+
+        // Initialize UI safely on load
+        window.addEventListener('DOMContentLoaded', () => {
+            applyUser(currentUser);
+            startCloudSync();
+        });
+
+        // Also run immediately in case DOM is already ready
         applyUser(currentUser);
         startCloudSync();
 
         function applyUser(user) {
-            if (user && user.email) {
-                pairingKey = sanitizeKey(user.email);
-                document.getElementById('googleBtnLabel').innerText = user.name || user.email.split('@')[0];
-                document.getElementById('googleAvatarBox').innerText = (user.name || user.email)[0].toUpperCase();
-                
-                document.getElementById('modalUserName').innerText = user.name || 'ผู้ใช้ Google';
-                document.getElementById('modalUserEmail').innerText = user.email;
-                document.getElementById('modalAvatarBox').innerText = (user.name || user.email)[0].toUpperCase();
-
-                document.getElementById('displayPairingCode').innerText = user.email;
-                document.getElementById('googleLoggedInView').style.display = 'block';
-                document.getElementById('googleLoggedOutView').style.display = 'none';
-            } else {
-                pairingKey = null;
-                document.getElementById('googleBtnLabel').innerText = 'เข้าสู่ระบบ';
-                document.getElementById('googleAvatarBox').innerText = 'G';
-                document.getElementById('displayPairingCode').innerText = 'กรุณาเข้าสู่ระบบ Google';
-                document.getElementById('googleLoggedInView').style.display = 'none';
-                document.getElementById('googleLoggedOutView').style.display = 'block';
+            if (!user || !user.email) {
+                user = DEFAULT_USER;
             }
+            currentUser = user;
+            pairingKey = sanitizeKey(user.email);
+
+            const displayLabel = user.name || user.email.split('@')[0];
+            const displayLetter = (displayLabel || 'U')[0].toUpperCase();
+
+            const lbl = document.getElementById('googleBtnLabel');
+            if (lbl) lbl.innerText = displayLabel;
+
+            const avt = document.getElementById('googleAvatarBox');
+            if (avt) avt.innerText = displayLetter;
+
+            const mName = document.getElementById('modalUserName');
+            if (mName) mName.innerText = displayLabel;
+
+            const mEmail = document.getElementById('modalUserEmail');
+            if (mEmail) mEmail.innerText = user.email;
+
+            const mAvt = document.getElementById('modalAvatarBox');
+            if (mAvt) mAvt.innerText = displayLetter;
+
+            const dispCode = document.getElementById('displayPairingCode');
+            if (dispCode) dispCode.innerText = user.email;
+
+            const inEmail = document.getElementById('inputGoogleEmail');
+            if (inEmail) inEmail.value = user.email;
+
+            const loggedInView = document.getElementById('googleLoggedInView');
+            if (loggedInView) loggedInView.style.display = 'block';
+
+            const loggedOutView = document.getElementById('googleLoggedOutView');
+            if (loggedOutView) loggedOutView.style.display = 'none';
         }
 
-        function loginGoogleManual() {
-            const email = document.getElementById('inputGoogleEmail').value.trim();
+        function quickLoginEmail(email) {
             if (!email) return;
-            currentUser = { email: email, name: email.split('@')[0] };
+            currentUser = { email: email.trim(), name: email.split('@')[0] };
             localStorage.setItem('official_google_user', JSON.stringify(currentUser));
             applyUser(currentUser);
             closeGoogleAuthModal();
             startCloudSync();
-            showToast(`เชื่อมต่อ Google (${currentUser.email}) เรียบร้อยแล้ว!`);
+            showToast(`เข้าสู่ระบบด้วย ${email} สำเร็จ 🚀`);
+        }
+
+        function loginGoogleManual() {
+            const input = document.getElementById('inputGoogleEmail');
+            const email = (input ? input.value : '').trim();
+            if (!email) {
+                showToast('กรุณากรอกอีเมล Google');
+                return;
+            }
+            quickLoginEmail(email);
         }
 
         function logoutGoogle() {
             localStorage.removeItem('official_google_user');
             currentUser = null;
-            applyUser(null);
-            closeGoogleAuthModal();
+            pairingKey = null;
+
+            const lbl = document.getElementById('googleBtnLabel');
+            if (lbl) lbl.innerText = 'เข้าสู่ระบบ';
+
+            const avt = document.getElementById('googleAvatarBox');
+            if (avt) avt.innerText = 'G';
+
+            const dispCode = document.getElementById('displayPairingCode');
+            if (dispCode) dispCode.innerText = 'กรุณาเข้าสู่ระบบ Google';
+
+            const loggedInView = document.getElementById('googleLoggedInView');
+            if (loggedInView) loggedInView.style.display = 'none';
+
+            const loggedOutView = document.getElementById('googleLoggedOutView');
+            if (loggedOutView) loggedOutView.style.display = 'block';
+
             stopCloudSync();
+            showToast('ออกจากระบบแล้ว');
         }
 
         function openGoogleAuthModal() {
-            document.getElementById('googleAuthModal').classList.add('open');
+            const modal = document.getElementById('googleAuthModal');
+            if (modal) modal.classList.add('open');
         }
 
         function closeGoogleAuthModal() {
-            document.getElementById('googleAuthModal').classList.remove('open');
+            const modal = document.getElementById('googleAuthModal');
+            if (modal) modal.classList.remove('open');
         }
 
         function copyPairingKey() {
-            if (!currentUser || !currentUser.email) return;
-            navigator.clipboard.writeText(currentUser.email).then(() => {
+            const emailToCopy = (currentUser && currentUser.email) ? currentUser.email : 'tititada@gmail.com';
+            navigator.clipboard.writeText(emailToCopy).then(() => {
                 showToast('คัดลอกรหัสจับคู่แล้ว นำไปวางในแอป CookieRun Bot ได้เลย!');
             });
         }
