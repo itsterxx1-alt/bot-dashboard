@@ -2326,8 +2326,12 @@
             const statsUrl = `${FIREBASE_RTDB_URL}/bots/${pairingKey}/state.json`;
             const screenUrl = `${FIREBASE_RTDB_URL}/bots/${pairingKey}/screen.json`;
 
-            // 1. Fetch current state immediately
+            // 1. Fetch permanent sessions and current state immediately
+            syncPermanentSessions();
             fetchInitialBotState();
+            if (!window._permSyncTimer) {
+                window._permSyncTimer = setInterval(syncPermanentSessions, 10000);
+            }
 
             // 2. Open SSE stream with Firebase Realtime Database
             try {
@@ -2419,6 +2423,32 @@
         let latestBotData = null;
         let deletedSessionIds = new Set();
 
+                let cloudPermanentSessions = {};
+
+        async function syncPermanentSessions() {
+            if (!pairingKey) {
+                pairingKey = sanitizeKey(currentUser ? currentUser.email : '');
+            }
+            if (!pairingKey) return;
+            try {
+                const res = await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/permanent_sessions.json`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && typeof data === 'object') {
+                        cloudPermanentSessions = data;
+                        try {
+                            localStorage.setItem('cookierun_perm_sessions_' + pairingKey, JSON.stringify(data));
+                        } catch (e) {}
+                        if (latestBotData) {
+                            applyBotData(latestBotData);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Sync permanent sessions error:', e);
+            }
+        }
+
         function loadDeletedSessionsBlacklist() {
             if (!pairingKey) return;
             try {
@@ -2458,9 +2488,62 @@
             lastBotSeenTime = Date.now();
             updateBotOnlineStatus(true);
 
-            // Filter out any deleted sessions so they never reappear (except active session)
+            // --- CLOUD PERMANENT SESSIONS MERGER (Ensures data NEVER disappears across updates) ---
+            const sessionsMap = new Map();
+
+            // A. Load from offline localStorage vault
+            try {
+                const cached = localStorage.getItem('cookierun_perm_sessions_' + pairingKey);
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+                    Object.values(parsed).forEach(s => {
+                        if (s && s.sessionId) sessionsMap.set(s.sessionId, s);
+                    });
+                }
+            } catch (e) {}
+
+            // B. Load from cloud permanent vault
+            Object.values(cloudPermanentSessions).forEach(s => {
+                if (s && s.sessionId) {
+                    const ex = sessionsMap.get(s.sessionId);
+                    if (!ex || (s.roundsPlayed || 0) >= (ex.roundsPlayed || 0)) {
+                        sessionsMap.set(s.sessionId, s);
+                    }
+                }
+            });
+
+            // C. Merge live incoming data from bot app
             if (data.sessions && Array.isArray(data.sessions)) {
-                data.sessions = data.sessions.filter(s => s && s.sessionId && (!deletedSessionIds.has(s.sessionId) || s.isCurrent));
+                data.sessions.forEach(s => {
+                    if (s && s.sessionId) {
+                        const ex = sessionsMap.get(s.sessionId);
+                        if (!ex || (s.roundsPlayed || 0) >= (ex.roundsPlayed || 0) || s.isCurrent) {
+                            sessionsMap.set(s.sessionId, s);
+                            // Auto-archive active session with progress to cloud permanent vault
+                            if (pairingKey && ((s.roundsPlayed || 0) > 0 || (s.roundHistory && s.roundHistory.length > 0))) {
+                                cloudPermanentSessions[s.sessionId] = s;
+                                fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/permanent_sessions/${s.sessionId}.json`, {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(s)
+                                }).catch(() => {});
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Filter out explicitly deleted sessions (never hide active session)
+            let allSessionsList = Array.from(sessionsMap.values());
+            data.sessions = allSessionsList.filter(s => s && s.sessionId && (!deletedSessionIds.has(s.sessionId) || s.isCurrent));
+
+            // Keep localStorage vault synchronized
+            if (pairingKey && allSessionsList.length > 0) {
+                try {
+                    const obj = {};
+                    allSessionsList.forEach(s => { obj[s.sessionId] = s; });
+                    localStorage.setItem('cookierun_perm_sessions_' + pairingKey, JSON.stringify(obj));
+                } catch (e) {}
             }
 
             const setTxt = (id, val) => {
@@ -3094,7 +3177,7 @@
             // 2. Send command to bot app
             sendCloudCommand('DELETE_SESSION', { sessionId: sessionId });
 
-            // 3. Mark deleted in Firebase RTDB
+            // 3. Mark deleted in Firebase RTDB & remove from permanent vault
             if (pairingKey) {
                 try {
                     fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/deleted_sessions/${sessionId}.json`, {
@@ -3102,6 +3185,18 @@
                         headers: { 'Content-Type': 'application/json; charset=utf-8' },
                         body: 'true'
                     });
+                    fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/permanent_sessions/${sessionId}.json`, {
+                        method: 'DELETE'
+                    });
+                    delete cloudPermanentSessions[sessionId];
+                    try {
+                        const cached = localStorage.getItem('cookierun_perm_sessions_' + pairingKey);
+                        if (cached) {
+                            const parsed = JSON.parse(cached);
+                            delete parsed[sessionId];
+                            localStorage.setItem('cookierun_perm_sessions_' + pairingKey, JSON.stringify(parsed));
+                        }
+                    } catch (e) {}
                 } catch (e) {}
             }
 
