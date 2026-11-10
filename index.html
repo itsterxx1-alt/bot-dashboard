@@ -1273,6 +1273,9 @@
                 <span>🍪</span>
             </div>
             <h2 class="auth-title">CookieRunBot Official</h2>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 6px;">
+                <span class="app-version-display" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 9999px;">v0.7.0</span>
+            </div>
             <p class="auth-subtitle">ระบบคลาวด์ควบคุมและฟาร์มอัตโนมัติ (Live Cloud Controller)</p>
 
             <div class="auth-notice-box">
@@ -1400,14 +1403,17 @@
             <a href="#" class="brand-box">
                 <div class="brand-logo">🍪</div>
                 <div class="brand-text">
-                    <h1>CookieRunBot</h1>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <h1>CookieRunBot</h1>
+                        <span class="version-badge app-version-display" id="appVersionBadge" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 1px 7px; border-radius: 9999px;">v0.7.0</span>
+                    </div>
                     <span>ระบบคลาวด์ฟาร์มบอทคุกกี้รัน</span>
                 </div>
             </a>
 
             <div class="header-actions">
                 <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-download-apk" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 6px 13px; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; text-decoration: none; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35); transition: transform 0.15s ease;" title="ดาวน์โหลดแอปสำหรับมือถือ Android (APK)">
-                    <span>📲</span> <span>โหลดแอป (APK)</span>
+                    <span>📲</span> <span>โหลดแอป (<span class="app-version-display">v0.7.0</span>)</span>
                 </a>
 
                 <div class="cloud-status-badge offline" id="cloudStatusBadge">
@@ -1484,16 +1490,17 @@
                     🚀 อัปเดตแอป (OTA)
                 </button>
                 <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-copy-code btn-download-banner" style="background: #059669; text-decoration: none;">
-                    📥 ดาวน์โหลด APK (ตัวล่าสุด)
+                    📥 ดาวน์โหลด APK (<span class="app-version-display">v0.7.0</span>)
                 </a>
             </div>
         </div>
 
         <!-- Device & Permissions Realtime Status Strip -->
         <div class="device-status-strip" style="background: var(--bg-surface); border: 1px solid var(--border-card); border-radius: var(--radius-sm); padding: 8px 14px; margin-bottom: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.8rem;">
-            <div class="device-status-item main-status" style="display: flex; align-items: center; gap: 6px; color: var(--text-muted);">
+            <div class="device-status-item main-status" style="display: flex; align-items: center; gap: 8px; color: var(--text-muted);">
                 <span>📱 บอท:</span>
                 <span id="pillBotRunning" style="color: #94a3b8; font-weight: 600;">⏹ บอทหยุด</span>
+                <span id="pillBotVersion" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd; padding: 2px 7px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">แอป: <span class="app-version-display">v0.7.0</span></span>
             </div>
             <div class="device-status-perms" style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
                 <span id="pillAccessStatus" class="perm-pill" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
@@ -1915,6 +1922,10 @@
                 </div>
             </div>
         </div>
+
+        <footer style="text-align: center; margin-top: 28px; padding: 18px 10px; font-size: 0.78rem; color: #64748b; border-top: 1px solid var(--border-card);">
+            CookieRunBot Cloud Dashboard • เวอร์ชันแดชบอร์ด: <span class="app-version-display" style="color: #94a3b8; font-weight: 600;">v0.7.0</span> • เวอร์ชันแอปที่เชื่อมต่อ: <span id="footerBotVersion" style="color: #60a5fa; font-weight: 600;">v0.7.0</span>
+        </footer>
 
     </main>
     </div> <!-- /#viewDashboard -->
@@ -2490,6 +2501,14 @@
             latestBotData = data;
             lastBotSeenTime = Date.now();
             updateBotOnlineStatus(true);
+
+            if (data.info && data.info.version) {
+                const v = data.info.version;
+                const pillVer = document.getElementById('pillBotVersion');
+                if (pillVer) pillVer.innerHTML = `แอป: <span style="color:#60a5fa; font-weight:700;">v${v}</span>`;
+                const footVer = document.getElementById('footerBotVersion');
+                if (footVer) footVer.innerText = `v${v}`;
+            }
 
             // --- CLOUD PERMANENT SESSIONS MERGER (Ensures data NEVER disappears across updates) ---
             const sessionsMap = new Map();
@@ -3260,10 +3279,27 @@
             return div.innerHTML;
         }
 
+        async function loadVersionInfo() {
+            try {
+                const res = await fetch('version.json?t=' + Date.now());
+                if (res.ok) {
+                    const info = await res.json();
+                    if (info.versionName) {
+                        document.querySelectorAll('.app-version-display').forEach(el => {
+                            el.innerText = 'v' + info.versionName;
+                        });
+                        const footVer = document.getElementById('footerBotVersion');
+                        if (footVer && footVer.innerText === 'v0.7.0') footVer.innerText = 'v' + info.versionName;
+                    }
+                }
+            } catch (e) {}
+        }
+
         // ===================================================================
         // INITIALIZATION
         // ===================================================================
         async function initDashboard() {
+            loadVersionInfo();
             // 1. Immediately restore user from localStorage if exists
             let hasSavedUser = false;
             try {
