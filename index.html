@@ -818,30 +818,22 @@
                 </div>
             </div>
 
-            <!-- Quick Primary Google Login -->
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px;">
-                <button class="btn-google-login-primary" onclick="handleGoogleLogin('tititada@gmail.com')">
+            <!-- Google Email Login Form -->
+            <div style="margin-bottom: 22px;">
+                <div style="text-align: left; margin-bottom: 6px;">
+                    <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 500;">
+                        อีเมลบัญชี Google ที่เชื่อมโยงกับแอปบอท:
+                    </label>
+                </div>
+                <input type="email" id="txtCustomLoginEmail" placeholder="กรอกอีเมล Google เช่น example@gmail.com" class="config-text-input" style="text-align: left; margin-bottom: 12px; font-size: 0.95rem; padding: 13px 14px;" onkeydown="if(event.key==='Enter') handleCustomGoogleLogin()">
+                <button class="btn-google-login-primary" onclick="handleCustomGoogleLogin()">
                     <svg width="20" height="20" viewBox="0 0 48 48">
                         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                         <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
                         <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
                         <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
                     </svg>
-                    <span>เข้าสู่ระบบด้วย <b>tititada@gmail.com</b></span>
-                </button>
-            </div>
-
-            <!-- Divider -->
-            <div style="position: relative; margin: 18px 0; text-align: center;">
-                <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border-card);"></div>
-                <span style="position: relative; background: #162030; padding: 0 12px; font-size: 0.78rem; color: var(--text-subtle);">หรือเข้าสู่ระบบด้วยบัญชี Google อื่น</span>
-            </div>
-
-            <!-- Custom Email Login Input -->
-            <div style="margin-bottom: 20px;">
-                <input type="email" id="txtCustomLoginEmail" placeholder="yourname@gmail.com" class="config-text-input" style="text-align: center; margin-bottom: 10px; font-size: 0.95rem; padding: 12px;">
-                <button class="btn-act btn-act-start" style="width: 100%; padding: 12px; font-size: 0.95rem;" onclick="handleCustomGoogleLogin()">
-                    🚀 เข้าสู่ระบบด้วยบัญชีนี้
+                    <span>เข้าสู่ระบบด้วยบัญชี Google</span>
                 </button>
             </div>
 
@@ -999,13 +991,13 @@
         <!-- Google Account Status Banner (No Pairing Code Required) -->
         <div class="user-account-banner" id="userAccountBanner">
             <div class="user-account-info">
-                <div class="google-avatar-badge" id="bannerAvatar">T</div>
+                <div class="google-avatar-badge" id="bannerAvatar">G</div>
                 <div>
                     <div style="font-size: 0.78rem; color: #94a3b8; font-weight: 500;">
                         บัญชี Google ที่เชื่อมโยงกับบอท (Google Account)
                     </div>
                     <div style="font-size: 1.05rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
-                        <span id="displayUserEmail">tititada@gmail.com</span>
+                        <span id="displayUserEmail">-</span>
                         <span class="account-verified-tag">🟢 ลิ้งก์กับบอทแล้ว</span>
                     </div>
                 </div>
@@ -1338,9 +1330,9 @@
             </div>
 
             <div id="googleLoggedInView" style="text-align: center; padding: 10px 0;">
-                <div class="google-avatar" style="width: 64px; height: 64px; font-size: 1.8rem; margin: 0 auto 12px auto;" id="modalAvatarBox">T</div>
-                <h4 id="modalUserName" style="color: #fff; font-size: 1.15rem; margin-bottom: 4px;">itster</h4>
-                <p id="modalUserEmail" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">tititada@gmail.com</p>
+                <div class="google-avatar" style="width: 64px; height: 64px; font-size: 1.8rem; margin: 0 auto 12px auto;" id="modalAvatarBox">G</div>
+                <h4 id="modalUserName" style="color: #fff; font-size: 1.15rem; margin-bottom: 4px;">Google User</h4>
+                <p id="modalUserEmail" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">-</p>
 
                 <div style="background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 10px; border-radius: 8px; font-size: 0.88rem; margin-bottom: 18px; border: 1px solid rgba(16, 185, 129, 0.3);">
                     ✅ เชื่อมต่อบัญชี Google กับบอทเรียบร้อยแล้ว
@@ -1353,15 +1345,11 @@
 
             <div id="googleLoggedOutView" style="display: none; padding: 10px 0;">
                 <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 12px;">
-                    เลือกบัญชี Google เพื่อระบุตัวตนและจับคู่กับบอทของคุณ:
+                    กรอกบัญชี Google เพื่อระบุตัวตนและจับคู่กับบอทของคุณ:
                 </p>
-                <button class="btn-act btn-act-start" style="width: 100%; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="quickLoginEmail('tititada@gmail.com')">
-                    🍪 เข้าสู่ระบบด้วย tititada@gmail.com
-                </button>
-                <div style="font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-bottom: 10px;">หรือกรอกอีเมลอื่น:</div>
-                <input type="email" id="inputGoogleEmail" placeholder="tititada@gmail.com" value="tititada@gmail.com" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-card); color: #fff; border-radius: 8px; margin-bottom: 12px;">
-                <button class="btn-act btn-act-reset" style="width: 100%;" onclick="loginGoogleManual()">
-                    เชื่อมต่ออีเมลนี้
+                <input type="email" id="inputGoogleEmail" placeholder="example@gmail.com" value="" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-card); color: #fff; border-radius: 8px; margin-bottom: 12px;" onkeydown="if(event.key==='Enter') loginGoogleManual()">
+                <button class="btn-act btn-act-start" style="width: 100%;" onclick="loginGoogleManual()">
+                    เข้าสู่ระบบด้วยอีเมลนี้
                 </button>
             </div>
         </div>
@@ -1376,10 +1364,6 @@
         // GOOGLE FIREBASE REALTIME DATABASE CONFIG & GLOBAL STATE
         // ===================================================================
         const FIREBASE_RTDB_URL = "https://cookie-run-bot-default-rtdb.asia-southeast1.firebasedatabase.app";
-        const DEFAULT_USER = {
-            email: 'tititada@gmail.com',
-            name: 'tititada'
-        };
 
         function sanitizeKey(raw) {
             return (raw || '').toLowerCase().replace(/[^a-z0-9]/g, '').trim();
@@ -1630,7 +1614,8 @@
         }
 
         function copyPairingKey() {
-            const emailToCopy = (currentUser && currentUser.email) ? currentUser.email : 'tititada@gmail.com';
+            const emailToCopy = (currentUser && currentUser.email) ? currentUser.email : '';
+            if (!emailToCopy) return;
             navigator.clipboard.writeText(emailToCopy).then(() => {
                 showToast('คัดลอกอีเมลสำเร็จ!');
             });
@@ -1645,7 +1630,7 @@
         // ===================================================================
         async function fetchInitialBotState() {
             if (!pairingKey) {
-                pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
+                pairingKey = sanitizeKey(currentUser ? currentUser.email : '');
             }
             if (!pairingKey) return;
 
@@ -1665,7 +1650,7 @@
         function startCloudSync() {
             stopCloudSync();
             if (!pairingKey) {
-                pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
+                pairingKey = sanitizeKey(currentUser ? currentUser.email : '');
             }
             if (!pairingKey) return;
 
@@ -1828,7 +1813,7 @@
         // ===================================================================
         async function sendCloudCommand(action, params = {}) {
             if (!pairingKey) {
-                pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
+                pairingKey = sanitizeKey(currentUser ? currentUser.email : '');
             }
 
             const cmdPayload = {
