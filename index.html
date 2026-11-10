@@ -293,36 +293,52 @@
             display: block;
         }
 
-        /* Pairing Banner */
-        .pairing-banner {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(139, 92, 246, 0.12));
-            border: 1px solid rgba(59, 130, 246, 0.3);
+        /* User Account Banner (Pure Google Auth - No Pairing Code) */
+        .user-account-banner {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(59, 130, 246, 0.35);
             border-radius: var(--radius-md);
-            padding: 12px 16px;
+            padding: 14px 18px;
             margin-bottom: 16px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
         }
 
-        .pairing-info {
+        .user-account-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .pairing-code-badge {
-            background: rgba(0, 0, 0, 0.4);
-            color: #60a5fa;
-            font-family: var(--font-mono);
-            font-size: 0.95rem;
+        .google-avatar-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(66, 133, 244, 0.35);
+            flex-shrink: 0;
+        }
+
+        .account-verified-tag {
+            font-size: 0.72rem;
             font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 6px;
-            border: 1px dashed rgba(96, 165, 250, 0.5);
-            display: inline-block;
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            padding: 2px 8px;
+            border-radius: 99px;
+            display: inline-flex;
+            align-items: center;
         }
 
         .btn-copy-code {
@@ -683,31 +699,29 @@
     <!-- Main Container -->
     <main class="main-container">
 
-        <!-- Pairing Code Banner -->
-        <div class="pairing-banner" id="pairingBanner">
-            <div class="pairing-info">
-                <div style="font-size: 1.5rem;">🔑</div>
+        <!-- Google Account Status Banner (No Pairing Code Required) -->
+        <div class="user-account-banner" id="userAccountBanner">
+            <div class="user-account-info">
+                <div class="google-avatar-badge" id="bannerAvatar">T</div>
                 <div>
-                    <div style="font-size: 0.85rem; font-weight: 600; color: #fff;">
-                        รหัสจับคู่บอทของคุณ (Device Pairing Key)
+                    <div style="font-size: 0.78rem; color: #94a3b8; font-weight: 500;">
+                        บัญชี Google ที่เชื่อมโยงกับบอท (Google Account)
                     </div>
-                    <div class="pairing-code-badge" id="displayPairingCode">
-                        tititada@gmail.com
-                    </div>
-                    <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 5px;" id="relayNodesStatus">
-                        🌐 เครือข่ายคลาวด์: <span id="statusHttpRelay" style="color: #34d399;">HTTP Cloud Relay (🟢 พร้อมใช้งาน พอร์ต 443)</span>
+                    <div style="font-size: 1.05rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
+                        <span id="displayUserEmail">tititada@gmail.com</span>
+                        <span class="account-verified-tag">🟢 ลิ้งก์กับบอทแล้ว</span>
                     </div>
                 </div>
             </div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <button class="btn-copy-code" onclick="copyPairingKey()">
-                    📋 คัดลอกรหัสจับคู่
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+                <button class="btn-copy-code" onclick="openGoogleAuthModal()" style="background: #3b82f6;">
+                    🔄 สลับบัญชี Google
                 </button>
                 <button class="btn-copy-code" onclick="sendCloudCommand('PING')" style="background: #7c3aed;">
-                    🔔 ทดสอบสัญญาณ (Ping)
+                    🔔 ส่งสัญญาณทดสอบ (Ping)
                 </button>
                 <a href="CookieRunBot-v0.6-cloud.apk" download class="btn-copy-code" style="background: #059669; text-decoration: none;">
-                    📥 ดาวน์โหลด APK v0.6 (Cloud)
+                    📥 ดาวน์โหลด APK v0.6
                 </a>
             </div>
         </div>
@@ -993,6 +1007,12 @@
             const dispCode = document.getElementById('displayPairingCode');
             if (dispCode) dispCode.innerText = user.email;
 
+            const dispEmail = document.getElementById('displayUserEmail');
+            if (dispEmail) dispEmail.innerText = user.email;
+
+            const bAvt = document.getElementById('bannerAvatar');
+            if (bAvt) bAvt.innerText = displayLetter;
+
             const inEmail = document.getElementById('inputGoogleEmail');
             if (inEmail) inEmail.value = user.email;
 
@@ -1068,6 +1088,7 @@
         const BASE_RELAY_URL = "https://ntfy.sh";
         let statsEventSource = null;
         let screenEventSource = null;
+        let pollingTimer = null;
 
         function updateRelayStatusBadge(status) {
             const elem = document.getElementById('statusHttpRelay');
@@ -1084,14 +1105,41 @@
             }
         }
 
+        async function fetchInitialBotState() {
+            if (!pairingKey) return;
+            try {
+                const res = await fetch(`${BASE_RELAY_URL}/crbot_${pairingKey}_stats/json?poll=1`);
+                if (!res.ok) return;
+                const text = await res.text();
+                const lines = text.split('\n').filter(l => l.trim());
+                if (lines.length > 0) {
+                    const latestObj = JSON.parse(lines[lines.length - 1]);
+                    if (latestObj && latestObj.message) {
+                        const botData = JSON.parse(latestObj.message);
+                        applyBotData(botData);
+                        console.log('✅ Instant state applied from cloud cache:', botData);
+                    }
+                }
+            } catch (e) {
+                console.warn('Initial fetch error:', e);
+            }
+        }
+
         function startCloudSync() {
             stopCloudSync();
+            if (!pairingKey) {
+                pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
+            }
             if (!pairingKey) return;
 
             updateRelayStatusBadge('connecting');
-            const statsUrl = `${BASE_RELAY_URL}/crbot_${pairingKey}_stats/sse`;
+            const statsUrl = `${BASE_RELAY_URL}/crbot_${pairingKey}_stats/sse?since=2m`;
             const screenUrl = `${BASE_RELAY_URL}/crbot_${pairingKey}_screen/sse`;
 
+            // 1. Fetch current cached state immediately
+            fetchInitialBotState();
+
+            // 2. Open SSE stream for realtime updates
             try {
                 statsEventSource = new EventSource(statsUrl);
 
@@ -1139,6 +1187,9 @@
                 console.error('EventSource error:', e);
             }
 
+            // 3. Keep-alive polling fallback every 4s (Safari background safe)
+            pollingTimer = setInterval(fetchInitialBotState, 4000);
+
             if (!window._heartbeatTimer) {
                 window._heartbeatTimer = setInterval(checkBotHeartbeat, 1500);
             }
@@ -1152,6 +1203,10 @@
             if (screenEventSource) {
                 try { screenEventSource.close(); } catch (e) {}
                 screenEventSource = null;
+            }
+            if (pollingTimer) {
+                clearInterval(pollingTimer);
+                pollingTimer = null;
             }
             updateRelayStatusBadge('disconnected');
             updateBotOnlineStatus(false);
