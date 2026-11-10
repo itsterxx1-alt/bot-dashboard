@@ -639,6 +639,51 @@
             from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+
+        /* Real App Config Inputs & Grids */
+        .config-inputs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+        }
+
+        .config-input-box {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .config-input-box label {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .config-input-box input,
+        .config-text-input,
+        .config-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border-card);
+            color: #fff;
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.88rem;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .config-input-box input:focus,
+        .config-text-input:focus,
+        .config-select:focus {
+            border-color: var(--cr-caramel);
+        }
+
+        .config-select option {
+            background: #151d2a;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -736,7 +781,11 @@
                         <span>🏃</span>
                     </div>
                     <div class="stat-value" id="valRounds">0</div>
-                    <div class="stat-sub">สถานะ: <span id="valStage" style="color: #60a5fa;">STOPPED</span></div>
+                    <div class="stat-sub">
+                        สถานะ: <span id="valStage" style="color: #60a5fa;">STOPPED</span>
+                        <span style="margin: 0 4px; opacity: 0.4;">|</span>
+                        เวลา: <span id="valUptime" style="color: #cbd5e1;">00:00:00</span>
+                    </div>
                 </div>
 
                 <div class="stat-card">
@@ -795,67 +844,175 @@
         </div>
 
         <!-- TAB: BOT SETTINGS (cookierunbot.com style) -->
+                <!-- TAB: BOT SETTINGS (Matching Android Bot App V0.6) -->
         <div class="tab-content" id="tab-settings">
             
-            <!-- Section 1: ส่วนซื้อของ -->
+            <!-- Section 1: ไอเทม & การสุ่มบูสต์ -->
             <div class="config-card">
                 <div class="config-sec-title">
-                    <span>🛒</span> ส่วนซื้อของ (Item Purchase & Boosts)
+                    <span>🛒</span> ไอเทม & การสุ่มบูสต์ (Boosts & Items)
                 </div>
-                <div class="pills-grid">
-                    <label class="check-pill"><input type="checkbox" id="chkHpExtension"> Hp Extension</label>
-                    <label class="check-pill"><input type="checkbox" id="chkPowerJellyBoost"> Power Jelly Boost</label>
-                    <label class="check-pill"><input type="checkbox" id="chkDoubleXp"> Double XP</label>
-                    <label class="check-pill checked"><input type="checkbox" id="chkFastStart" checked> Fast Start</label>
-                    <label class="check-pill checked"><input type="checkbox" id="chkCookieRelay" checked> Cookie Relay</label>
-                    <label class="check-pill checked"><input type="checkbox" id="chkRandomBoost" checked> Random Boost</label>
+                <div class="pills-grid" style="margin-bottom: 12px;">
+                    <label class="check-pill">
+                        <input type="checkbox" id="chkUseDesiredRandomBoost">
+                        สุ่มหาบูสต์ที่ต้องการก่อนเริ่มเกม
+                    </label>
+                    <label class="check-pill">
+                        <input type="checkbox" id="chkUseFastStart">
+                        ใช้ Fast Start (วิ่งผลัดต้นเกม)
+                    </label>
+                    <label class="check-pill">
+                        <input type="checkbox" id="chkUseCookieRelay">
+                        ใช้ Cookie Relay (วิ่งไม้ผลัด)
+                    </label>
+                </div>
+
+                <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-card); border-radius: 8px; padding: 12px; margin-bottom: 6px;">
+                    <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 6px; font-weight: 500;">
+                        เลือกบูสต์ที่ต้องการสุ่มหา (Desired Boost):
+                    </label>
+                    <select id="selDesiredBoostId" class="config-select">
+                        <option value="double_coins">🪙 Double Coins (เหรียญ x2)</option>
+                        <option value="score_15">🏆 +15% Score Bonus (คะแนน +15%)</option>
+                        <option value="hp_drain_15">🧪 -15% HP Drain (ลดเลือดไหลช้าลง 15%)</option>
+                        <option value="revive_80">❤️ Revive Once with 80 HP (ฟื้นชีพ 1 ครั้ง)</option>
+                        <option value="crush_70">💥 70% Crush Chance (ทำลายสิ่งกีดขวาง 70%)</option>
+                        <option value="speed_17">⚡ +17% Base Speed (วิ่งเร็วขึ้น 17%)</option>
+                        <option value="coin_magic">✨ Gold Coin Magic (เปลี่ยนเหรียญทอง)</option>
+                        <option value="damage_30">🛡️ -30% Collision Damage (ชนเบาลง 30%)</option>
+                        <option value="potions_20">🍷 +20% HP from Potions (ขวดเลือด +20%)</option>
+                        <option value="magnetic">🧲 Magnetic Aura (พลังแม่เหล็ก)</option>
+                        <option value="pit_lifts_2">🕳️ 2 Pit Lifts (ช่วยตกเหว 2 ครั้ง)</option>
+                    </select>
                 </div>
             </div>
 
-            <!-- Section 2: การควบคุม -->
+            <!-- Section 2: ระบบกระโดดอัตโนมัติ -->
             <div class="config-card">
                 <div class="config-sec-title">
-                    <span>🎮</span> การควบคุม (Jump & Relay Automation)
+                    <span>🏃</span> ระบบกระโดดอัตโนมัติ (Auto Jump System)
                 </div>
-                <div class="pills-grid">
-                    <label class="check-pill checked"><input type="checkbox" id="chkAutoJump" checked> กด Jump + Double Jump อัตโนมัติ</label>
-                    <label class="check-pill checked"><input type="checkbox" id="chkUseFastStart" checked> กดใช้ Fast Start</label>
-                    <label class="check-pill checked"><input type="checkbox" id="chkUseCookieRelay" checked> กดใช้ Cookie Relay</label>
-                    <label class="check-pill checked"><input type="checkbox" id="chkStopOnBoxes"> ออกจากรอบเมื่อเก็บกล่องครบ</label>
-                    <label class="check-pill"><input type="checkbox" id="chkStopJumpOnMax"> หยุดกระโดดเมื่อกระโดดครบ</label>
+                <div style="margin-bottom: 12px;">
+                    <label class="check-pill" style="width: 100%;">
+                        <input type="checkbox" id="chkJumpEnabled">
+                        เปิดระบบกระโดดอัตโนมัติระหว่างเล่น (Auto Jump)
+                    </label>
+                </div>
+                <div class="config-inputs-grid">
+                    <div class="config-input-box">
+                        <label>กระโดดเดี่ยว Single Jump (%)</label>
+                        <input type="number" id="numJumpSinglePercent" value="70" min="0" max="100">
+                    </div>
+                    <div class="config-input-box">
+                        <label>กระโดด 2 จังหวะ Double Jump (%)</label>
+                        <input type="number" id="numJumpDoublePercent" value="30" min="0" max="100">
+                    </div>
+                    <div class="config-input-box">
+                        <label>ความถี่กระโดด Interval (ms)</label>
+                        <input type="number" id="numJumpIntervalMs" value="500" min="100" max="1500" step="50">
+                    </div>
+                    <div class="config-input-box">
+                        <label>กระโดดสูงสุด (0 = ไม่จำกัด)</label>
+                        <input type="number" id="numJumpMaxCount" value="0" min="0">
+                    </div>
                 </div>
             </div>
 
-            <!-- Section 3: อื่นๆ -->
+            <!-- Section 3: ส่งหัวใจเพื่อน & ของรางวัล -->
             <div class="config-card">
                 <div class="config-sec-title">
-                    <span>❤️</span> การส่งหัวใจ & สิทธิประโยชน์ (Automation)
+                    <span>💌</span> ส่งหัวใจเพื่อน & ของรางวัล (Friend Lives & Relic)
                 </div>
-                <div class="pills-grid">
-                    <label class="check-pill checked"><input type="checkbox" id="chkSendFriendLives" checked> เลื่อนรายชื่อเพื่อนและส่งหัวใจอัตโนมัติ</label>
-                    <label class="check-pill checked"><input type="checkbox" id="chkClaimMailHearts" checked> รับหัวใจในจดหมายอัตโนมัติ</label>
-                    <label class="check-pill checked"><input type="checkbox" id="chkClaimRelic" checked> รับ Relic อัตโนมัติ</label>
-                    <label class="check-pill"><input type="checkbox" id="chkClaimQuests"> รับรางวัลภารกิจอัตโนมัติ</label>
-                    <label class="check-pill checked"><input type="checkbox" id="chkAntiBot" checked> ตรวจจับ Anti-Bot</label>
-                    <label class="check-pill checked"><input type="checkbox" id="chkLogBoxes" checked> บันทึกประวัติการเปิดกล่อง</label>
+                <div class="pills-grid" style="margin-bottom: 12px;">
+                    <label class="check-pill">
+                        <input type="checkbox" id="chkSendFriendLives">
+                        ส่งหัวใจให้เพื่อนทุกคนอัตโนมัติ
+                    </label>
+                    <label class="check-pill">
+                        <input type="checkbox" id="chkSendFriendLivesIndividualEnabled">
+                        เลื่อนส่งหัวใจทีละคนแบบละเอียด
+                    </label>
+                    <label class="check-pill">
+                        <input type="checkbox" id="chkDetectRelic">
+                        ตรวจจับชิ้นส่วนโบราณวัตถุ (Relic)
+                    </label>
+                </div>
+                <div class="config-input-box" style="max-width: 320px;">
+                    <label>รอบเวลาส่งหัวใจซ้ำ (ชั่วโมง):</label>
+                    <input type="number" id="numSendFriendLivesIntervalHours" value="3.0" min="0.5" max="24.0" step="0.5">
                 </div>
             </div>
 
-            <!-- Section 4: เปิดกล่องของขวัญ -->
+            <!-- Section 4: เป้าหมายการฟาร์ม -->
             <div class="config-card">
                 <div class="config-sec-title">
-                    <span>🎁</span> เปิดกล่องของขวัญ (Gift Box)
+                    <span>🎯</span> เป้าหมายการฟาร์ม (Farm Goals)
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <label class="check-pill checked"><input type="radio" name="giftOption" value="none" checked> ไม่เปิดกล่องของขวัญ</label>
-                    <label class="check-pill"><input type="radio" name="giftOption" value="all_continue"> เปิดจนกว่าจะหมด แล้วเล่นต่อ</label>
-                    <label class="check-pill"><input type="radio" name="giftOption" value="all_exit"> เปิดจนกว่าจะหมด แล้วออกจากเกม</label>
-                    <label class="check-pill"><input type="radio" name="giftOption" value="target_continue"> เปิดตามจำนวนที่กำหนด แล้วเล่นต่อ</label>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+                        <label class="check-pill" style="flex: 1; min-width: 200px;">
+                            <input type="checkbox" id="chkStopGoalRoundsEnabled">
+                            หยุดเมื่อครบจำนวนรอบ (Rounds Target)
+                        </label>
+                        <div class="config-input-box" style="width: 140px;">
+                            <input type="number" id="numStopGoalRoundsTarget" value="50" min="1">
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+                        <label class="check-pill" style="flex: 1; min-width: 200px;">
+                            <input type="checkbox" id="chkStopGoalTimeEnabled">
+                            หยุดเมื่อครบระยะเวลา (Hours Target)
+                        </label>
+                        <div class="config-input-box" style="width: 140px;">
+                            <input type="number" id="numStopGoalTimeHours" value="2.0" min="0.1" step="0.5">
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <button class="btn-act btn-act-start" style="width: 100%; margin-top: 10px;" onclick="saveFarmSettings()">
-                💾 บันทึกการตั้งค่าไปยังบอท
+            <!-- Section 5: การแจ้งเตือน Discord -->
+            <div class="config-card">
+                <div class="config-sec-title">
+                    <span>📢</span> แจ้งเตือน Discord (Discord Webhook)
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <label class="check-pill" style="width: 100%;">
+                        <input type="checkbox" id="chkDiscordEnabled">
+                        เปิดใช้งานการแจ้งเตือน Discord
+                    </label>
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 6px; font-weight: 500;">
+                        Discord Webhook URL:
+                    </label>
+                    <input type="text" id="txtDiscordWebhookUrl" placeholder="https://discord.com/api/webhooks/..." class="config-text-input">
+                </div>
+                <div class="pills-grid" style="margin-bottom: 12px;">
+                    <label class="check-pill">
+                        <input type="checkbox" id="chkAttachScreenshot">
+                        แนบรูปภาพหน้าจอขณะแจ้งเตือน
+                    </label>
+                    <label class="check-pill">
+                        <input type="checkbox" id="chkNotifyRounds">
+                        แจ้งเตือนเมื่อจบแต่ละรอบ
+                    </label>
+                    <label class="check-pill">
+                        <input type="checkbox" id="chkNotifyBoxes">
+                        แจ้งเตือนเมื่อได้กล่องปริศนา
+                    </label>
+                    <label class="check-pill">
+                        <input type="checkbox" id="chkNotifyAntibot">
+                        แจ้งเตือนเมื่อพบระบบ Anti-Bot
+                    </label>
+                </div>
+                <button class="btn-copy-code" style="background: #5865F2; padding: 8px 16px; font-size: 0.85rem;" onclick="testDiscordWebhook()">
+                    🔔 ทดสอบส่งการแจ้งเตือน Discord
+                </button>
+            </div>
+
+            <!-- Save Settings Button -->
+            <button class="btn-act btn-act-start" style="width: 100%; margin-top: 10px; font-size: 1rem; padding: 14px;" onclick="saveFarmSettings()">
+                💾 บันทึกการตั้งค่าไปยังบอท (Save Config to Bot)
             </button>
         </div>
 
@@ -1196,6 +1353,7 @@
                     if (el) el.innerText = val;
                 };
                 setTxt('valRounds', s.roundsPlayed || 0);
+                setTxt('valUptime', s.uptime || '00:00:00');
                 setTxt('valCoins', (s.sessionCoinsEarned || 0).toLocaleString());
                 setTxt('valXp', (s.sessionXpEarned || 0).toLocaleString());
                 setTxt('valBoxes', s.mysteryBoxes || 0);
@@ -1218,6 +1376,10 @@
 
             if (data.sessions && Array.isArray(data.sessions)) {
                 renderSessions(data.sessions);
+            }
+
+            if (data.config) {
+                applyBotConfig(data.config);
             }
         }
 
@@ -1348,8 +1510,91 @@
             sendCloudCommand('TAP', { x: gameX, y: gameY });
         }
 
-        function saveFarmSettings() {
-            showToast('บันทึกการตั้งค่าฟาร์มไปยังบอทเรียบร้อยแล้ว!');
+        function applyBotConfig(cfg) {
+            if (!cfg) return;
+            const setChk = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.checked = !!val;
+            };
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el && val !== undefined && val !== null) el.value = val;
+            };
+
+            setChk('chkUseDesiredRandomBoost', cfg.useDesiredRandomBoost);
+            setVal('selDesiredBoostId', cfg.desiredBoostId || 'double_coins');
+            setChk('chkUseFastStart', cfg.useFastStart);
+            setChk('chkUseCookieRelay', cfg.useCookieRelay);
+            setChk('chkJumpEnabled', cfg.jumpEnabled);
+            setVal('numJumpSinglePercent', cfg.jumpSinglePercent ?? 70);
+            setVal('numJumpDoublePercent', cfg.jumpDoublePercent ?? 30);
+            setVal('numJumpIntervalMs', cfg.jumpIntervalMs ?? 500);
+            setVal('numJumpMaxCount', cfg.jumpMaxCount ?? 0);
+            setChk('chkSendFriendLives', cfg.sendFriendLives);
+            setChk('chkSendFriendLivesIndividualEnabled', cfg.sendFriendLivesIndividualEnabled);
+            setVal('numSendFriendLivesIntervalHours', cfg.sendFriendLivesIntervalHours ?? 3.0);
+            setChk('chkDetectRelic', cfg.detectRelic);
+            setChk('chkStopGoalRoundsEnabled', cfg.stopGoalRoundsEnabled);
+            setVal('numStopGoalRoundsTarget', cfg.stopGoalRoundsTarget ?? 50);
+            setChk('chkStopGoalTimeEnabled', cfg.stopGoalTimeEnabled);
+            setVal('numStopGoalTimeHours', cfg.stopGoalTimeHours ?? 2.0);
+            setChk('chkDiscordEnabled', cfg.discordEnabled);
+            setVal('txtDiscordWebhookUrl', cfg.discordWebhookUrl || '');
+            setChk('chkAttachScreenshot', cfg.attachScreenshot);
+            setChk('chkNotifyRounds', cfg.notifyRounds);
+            setChk('chkNotifyBoxes', cfg.notifyBoxes);
+            setChk('chkNotifyAntibot', cfg.notifyAntibot);
+        }
+
+        async function saveFarmSettings() {
+            const configPayload = {
+                useDesiredRandomBoost: document.getElementById('chkUseDesiredRandomBoost').checked,
+                desiredBoostId: document.getElementById('selDesiredBoostId').value,
+                useFastStart: document.getElementById('chkUseFastStart').checked,
+                useCookieRelay: document.getElementById('chkUseCookieRelay').checked,
+                jumpEnabled: document.getElementById('chkJumpEnabled').checked,
+                jumpSinglePercent: parseInt(document.getElementById('numJumpSinglePercent').value) || 70,
+                jumpDoublePercent: parseInt(document.getElementById('numJumpDoublePercent').value) || 30,
+                jumpIntervalMs: parseInt(document.getElementById('numJumpIntervalMs').value) || 500,
+                jumpMaxCount: parseInt(document.getElementById('numJumpMaxCount').value) || 0,
+                sendFriendLives: document.getElementById('chkSendFriendLives').checked,
+                sendFriendLivesIndividualEnabled: document.getElementById('chkSendFriendLivesIndividualEnabled').checked,
+                sendFriendLivesIntervalHours: parseFloat(document.getElementById('numSendFriendLivesIntervalHours').value) || 3.0,
+                detectRelic: document.getElementById('chkDetectRelic').checked,
+                stopGoalRoundsEnabled: document.getElementById('chkStopGoalRoundsEnabled').checked,
+                stopGoalRoundsTarget: parseInt(document.getElementById('numStopGoalRoundsTarget').value) || 50,
+                stopGoalTimeEnabled: document.getElementById('chkStopGoalTimeEnabled').checked,
+                stopGoalTimeHours: parseFloat(document.getElementById('numStopGoalTimeHours').value) || 2.0,
+                discordEnabled: document.getElementById('chkDiscordEnabled').checked,
+                discordWebhookUrl: document.getElementById('txtDiscordWebhookUrl').value.trim(),
+                attachScreenshot: document.getElementById('chkAttachScreenshot').checked,
+                notifyRounds: document.getElementById('chkNotifyRounds').checked,
+                notifyBoxes: document.getElementById('chkNotifyBoxes').checked,
+                notifyAntibot: document.getElementById('chkNotifyAntibot').checked
+            };
+
+            // Save to Firebase RTDB for persistent dashboard cache
+            try {
+                await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/config.json`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                    body: JSON.stringify(configPayload)
+                });
+            } catch (_) {}
+
+            // Send UPDATE_CONFIG command directly to bot
+            sendCloudCommand('UPDATE_CONFIG', configPayload);
+            showToast('💾 ส่งการตั้งค่าไปยังบอทสำเร็จ!');
+        }
+
+        function testDiscordWebhook() {
+            const url = document.getElementById('txtDiscordWebhookUrl').value.trim();
+            if (!url) {
+                showToast('กรุณากรอก Discord Webhook URL');
+                return;
+            }
+            sendCloudCommand('TEST_DISCORD', { url: url });
+            showToast('📢 ส่งคำสั่งทดสอบ Discord ไปยังบอทแล้ว!');
         }
 
         function renderLogs(logs) {
