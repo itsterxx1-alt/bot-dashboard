@@ -1086,6 +1086,30 @@
         // ==========================================
         // CLOUD REALTIME SYNC (HTTP REST + SSE)
         // ==========================================
+        async function handleBotStatsPayload(obj) {
+            if (!obj) return;
+            try {
+                // If payload was stored as an attachment by ntfy (payload > 4KB)
+                if (obj.attachment && obj.attachment.url) {
+                    const fileRes = await fetch(obj.attachment.url);
+                    if (fileRes.ok) {
+                        const botData = await fileRes.json();
+                        applyBotData(botData);
+                        console.log('✅ Applied stats from attachment:', botData);
+                        return;
+                    }
+                }
+                // If payload is inline in obj.message
+                if (obj.message && typeof obj.message === 'string' && obj.message.trim().startsWith('{')) {
+                    const botData = JSON.parse(obj.message);
+                    applyBotData(botData);
+                    console.log('✅ Applied stats from message body:', botData);
+                }
+            } catch (e) {
+                console.warn('Error handling bot stats payload:', e);
+            }
+        }
+
         async function fetchInitialBotState() {
             if (!pairingKey) {
                 pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
@@ -1095,15 +1119,13 @@
                 const res = await fetch(`${BASE_RELAY_URL}/crbot_${pairingKey}_stats/json?poll=1`);
                 if (!res.ok) return;
                 const text = await res.text();
-                const lines = text.split('
-').filter(l => l.trim());
+                const lines = text.split(/?
+/).filter(l => l.trim());
                 for (let i = lines.length - 1; i >= 0; i--) {
                     try {
                         const obj = JSON.parse(lines[i]);
-                        if (obj && obj.event === 'message' && obj.message) {
-                            const botData = (typeof obj.message === 'string') ? JSON.parse(obj.message) : obj.message;
-                            applyBotData(botData);
-                            console.log('✅ Instant state applied from cloud cache:', botData);
+                        if (obj && obj.event === 'message') {
+                            await handleBotStatsPayload(obj);
                             break;
                         }
                     } catch (_) {}
@@ -1134,12 +1156,11 @@
                     console.log('✅ Connected to HTTP Cloud SSE:', statsUrl);
                 };
 
-                statsEventSource.onmessage = (event) => {
+                statsEventSource.onmessage = async (event) => {
                     try {
                         const parsed = JSON.parse(event.data);
-                        if (parsed.event === 'message' && parsed.message) {
-                            const data = (typeof parsed.message === 'string') ? JSON.parse(parsed.message) : parsed.message;
-                            applyBotData(data);
+                        if (parsed.event === 'message') {
+                            await handleBotStatsPayload(parsed);
                         }
                     } catch (e) {
                         console.warn('Error parsing stats payload:', e);
@@ -1152,23 +1173,11 @@
 
                 // Stream listener
                 screenEventSource = new EventSource(screenUrl);
-                screenEventSource.onmessage = (event) => {
+                screenEventSource.onmessage = async (event) => {
                     try {
                         const parsed = JSON.parse(event.data);
-                        if (parsed.event === 'message' && parsed.message) {
-                            let frameStr = parsed.message;
-                            if (parsed.attachment && parsed.attachment.url) {
-                                frameStr = parsed.attachment.url;
-                            }
-                            if (frameStr.startsWith('data:image') || frameStr.startsWith('http')) {
-                                const img = document.getElementById('streamImage');
-                                if (img) {
-                                    img.src = frameStr;
-                                    img.style.display = 'block';
-                                }
-                                const ph = document.getElementById('streamPlaceholder');
-                                if (ph) ph.style.display = 'none';
-                            }
+                        if (parsed.event === 'message') {
+                            await handleScreenPayload(parsed);
                         }
                     } catch (e) {}
                 };
@@ -1302,32 +1311,53 @@
         // ==========================================
         // SCREEN STREAMING & TOUCH CONTROL
         // ==========================================
+        async function handleScreenPayload(obj) {
+            if (!obj || !isStreamingActive) return;
+            try {
+                let frameUrl = null;
+                if (obj.attachment && obj.attachment.url) {
+                    const attUrl = obj.attachment.url;
+                    if (attUrl.endsWith('.jpg') || attUrl.endsWith('.jpeg') || attUrl.endsWith('.png') || obj.attachment.type?.startsWith('image/')) {
+                        frameUrl = attUrl;
+                    } else {
+                        // .txt attachment containing data:image/jpeg;base64,...
+                        const r = await fetch(attUrl);
+                        if (r.ok) {
+                            frameUrl = (await r.text()).trim();
+                        }
+                    }
+                } else if (obj.message && typeof obj.message === 'string') {
+                    frameUrl = obj.message.trim();
+                }
+
+                if (frameUrl && (frameUrl.startsWith('data:image') || frameUrl.startsWith('http'))) {
+                    const img = document.getElementById('streamImage');
+                    if (img) {
+                        img.src = frameUrl;
+                        img.style.display = 'block';
+                    }
+                    const ph = document.getElementById('streamPlaceholder');
+                    if (ph) ph.style.display = 'none';
+                }
+            } catch (e) {
+                console.warn('Screen frame render error:', e);
+            }
+        }
+
         async function fetchLatestScreenFrame() {
             if (!isStreamingActive || !pairingKey) return;
             try {
                 const res = await fetch(`${BASE_RELAY_URL}/crbot_${pairingKey}_screen/json?poll=1`);
                 if (!res.ok) return;
                 const text = await res.text();
-                const lines = text.split('
-').filter(l => l.trim());
+                const lines = text.split(/?
+/).filter(l => l.trim());
                 for (let i = lines.length - 1; i >= 0; i--) {
                     try {
                         const obj = JSON.parse(lines[i]);
-                        if (obj && obj.event === 'message' && obj.message) {
-                            let frameStr = obj.message;
-                            if (obj.attachment && obj.attachment.url) {
-                                frameStr = obj.attachment.url;
-                            }
-                            if (frameStr.startsWith('data:image') || frameStr.startsWith('http')) {
-                                const img = document.getElementById('streamImage');
-                                if (img) {
-                                    img.src = frameStr;
-                                    img.style.display = 'block';
-                                }
-                                const ph = document.getElementById('streamPlaceholder');
-                                if (ph) ph.style.display = 'none';
-                                break;
-                            }
+                        if (obj && obj.event === 'message') {
+                            await handleScreenPayload(obj);
+                            break;
                         }
                     } catch (_) {}
                 }
