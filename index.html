@@ -2,6 +2,9 @@
 <html lang="th" class="notranslate">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>CookieRunBot — ระบบควบคุมบอทคุกกี้รันผ่านเว็บ (Official Dashboard)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -915,7 +918,12 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- MQTT Client Library for Real-Time Cloud Relay -->
-    <script src="https://unpkg.com/mqtt@5.3.5/dist/mqtt.min.js"></script>
+    <script src="mqtt.min.js"></script>
+    <script>
+        if (typeof mqtt === 'undefined') {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.3.5/mqtt.min.js"><\/script>');
+        }
+    </script>
 
     <!-- Logic Script -->
     <script>
