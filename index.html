@@ -684,9 +684,256 @@
             background: #151d2a;
             color: #fff;
         }
+
+        /* ===================================================================
+           AUTH SCREENS (LOGIN & WAITING FOR BOT LINK)
+           =================================================================== */
+        .auth-view-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px 16px;
+            background: radial-gradient(circle at 50% 20%, rgba(59, 130, 246, 0.12), transparent 75%), var(--bg-base);
+        }
+
+        .auth-card {
+            background: rgba(24, 34, 52, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-card);
+            border-radius: 20px;
+            max-width: 460px;
+            width: 100%;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7);
+            animation: fadeInScale 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.96) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .auth-brand-badge {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 20px var(--cr-caramel-glow);
+            margin-bottom: 14px;
+        }
+
+        .auth-warning-badge {
+            width: 60px;
+            height: 60px;
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-bottom: 14px;
+        }
+
+        .auth-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .auth-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.45;
+            margin-bottom: 20px;
+        }
+
+        .auth-notice-box {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            padding: 12px 14px;
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        .btn-google-login-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 13px 18px;
+            background: #ffffff;
+            color: #1f2937;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn-google-login-primary:hover {
+            background: #f8fafc;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-google-login-primary:active {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
+
+    <!-- ===================================================================
+         VIEW 1: GOOGLE LOGIN SCREEN (ยืนยันตัวตนก่อนเข้าควบคุมบอท)
+         =================================================================== -->
+    <div id="viewLogin" class="auth-view-container">
+        <div class="auth-card">
+            <!-- Brand Badge -->
+            <div class="auth-brand-badge">
+                <span>🍪</span>
+            </div>
+            <h2 class="auth-title">CookieRunBot Official</h2>
+            <p class="auth-subtitle">ระบบคลาวด์ควบคุมและฟาร์มอัตโนมัติ (Live Cloud Controller)</p>
+
+            <div class="auth-notice-box">
+                <div style="font-size: 0.92rem; font-weight: 600; color: #fff; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                    <span>🔐</span> เข้าสู่ระบบด้วยบัญชี Google
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.45;">
+                    กรุณายืนยันตัวตนเพื่อเข้าถึงบอทที่เชื่อมโยงกับบัญชีของคุณ ระบบจะแยกข้อมูลและสถิติการฟาร์มของแต่ละผู้ใช้อย่างอิสระและปลอดภัย
+                </div>
+            </div>
+
+            <!-- Quick Primary Google Login -->
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px;">
+                <button class="btn-google-login-primary" onclick="handleGoogleLogin('tititada@gmail.com')">
+                    <svg width="20" height="20" viewBox="0 0 48 48">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    <span>เข้าสู่ระบบด้วย <b>tititada@gmail.com</b></span>
+                </button>
+            </div>
+
+            <!-- Divider -->
+            <div style="position: relative; margin: 18px 0; text-align: center;">
+                <div style="position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: var(--border-card);"></div>
+                <span style="position: relative; background: #162030; padding: 0 12px; font-size: 0.78rem; color: var(--text-subtle);">หรือเข้าสู่ระบบด้วยบัญชี Google อื่น</span>
+            </div>
+
+            <!-- Custom Email Login Input -->
+            <div style="margin-bottom: 20px;">
+                <input type="email" id="txtCustomLoginEmail" placeholder="yourname@gmail.com" class="config-text-input" style="text-align: center; margin-bottom: 10px; font-size: 0.95rem; padding: 12px;">
+                <button class="btn-act btn-act-start" style="width: 100%; padding: 12px; font-size: 0.95rem;" onclick="handleCustomGoogleLogin()">
+                    🚀 เข้าสู่ระบบด้วยบัญชีนี้
+                </button>
+            </div>
+
+            <!-- Feature Badges -->
+            <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-card); border-radius: 12px; padding: 12px; font-size: 0.78rem; color: var(--text-muted); text-align: left; line-height: 1.5; margin-bottom: 18px;">
+                <div style="display: flex; gap: 8px; margin-bottom: 6px;">
+                    <span>🔒</span>
+                    <span><b>แยกข้อมูลอิสระ:</b> คุณจะเห็นเฉพาะบอทและสถิติที่ผูกกับบัญชีคุณเท่านั้น</span>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <span>⚡</span>
+                    <span><b>Google Firebase RTDB:</b> เชื่อมต่อและสั่งงานแบบเรียลไทม์ความเร็วสูง</span>
+                </div>
+            </div>
+
+            <!-- Download APK Link -->
+            <a href="CookieRunBot-v0.6-cloud.apk" download style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.82rem; color: #10b981; text-decoration: none; font-weight: 500;">
+                <span>📥</span> ดาวน์โหลดแอปบอท Android (CookieRunBot-v0.6-cloud.apk)
+            </a>
+        </div>
+    </div>
+
+    <!-- ===================================================================
+         VIEW 2: UNLINKED WAITING SCREEN (ล็อกอินแล้วแต่ยังไม่ได้ลิ้งก์กับบอท)
+         =================================================================== -->
+    <div id="viewUnlinked" class="auth-view-container" style="display: none;">
+        <div class="auth-card" style="max-width: 480px;">
+            <!-- User Profile Pill -->
+            <div style="display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.06); padding: 6px 14px; border-radius: 24px; border: 1px solid var(--border-card); margin-bottom: 16px;">
+                <div class="google-avatar" style="width: 26px; height: 26px; font-size: 0.85rem;" id="unlinkedUserAvatar">T</div>
+                <span style="font-size: 0.85rem; font-weight: 600; color: #fff;" id="unlinkedUserEmail">user@gmail.com</span>
+                <button onclick="handleLogout()" style="background: none; border: none; color: #ef4444; font-size: 0.78rem; cursor: pointer; text-decoration: underline; margin-left: 4px;">ออกจากระบบ</button>
+            </div>
+
+            <!-- Warning Badge -->
+            <div class="auth-warning-badge">
+                <span>⚠️</span>
+            </div>
+            <h2 class="auth-title" style="color: #f59e0b;">ยังไม่พบบอทที่เชื่อมโยงกับบัญชีนี้</h2>
+            <p class="auth-subtitle" style="margin-bottom: 18px;">
+                หน้าควบคุมถูกระงับการแสดงผลไว้ชั่วคราว เพื่อความปลอดภัยและความถูกต้องของข้อมูล<br>
+                ระบบจะเปิดหน้าควบคุมให้โดยอัตโนมัติทันทีที่มีการเชื่อมต่อจากแอปบอทของคุณ
+            </p>
+
+            <!-- Instructions Box -->
+            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 14px; padding: 16px 16px; text-align: left; margin-bottom: 18px;">
+                <div style="font-size: 0.88rem; font-weight: 600; color: #f59e0b; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                    <span>📱</span> วิธีเชื่อมต่อบอทบนมือถือกับบัญชีนี้:
+                </div>
+                <ol style="font-size: 0.82rem; color: #cbd5e1; padding-left: 20px; line-height: 1.6; display: flex; flex-direction: column; gap: 8px;">
+                    <li>เปิดแอป <b>CookieRun Bot (v0.6)</b> บนโทรศัพท์มือถือ Android ของคุณ</li>
+                    <li>ไปที่เมนู <b>"การเชื่อมต่อคลาวด์"</b></li>
+                    <li>
+                        กรอกอีเมลนี้ลงในช่อง Google Account:<br>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
+                            <input type="text" id="txtUnlinkedEmailCopy" readonly class="config-text-input" style="font-family: var(--font-mono); font-size: 0.82rem; padding: 6px 10px; background: rgba(0,0,0,0.4); color: #fbbf24; font-weight: 600;">
+                            <button class="btn-act btn-act-reset" style="padding: 6px 12px; font-size: 0.78rem; width: auto; white-space: nowrap;" onclick="copyUnlinkedEmail()">
+                                📋 คัดลอก
+                            </button>
+                        </div>
+                    </li>
+                    <li>เปิดสวิตช์ <b>"เชื่อมต่อคลาวด์"</b> หรือกด <b>"เริ่มบอท"</b> ในแอป</li>
+                </ol>
+            </div>
+
+            <!-- Waiting Radar Pulse -->
+            <div style="background: rgba(30, 41, 59, 0.6); border: 1px solid var(--border-card); border-radius: 10px; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 18px;">
+                <span class="cloud-pulse" style="background: #f59e0b; box-shadow: 0 0 10px #f59e0b;"></span>
+                <span style="font-size: 0.8rem; color: #94a3b8;" id="unlinkedStatusMsg">กำลังรอสัญญาณเชื่อมต่อจากแอปบอทบนมือถือ...</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn-act btn-act-start" style="padding: 12px; font-size: 0.9rem;" onclick="checkBotLinkAndRender(true)">
+                    🔄 ตรวจสอบการเชื่อมต่ออีกครั้ง (Check Connection)
+                </button>
+                <div style="display: flex; gap: 10px;">
+                    <a href="CookieRunBot-v0.6-cloud.apk" download class="btn-copy-code" style="flex: 1; background: #059669; text-decoration: none; text-align: center; padding: 10px; font-size: 0.82rem;">
+                        📥 ดาวน์โหลด APK v0.6
+                    </a>
+                    <button class="btn-copy-code" style="flex: 1; background: #475569; padding: 10px; font-size: 0.82rem;" onclick="handleLogout()">
+                        🚪 สลับบัญชี Google
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================
+         VIEW 3: MAIN BOT CONTROLLER DASHBOARD (แสดงเมื่อลิ้งก์สำเร็จแล้ว)
+         =================================================================== -->
+    <div id="viewDashboard" style="display: none;">
 
     <!-- Top Navigation Header -->
     <header class="topbar">
@@ -705,10 +952,15 @@
                     <span id="cloudStatusText">รอเชื่อมต่อบอท</span>
                 </div>
 
-                <button class="btn-google" id="btnGoogleAuth" onclick="openGoogleAuthModal()">
-                    <div class="google-avatar" id="googleAvatarBox">G</div>
-                    <span id="googleBtnLabel">เข้าสู่ระบบ</span>
-                </button>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <button class="btn-google" id="btnGoogleAuth" onclick="openGoogleAuthModal()">
+                        <div class="google-avatar" id="googleAvatarBox">G</div>
+                        <span id="googleBtnLabel">เข้าสู่ระบบ</span>
+                    </button>
+                    <button class="btn-copy-code" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; padding: 6px 12px; font-size: 0.78rem;" onclick="handleLogout()" title="ออกจากระบบ Google">
+                        🚪 ออกจากระบบ
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -1072,6 +1324,7 @@
         </div>
 
     </main>
+    </div> <!-- /#viewDashboard -->
 
     <!-- Google Auth Modal -->
     <div class="modal-overlay" id="googleAuthModal">
@@ -1132,34 +1385,35 @@
             return (raw || '').toLowerCase().replace(/[^a-z0-9]/g, '').trim();
         }
 
-        let currentUser = DEFAULT_USER;
-        try {
-            const savedStr = localStorage.getItem('official_google_user');
-            if (savedStr) {
-                const parsed = JSON.parse(savedStr);
-                if (parsed && parsed.email) {
-                    currentUser = parsed;
-                }
-            }
-        } catch (e) {
-            currentUser = DEFAULT_USER;
-        }
-
-        let pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
+        let currentUser = null;
+        let pairingKey = null;
         let isStreamingActive = false;
         let lastBotSeenTime = 0;
         let statsEventSource = null;
         let screenEventSource = null;
         let pollingTimer = null;
         let screenPollTimer = null;
+        let unlinkedWatcherTimer = null;
 
         // ===================================================================
-        // USER AUTHENTICATION & PROFILE
+        // VIEW SWITCHER (LOGIN, UNLINKED WAITING, DASHBOARD)
+        // ===================================================================
+        function showView(viewName) {
+            const vLogin = document.getElementById('viewLogin');
+            const vUnlinked = document.getElementById('viewUnlinked');
+            const vDash = document.getElementById('viewDashboard');
+
+            if (vLogin) vLogin.style.display = (viewName === 'login') ? 'flex' : 'none';
+            if (vUnlinked) vUnlinked.style.display = (viewName === 'unlinked') ? 'flex' : 'none';
+            if (vDash) vDash.style.display = (viewName === 'dashboard') ? 'block' : 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===================================================================
+        // USER AUTHENTICATION & BOT LINK VERIFICATION
         // ===================================================================
         function applyUser(user) {
-            if (!user || !user.email) {
-                user = DEFAULT_USER;
-            }
+            if (!user || !user.email) return;
             currentUser = user;
             pairingKey = sanitizeKey(user.email);
 
@@ -1197,28 +1451,141 @@
             if (loggedOutView) loggedOutView.style.display = 'none';
         }
 
-        function quickLoginEmail(email) {
+        async function checkBotLinkAndRender(showToastFeedback = false) {
+            if (!currentUser || !currentUser.email) {
+                showView('login');
+                return;
+            }
+
+            const key = sanitizeKey(currentUser.email);
+            pairingKey = key;
+
+            if (showToastFeedback) {
+                showToast(`🔍 กำลังตรวจสอบการเชื่อมต่อบอท (${currentUser.email})...`);
+            }
+
+            try {
+                const res = await fetch(`${FIREBASE_RTDB_URL}/bots/${key}/state.json`);
+                if (res.ok) {
+                    const data = await res.json();
+                    // Is this bot linked? It is linked if state has info or stats or valid config
+                    const isLinked = (data && (data.info || data.stats || (data.config && data.config.desiredBoostId)));
+                    if (isLinked) {
+                        if (unlinkedWatcherTimer) {
+                            clearInterval(unlinkedWatcherTimer);
+                            unlinkedWatcherTimer = null;
+                        }
+                        applyUser(currentUser);
+                        showView('dashboard');
+                        applyBotData(data);
+                        startCloudSync();
+                        if (showToastFeedback) {
+                            showToast(`✅ ยืนยันตัวตนสำเร็จ: เชื่อมโยงกับบอทเรียบร้อย 🚀`);
+                        }
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.warn('Check bot link error:', e);
+            }
+
+            // Not linked with any bot app!
+            showUnlinkedView(showToastFeedback);
+        }
+
+        function showUnlinkedView(showToastFeedback = false) {
+            stopCloudSync();
+            if (unlinkedWatcherTimer) {
+                clearInterval(unlinkedWatcherTimer);
+                unlinkedWatcherTimer = null;
+            }
+
+            const email = currentUser ? currentUser.email : '';
+            const displayLetter = (email[0] || 'U').toUpperCase();
+
+            const avt = document.getElementById('unlinkedUserAvatar');
+            if (avt) avt.innerText = displayLetter;
+
+            const lbl = document.getElementById('unlinkedUserEmail');
+            if (lbl) lbl.innerText = email;
+
+            const copyInput = document.getElementById('txtUnlinkedEmailCopy');
+            if (copyInput) copyInput.value = email;
+
+            const statusMsg = document.getElementById('unlinkedStatusMsg');
+            if (statusMsg) statusMsg.innerText = `กำลังรอสัญญาณเชื่อมต่อจากแอปบอทสำหรับ ${email}...`;
+
+            showView('unlinked');
+
+            if (showToastFeedback) {
+                showToast(`⚠️ บัญชี ${email} ยังไม่ได้เชื่อมต่อกับบอทบนมือถือ`);
+            }
+
+            // Background Watcher: checks every 3 seconds to auto-unlock dashboard as soon as the bot links!
+            unlinkedWatcherTimer = setInterval(async () => {
+                if (!currentUser || !currentUser.email) {
+                    clearInterval(unlinkedWatcherTimer);
+                    return;
+                }
+                try {
+                    const key = sanitizeKey(currentUser.email);
+                    const res = await fetch(`${FIREBASE_RTDB_URL}/bots/${key}/state.json`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data && (data.info || data.stats)) {
+                            clearInterval(unlinkedWatcherTimer);
+                            unlinkedWatcherTimer = null;
+                            showToast('🎉 ตรวจพบบอทของคุณแล้ว! กำลังเข้าสู่หน้าควบคุม...');
+                            applyUser(currentUser);
+                            showView('dashboard');
+                            applyBotData(data);
+                            startCloudSync();
+                        }
+                    }
+                } catch (e) {}
+            }, 3000);
+        }
+
+        function handleGoogleLogin(email) {
             if (!email) return;
             currentUser = { email: email.trim(), name: email.split('@')[0] };
+            localStorage.setItem('cookierun_auth_user', JSON.stringify(currentUser));
             localStorage.setItem('official_google_user', JSON.stringify(currentUser));
-            applyUser(currentUser);
             closeGoogleAuthModal();
-            startCloudSync();
-            showToast(`เข้าสู่ระบบด้วย ${email} สำเร็จ 🚀`);
+            checkBotLinkAndRender(true);
+        }
+
+        function handleCustomGoogleLogin() {
+            const input = document.getElementById('txtCustomLoginEmail');
+            const email = (input ? input.value : '').trim();
+            if (!email || !email.includes('@')) {
+                showToast('กรุณากรอกอีเมล Google ให้ถูกต้อง (เช่น example@gmail.com)');
+                return;
+            }
+            handleGoogleLogin(email);
+        }
+
+        function quickLoginEmail(email) {
+            handleGoogleLogin(email);
         }
 
         function loginGoogleManual() {
             const input = document.getElementById('inputGoogleEmail');
             const email = (input ? input.value : '').trim();
-            if (!email) {
-                showToast('กรุณากรอกอีเมล Google');
+            if (!email || !email.includes('@')) {
+                showToast('กรุณากรอกอีเมล Google ให้ถูกต้อง');
                 return;
             }
-            quickLoginEmail(email);
+            handleGoogleLogin(email);
         }
 
-        function logoutGoogle() {
+        function handleLogout() {
+            localStorage.removeItem('cookierun_auth_user');
             localStorage.removeItem('official_google_user');
+            if (unlinkedWatcherTimer) {
+                clearInterval(unlinkedWatcherTimer);
+                unlinkedWatcherTimer = null;
+            }
             currentUser = null;
             pairingKey = null;
 
@@ -1235,7 +1602,21 @@
             if (loggedOutView) loggedOutView.style.display = 'block';
 
             stopCloudSync();
-            showToast('ออกจากระบบแล้ว');
+            closeGoogleAuthModal();
+            showView('login');
+            showToast('ออกจากระบบเรียบร้อย');
+        }
+
+        function logoutGoogle() {
+            handleLogout();
+        }
+
+        function copyUnlinkedEmail() {
+            const email = currentUser ? currentUser.email : '';
+            if (!email) return;
+            navigator.clipboard.writeText(email).then(() => {
+                showToast(`คัดลอกอีเมล ${email} เรียบร้อย! นำไปวางในแอปบอท`);
+            });
         }
 
         function openGoogleAuthModal() {
@@ -1750,10 +2131,26 @@
         // ===================================================================
         function initDashboard() {
             try {
-                applyUser(currentUser);
-                startCloudSync();
+                const savedUserStr = localStorage.getItem('cookierun_auth_user') || localStorage.getItem('official_google_user');
+                if (savedUserStr) {
+                    try {
+                        const parsed = JSON.parse(savedUserStr);
+                        if (parsed && parsed.email) {
+                            currentUser = parsed;
+                            pairingKey = sanitizeKey(parsed.email);
+                            checkBotLinkAndRender(false);
+                            return;
+                        }
+                    } catch (e) {}
+                }
+
+                // If not logged in:
+                currentUser = null;
+                pairingKey = null;
+                showView('login');
             } catch (err) {
                 console.error("Dashboard init error:", err);
+                showView('login');
             }
         }
 
