@@ -909,6 +909,9 @@
     <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer"></div>
 
+    <!-- MQTT Client Library for Real-Time Cloud Relay -->
+    <script src="https://unpkg.com/mqtt@5.3.5/dist/mqtt.min.js"></script>
+
     <!-- Logic Script -->
     <script>
         let currentUser = {
@@ -923,13 +926,11 @@
 
         let pairingKey = sanitizeKey(currentUser.email);
         let isStreamingActive = false;
-        let statsEventSource = null;
-        let screenEventSource = null;
-        let pollTimer = null;
+        let mqttClient = null;
         let lastBotSeenTime = 0;
 
         function sanitizeKey(raw) {
-            return (raw || '').toLowerCase().replace(/[\.\#\$\[\]\/@]/g, '_').replace(/[^a-z0-9_]/g, '_').trim();
+            return (raw || '').toLowerCase().replace(/[^a-z0-9]/g, '').trim();
         }
 
         // Initialize UI
@@ -993,69 +994,62 @@
             });
         }
 
-        // ---------- Cloud Realtime Sync via Instant Relay ----------
+        // ---------- Cloud Realtime Sync via Instant MQTT Broker (No 429 Limit) ----------
         function startCloudSync() {
             stopCloudSync();
             if (!pairingKey) return;
 
-            // 1. Initial poll
-            pollLatestStats();
+            const clientId = 'crbot_web_' + pairingKey + '_' + Math.random().toString(36).substr(2, 6);
 
-            // 2. Realtime SSE stream
             try {
-                statsEventSource = new EventSource(`https://ntfy.sh/crbot_${pairingKey}_stats/sse`);
-                statsEventSource.onmessage = (event) => {
-                    try {
-                        const envelope = JSON.parse(event.data);
-                        if (envelope.event === 'message') {
-                            const data = JSON.parse(envelope.message);
-                            applyBotData(data);
+                if (typeof mqtt !== 'undefined') {
+                    mqttClient = mqtt.connect('wss://broker.hivemq.com:8884/mqtt', {
+                        clientId: clientId,
+                        clean: true,
+                        reconnectPeriod: 2000,
+                        connectTimeout: 10000
+                    });
+
+                    mqttClient.on('connect', () => {
+                        console.log('✅ Connected to Cloud Relay WSS!');
+                        mqttClient.subscribe(`crbot/${pairingKey}/stats`, { qos: 0 });
+                        mqttClient.subscribe(`crbot/${pairingKey}/screen`, { qos: 0 });
+                    });
+
+                    mqttClient.on('message', (topic, payload) => {
+                        if (topic === `crbot/${pairingKey}/stats`) {
+                            try {
+                                const data = JSON.parse(payload.toString());
+                                applyBotData(data);
+                            } catch (e) {}
+                        } else if (topic === `crbot/${pairingKey}/screen`) {
+                            const frameStr = payload.toString();
+                            if (frameStr.startsWith('data:image')) {
+                                const img = document.getElementById('streamImage');
+                                img.src = frameStr;
+                                img.style.display = 'block';
+                                document.getElementById('streamPlaceholder').style.display = 'none';
+                            }
                         }
-                    } catch (e) {}
-                };
-            } catch (e) {}
+                    });
 
-            // 3. Fallback poll every 3 seconds
-            pollTimer = setInterval(pollLatestStats, 3000);
+                    mqttClient.on('close', () => {
+                        updateBotOnlineStatus(false);
+                    });
+                }
+            } catch (e) {
+                console.error('MQTT connect error:', e);
+            }
 
-            // 4. Watchdog for bot status
             setInterval(checkBotHeartbeat, 2000);
         }
 
         function stopCloudSync() {
-            if (pollTimer) clearInterval(pollTimer);
-            if (statsEventSource) {
-                statsEventSource.close();
-                statsEventSource = null;
+            if (mqttClient) {
+                try { mqttClient.end(); } catch (e) {}
+                mqttClient = null;
             }
-            if (screenEventSource) {
-                screenEventSource.close();
-                screenEventSource = null;
-            }
-            pollTimer = null;
             updateBotOnlineStatus(false);
-        }
-
-        async function pollLatestStats() {
-            if (!pairingKey) return;
-            try {
-                const res = await fetch(`https://ntfy.sh/crbot_${pairingKey}_stats/json?poll=1`);
-                if (!res.ok) return;
-                const text = await res.text();
-                if (!text) return;
-
-                const lines = text.trim().split('\n');
-                for (let i = lines.length - 1; i >= 0; i--) {
-                    try {
-                        const envelope = JSON.parse(lines[i]);
-                        if (envelope.event === 'message' && envelope.message) {
-                            const data = JSON.parse(envelope.message);
-                            applyBotData(data);
-                            break;
-                        }
-                    } catch (e) {}
-                }
-            } catch (e) {}
         }
 
         function applyBotData(data) {
@@ -1118,25 +1112,22 @@
             }
 
             const cmdPayload = {
-                id: 'cmd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+                id: 'cmd_' + Date.now(),
                 action: action,
                 params: params,
                 ts: Date.now()
             };
 
-            try {
-                const res = await fetch(`https://ntfy.sh/crbot_${pairingKey}_cmds`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
-                    body: JSON.stringify(cmdPayload)
+            if (mqttClient && mqttClient.connected) {
+                mqttClient.publish(`crbot/${pairingKey}/cmd`, JSON.stringify(cmdPayload), { qos: 1 }, (err) => {
+                    if (!err) {
+                        showToast(`ส่งคำสั่ง ${action} สำเร็จ 🚀`);
+                    } else {
+                        showToast('ส่งคำสั่งไม่สำเร็จ: ' + err.message);
+                    }
                 });
-                if (res.ok) {
-                    showToast(`ส่งคำสั่ง ${action} สำเร็จ 🚀`);
-                } else {
-                    showToast('ส่งคำสั่งไม่สำเร็จ');
-                }
-            } catch (e) {
-                showToast('เกิดข้อผิดพลาด: ' + e.message);
+            } else {
+                showToast('กำลังเชื่อมต่อ Cloud Relay กรุณารอสักครู่...');
             }
         }
 
@@ -1146,33 +1137,10 @@
             if (isStreamingActive) {
                 label.innerText = '⏹ ปิดภาพสด';
                 sendCloudCommand('START_STREAM');
-                showToast('กำลังเชื่อมต่อสตรีมสด...');
-
-                try {
-                    if (screenEventSource) screenEventSource.close();
-                    screenEventSource = new EventSource(`https://ntfy.sh/crbot_${pairingKey}_screen/sse`);
-                    screenEventSource.onmessage = (event) => {
-                        try {
-                            const envelope = JSON.parse(event.data);
-                            if (envelope.event === 'message') {
-                                const data = JSON.parse(envelope.message);
-                                if (data.frame) {
-                                    const img = document.getElementById('streamImage');
-                                    img.src = data.frame;
-                                    img.style.display = 'block';
-                                    document.getElementById('streamPlaceholder').style.display = 'none';
-                                }
-                            }
-                        } catch (e) {}
-                    };
-                } catch (e) {}
+                showToast('กำลังเปิดภาพสดผ่าน Cloud...');
             } else {
                 label.innerText = '🔴 เปิดภาพสด';
                 sendCloudCommand('STOP_STREAM');
-                if (screenEventSource) {
-                    screenEventSource.close();
-                    screenEventSource = null;
-                }
                 document.getElementById('streamImage').style.display = 'none';
                 document.getElementById('streamPlaceholder').style.display = 'block';
             }
