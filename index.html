@@ -2006,8 +2006,11 @@
             return `${mins} นาที`;
         }
 
+        let latestBotData = null;
+
         function applyBotData(data) {
             if (!data) return;
+            latestBotData = data;
             lastBotSeenTime = Date.now();
             updateBotOnlineStatus(true);
 
@@ -2612,6 +2615,9 @@
                                     ${isExp ? '🔼 ซ่อนรายละเอียดรอบ' : `👁️ ดูรอบการวิ่ง (${roundCount} รอบ)`}
                                 </button>
                             ` : ''}
+                            <button class="btn-act btn-act-stop" style="padding: 4px 12px; font-size: 0.8rem; width: auto; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171;" onclick="deleteSessionConfirm('${s.sessionId}', '${escapeHtml(s.title || '')}')">
+                                🗑️ ลบเซสชัน
+                            </button>
                         </div>
                         ${hasRounds ? `
                             <div id="rounds_${s.sessionId}" style="display: ${isExp ? 'flex' : 'none'}; flex-direction: column; gap: 6px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-card);">
@@ -2621,6 +2627,36 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        async function deleteSessionConfirm(sessionId, title) {
+            if (!sessionId) return;
+            const ok = confirm(`คุณต้องการลบ "${title || 'เซสชันนี้'}" ใช่หรือไม่?\nข้อมูลสถิติการวิ่งในเซสชันนี้จะถูกลบออก`);
+            if (!ok) return;
+
+            // 1. Send command to bot
+            sendCloudCommand('DELETE_SESSION', { sessionId: sessionId });
+
+            // 2. Optimistic UI update & direct Firebase update
+            if (latestBotData && Array.isArray(latestBotData.sessions)) {
+                latestBotData.sessions = latestBotData.sessions.filter(s => s.sessionId !== sessionId);
+                
+                if (pairingKey) {
+                    try {
+                        await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/state/sessions.json`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                            body: JSON.stringify(latestBotData.sessions)
+                        });
+                    } catch (err) {
+                        console.warn('Direct RTDB sessions update failed:', err);
+                    }
+                }
+
+                applyBotData(latestBotData);
+            }
+
+            showToast('🗑️ ลบเซสชันเรียบร้อยแล้ว');
         }
 
         function switchTab(tabName) {
