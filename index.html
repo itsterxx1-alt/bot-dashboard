@@ -954,80 +954,120 @@
             });
         }
 
-        // ---------- Cloud Realtime Sync ----------
+        // ---------- Cloud Realtime Sync (Instant Pub/Sub via Cloud Relay) ----------
+        let statsEventSource = null;
+        let screenEventSource = null;
+        let lastBotSeenTime = 0;
+
+        function sanitizeKey(raw) {
+            return raw.toLowerCase().replace(/[\.\#\$\[\]\/@]/g, '_').replace(/[^a-z0-9_]/g, '_').trim();
+        }
+
         function startCloudSync() {
             stopCloudSync();
             if (!pairingKey) return;
 
-            // Poll stats every 2 seconds via REST
-            pollCloudStats();
-            pollTimer = setInterval(pollCloudStats, 2000);
+            // 1. Initial poll to get latest stats immediately
+            pollLatestStats();
+
+            // 2. Realtime SSE stream for stats
+            try {
+                statsEventSource = new EventSource(`https://ntfy.sh/crbot_${pairingKey}_stats/sse`);
+                statsEventSource.onmessage = (event) => {
+                    try {
+                        const envelope = JSON.parse(event.data);
+                        if (envelope.event === 'message') {
+                            const data = JSON.parse(envelope.message);
+                            applyBotData(data);
+                        }
+                    } catch (e) {}
+                };
+            } catch (e) {}
+
+            // 3. Fallback poll every 3 seconds
+            pollTimer = setInterval(pollLatestStats, 3000);
+
+            // 4. Watchdog timer for online badge
+            setInterval(checkBotHeartbeat, 2000);
         }
 
         function stopCloudSync() {
             if (pollTimer) clearInterval(pollTimer);
+            if (statsEventSource) {
+                statsEventSource.close();
+                statsEventSource = null;
+            }
+            if (screenEventSource) {
+                screenEventSource.close();
+                screenEventSource = null;
+            }
             pollTimer = null;
             updateBotOnlineStatus(false);
         }
 
-        async function pollCloudStats() {
+        async function pollLatestStats() {
             if (!pairingKey) return;
-            const baseUrl = cloudConfig.databaseUrl.replace(/\/$/, '');
-            const url = `${baseUrl}/bots/${pairingKey}.json`;
-
             try {
-                const res = await fetch(url);
+                const res = await fetch(`https://ntfy.sh/crbot_${pairingKey}_stats/json?poll=1`);
                 if (!res.ok) return;
-                const data = await res.json();
-                if (!data) {
-                    updateBotOnlineStatus(false);
-                    return;
+                const text = await res.text();
+                if (!text) return;
+
+                const lines = text.trim().split('\n');
+                for (let i = lines.length - 1; i >= 0; i--) {
+                    try {
+                        const envelope = JSON.parse(lines[i]);
+                        if (envelope.event === 'message' && envelope.message) {
+                            const data = JSON.parse(envelope.message);
+                            applyBotData(data);
+                            break;
+                        }
+                    } catch (e) {}
+                }
+            } catch (e) {}
+        }
+
+        function applyBotData(data) {
+            lastBotSeenTime = Date.now();
+            updateBotOnlineStatus(true);
+
+            // Update UI Stats
+            if (data.stats) {
+                document.getElementById('valRounds').innerText = data.stats.roundsPlayed || 0;
+                document.getElementById('valCoins').innerText = (data.stats.sessionCoinsEarned || 0).toLocaleString();
+                document.getElementById('valXp').innerText = (data.stats.sessionXpEarned || 0).toLocaleString();
+                document.getElementById('valBoxes').innerText = data.stats.mysteryBoxes || 0;
+                document.getElementById('valStage').innerText = data.stats.currentStage || 'STOPPED';
+                document.getElementById('valCoinsPerHr').innerText = (data.stats.coinsPerHour || 0).toLocaleString();
+
+                if (data.stats.lastRound) {
+                    document.getElementById('valLastXp').innerText = (data.stats.lastRound.xp || 0).toLocaleString();
                 }
 
-                // Check bot heartbeat (< 15 seconds)
-                const lastSeen = data.info?.lastSeen || 0;
-                const isOnline = (Date.now() - lastSeen) < 15000;
-                updateBotOnlineStatus(isOnline);
-
-                // Update UI Stats
-                if (data.stats) {
-                    document.getElementById('valRounds').innerText = data.stats.roundsPlayed || 0;
-                    document.getElementById('valCoins').innerText = (data.stats.sessionCoinsEarned || 0).toLocaleString();
-                    document.getElementById('valXp').innerText = (data.stats.sessionXpEarned || 0).toLocaleString();
-                    document.getElementById('valBoxes').innerText = data.stats.mysteryBoxes || 0;
-                    document.getElementById('valStage').innerText = data.stats.currentStage || 'STOPPED';
-                    document.getElementById('valCoinsPerHr').innerText = (data.stats.coinsPerHour || 0).toLocaleString();
-
-                    if (data.stats.lastRound) {
-                        document.getElementById('valLastXp').innerText = (data.stats.lastRound.xp || 0).toLocaleString();
-                    }
-
-                    if (data.stats.boxCounts) {
-                        const b = data.stats.boxCounts;
-                        document.getElementById('valBoxTypes').innerText = `🪵${b.wood||0} 🥈${b.silver||0} 🥇${b.gold||0} 🌈${b.rainbow||0}`;
-                    }
+                if (data.stats.boxCounts) {
+                    const b = data.stats.boxCounts;
+                    document.getElementById('valBoxTypes').innerText = `🪵${b.wood||0} 🥈${b.silver||0} 🥇${b.gold||0} 🌈${b.rainbow||0}`;
                 }
-
-                // Update Logs
-                if (data.logs && Array.isArray(data.logs)) {
-                    renderLogs(data.logs);
-                }
-
-                // Update Sessions
-                if (data.sessions && Array.isArray(data.sessions)) {
-                    renderSessions(data.sessions);
-                }
-
-                // Update Screen if active
-                if (isStreamingActive && data.screen?.frame) {
-                    const img = document.getElementById('streamImage');
-                    img.src = data.screen.frame;
-                    img.style.display = 'block';
-                    document.getElementById('streamPlaceholder').style.display = 'none';
-                }
-            } catch (e) {
-                updateBotOnlineStatus(false);
             }
+
+            // Update Logs
+            if (data.logs && Array.isArray(data.logs)) {
+                renderLogs(data.logs);
+            }
+
+            // Update Sessions
+            if (data.sessions && Array.isArray(data.sessions)) {
+                renderSessions(data.sessions);
+            }
+        }
+
+        function checkBotHeartbeat() {
+            if (!pairingKey) {
+                updateBotOnlineStatus(false);
+                return;
+            }
+            const isOnline = (Date.now() - lastBotSeenTime) < 12000;
+            updateBotOnlineStatus(isOnline);
         }
 
         function updateBotOnlineStatus(isOnline) {
@@ -1050,27 +1090,25 @@
                 return;
             }
 
-            const cmdId = 'cmd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
             const cmdPayload = {
-                id: cmdId,
+                id: 'cmd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
                 action: action,
                 params: params,
                 ts: Date.now()
             };
 
-            const baseUrl = cloudConfig.databaseUrl.replace(/\/$/, '');
-            const url = `${baseUrl}/bots/${pairingKey}/commands/${cmdId}.json`;
+            const url = `https://ntfy.sh/crbot_${pairingKey}_cmds`;
 
             try {
                 const res = await fetch(url, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
                     body: JSON.stringify(cmdPayload)
                 });
                 if (res.ok) {
                     showToast(`ส่งคำสั่ง ${action} ไปยังบอทแล้ว 🚀`);
                 } else {
-                    showToast('ส่งคำสั่งไม่สำเร็จ กรุณาลองใหม่');
+                    showToast('ส่งคำสั่งไม่สำเร็จ (' + res.status + ')');
                 }
             } catch (e) {
                 showToast('ข้อผิดพลาดการเชื่อมต่อ: ' + e.message);
@@ -1084,9 +1122,32 @@
                 label.innerText = '⏹ ปิดภาพสด';
                 sendCloudCommand('START_STREAM');
                 showToast('กำลังเปิดภาพสดผ่าน Cloud...');
+
+                try {
+                    if (screenEventSource) screenEventSource.close();
+                    screenEventSource = new EventSource(`https://ntfy.sh/crbot_${pairingKey}_screen/sse`);
+                    screenEventSource.onmessage = (event) => {
+                        try {
+                            const envelope = JSON.parse(event.data);
+                            if (envelope.event === 'message') {
+                                const data = JSON.parse(envelope.message);
+                                if (data.frame) {
+                                    const img = document.getElementById('streamImage');
+                                    img.src = data.frame;
+                                    img.style.display = 'block';
+                                    document.getElementById('streamPlaceholder').style.display = 'none';
+                                }
+                            }
+                        } catch (e) {}
+                    };
+                } catch (e) {}
             } else {
                 label.innerText = '🔴 เปิดภาพสด';
                 sendCloudCommand('STOP_STREAM');
+                if (screenEventSource) {
+                    screenEventSource.close();
+                    screenEventSource = null;
+                }
                 document.getElementById('streamImage').style.display = 'none';
                 document.getElementById('streamPlaceholder').style.display = 'block';
             }
