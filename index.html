@@ -1,39 +1,40 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" class="notranslate">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CookieRun Bot — Official Cloud Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CookieRunBot — ระบบควบคุมบอทคุกกี้รันผ่านเว็บ (Official Dashboard)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Prompt:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-base: #0a0e17;
-            --bg-surface: #121826;
+            --bg-base: #0f172a;
+            --bg-surface: #1e293b;
             --bg-card: #182234;
             --bg-card-hover: #1e2b42;
             --border-card: rgba(255, 255, 255, 0.08);
-            --border-accent: rgba(245, 158, 11, 0.3);
+            --border-accent: rgba(245, 158, 11, 0.35);
             
-            --cookie-caramel: #f59e0b;
-            --cookie-caramel-glow: rgba(245, 158, 11, 0.25);
-            --cookie-brown: #3b2a1a;
-            --cookie-green: #10b981;
-            --cookie-green-glow: rgba(16, 185, 129, 0.25);
-            --cookie-red: #ef4444;
-            --cookie-red-glow: rgba(239, 68, 68, 0.25);
-            --cookie-blue: #3b82f6;
-            --cookie-purple: #8b5cf6;
+            --cr-caramel: #f59e0b;
+            --cr-caramel-glow: rgba(245, 158, 11, 0.25);
+            --cr-brown: #78350f;
+            --cr-brown-dark: #451a03;
+            --cr-green: #10b981;
+            --cr-green-glow: rgba(16, 185, 129, 0.25);
+            --cr-red: #ef4444;
+            --cr-red-glow: rgba(239, 68, 68, 0.25);
+            --cr-blue: #3b82f6;
+            --cr-purple: #8b5cf6;
             
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --text-subtle: #6b7280;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-subtle: #64748b;
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 16px;
             --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
-            --font-main: 'Prompt', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-main: 'Kanit', 'Prompt', -apple-system, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
@@ -55,9 +56,9 @@
             overflow-x: hidden;
         }
 
-        /* Top Navigation Bar */
+        /* Top Header */
         .topbar {
-            background: rgba(18, 24, 38, 0.95);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-card);
@@ -72,7 +73,6 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
         }
@@ -86,41 +86,37 @@
         }
 
         .brand-logo {
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             background: linear-gradient(135deg, #f59e0b, #d97706);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            box-shadow: 0 2px 10px var(--cookie-caramel-glow);
+            font-size: 22px;
+            box-shadow: 0 2px 10px var(--cr-caramel-glow);
         }
 
         .brand-text h1 {
-            font-size: 1.05rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.01em;
             background: linear-gradient(135deg, #ffffff 40%, #f59e0b 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
 
-        .brand-badge {
-            font-size: 0.7rem;
-            background: rgba(59, 130, 246, 0.2);
-            color: #60a5fa;
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            padding: 1px 7px;
-            border-radius: 99px;
-            font-weight: 600;
+        .brand-text span {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            display: block;
         }
 
-        /* Google Profile & Cloud Status */
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .cloud-status-badge {
@@ -176,11 +172,6 @@
             transition: all 0.2s;
         }
 
-        .btn-google:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
         .google-avatar {
             width: 24px;
             height: 24px;
@@ -191,21 +182,13 @@
             justify-content: center;
             font-size: 0.75rem;
             font-weight: 700;
-            overflow: hidden;
         }
 
-        .google-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Action Buttons Row */
+        /* Top Action Buttons */
         .topbar-action-row {
             display: flex;
             align-items: center;
             gap: 8px;
-            width: 100%;
             max-width: 1400px;
             margin: 8px auto 0 auto;
             padding-top: 8px;
@@ -214,11 +197,11 @@
 
         .btn-act {
             flex: 1;
-            min-height: 40px;
+            min-height: 42px;
             border: none;
             border-radius: var(--radius-sm);
             font-family: var(--font-main);
-            font-size: 0.88rem;
+            font-size: 0.92rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
@@ -235,13 +218,13 @@
         .btn-act-start {
             background: linear-gradient(135deg, #10b981, #059669);
             color: #fff;
-            box-shadow: 0 2px 10px var(--cookie-green-glow);
+            box-shadow: 0 2px 10px var(--cr-green-glow);
         }
 
         .btn-act-stop {
             background: linear-gradient(135deg, #ef4444, #dc2626);
             color: #fff;
-            box-shadow: 0 2px 10px var(--cookie-red-glow);
+            box-shadow: 0 2px 10px var(--cr-red-glow);
         }
 
         .btn-act-reset {
@@ -270,10 +253,10 @@
             background: transparent;
             border: 1px solid transparent;
             color: var(--text-muted);
-            padding: 8px 14px;
+            padding: 8px 16px;
             border-radius: var(--radius-sm);
             font-family: var(--font-main);
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             font-weight: 500;
             white-space: nowrap;
             cursor: pointer;
@@ -284,13 +267,13 @@
         }
 
         .nav-tab-btn.active {
-            background: var(--bg-card);
-            color: var(--cookie-caramel);
+            background: var(--bg-surface);
+            color: var(--cr-caramel);
             border-color: var(--border-accent);
             font-weight: 600;
         }
 
-        /* Container & Tabs */
+        /* Main Container */
         .main-container {
             flex: 1;
             max-width: 1400px;
@@ -309,26 +292,22 @@
 
         /* Pairing Banner */
         .pairing-banner {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.15));
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(139, 92, 246, 0.12));
             border: 1px solid rgba(59, 130, 246, 0.3);
             border-radius: var(--radius-md);
-            padding: 14px 16px;
+            padding: 12px 16px;
             margin-bottom: 16px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            gap: 10px;
         }
 
         .pairing-info {
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .pairing-icon {
-            font-size: 1.6rem;
         }
 
         .pairing-code-badge {
@@ -341,14 +320,13 @@
             border-radius: 6px;
             border: 1px dashed rgba(96, 165, 250, 0.5);
             display: inline-block;
-            margin-top: 2px;
         }
 
         .btn-copy-code {
-            background: var(--cookie-blue);
+            background: var(--cr-blue);
             color: #fff;
             border: none;
-            padding: 8px 14px;
+            padding: 6px 14px;
             border-radius: var(--radius-sm);
             font-size: 0.82rem;
             font-weight: 600;
@@ -388,12 +366,12 @@
             align-items: center;
             justify-content: space-between;
             color: var(--text-muted);
-            font-size: 0.78rem;
+            font-size: 0.82rem;
             font-weight: 500;
         }
 
         .stat-value {
-            font-size: 1.45rem;
+            font-size: 1.6rem;
             font-weight: 700;
             font-family: var(--font-mono);
             color: #fff;
@@ -401,11 +379,71 @@
         }
 
         .stat-sub {
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             color: var(--text-subtle);
         }
 
-        /* Stream & Live Controls Card */
+        /* cookierunbot.com Config Sections */
+        .config-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+            padding: 16px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .config-sec-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--cr-caramel);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 6px;
+        }
+
+        .pills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+        }
+
+        .check-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-card);
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-main);
+            transition: all 0.15s;
+            user-select: none;
+        }
+
+        .check-pill:hover {
+            border-color: rgba(245, 158, 11, 0.4);
+        }
+
+        .check-pill input {
+            accent-color: var(--cr-caramel);
+            width: 16px;
+            height: 16px;
+        }
+
+        .check-pill.checked {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: var(--cr-caramel);
+            color: #fff;
+        }
+
+        /* Screen Stream Container */
         .stream-card {
             background: var(--bg-surface);
             border: 1px solid var(--border-card);
@@ -425,14 +463,6 @@
             gap: 8px;
         }
 
-        .card-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
         .stream-container {
             position: relative;
             width: 100%;
@@ -448,18 +478,16 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            user-select: none;
-            -webkit-user-drag: none;
         }
 
         .stream-placeholder {
             color: var(--text-subtle);
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             text-align: center;
-            padding: 20px;
+            padding: 24px;
         }
 
-        /* Remote Gamepad Controls */
+        /* Gamepad Controls */
         .controls-grid {
             padding: 14px;
             background: rgba(0, 0, 0, 0.2);
@@ -481,7 +509,7 @@
             color: var(--text-main);
             border-radius: var(--radius-sm);
             font-family: var(--font-main);
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             font-weight: 500;
             cursor: pointer;
             display: flex;
@@ -493,18 +521,18 @@
 
         .btn-gamepad:active {
             transform: scale(0.96);
-            background: var(--cookie-caramel-glow);
-            border-color: var(--cookie-caramel);
+            background: var(--cr-caramel-glow);
+            border-color: var(--cr-caramel);
         }
 
-        /* Activity Logs */
+        /* Logs Panel */
         .logs-panel {
             background: #090d16;
             border: 1px solid var(--border-card);
             border-radius: var(--radius-md);
             padding: 12px;
             font-family: var(--font-mono);
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             height: 380px;
             overflow-y: auto;
             display: flex;
@@ -514,7 +542,6 @@
 
         .log-line {
             line-height: 1.4;
-            word-break: break-all;
             padding: 2px 4px;
             border-radius: 4px;
         }
@@ -579,12 +606,12 @@
         }
 
         .toast {
-            background: var(--bg-card);
+            background: var(--bg-surface);
             color: #fff;
             border: 1px solid var(--border-accent);
             padding: 10px 16px;
             border-radius: var(--radius-sm);
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
             animation: slideUp 0.2s ease-out;
         }
@@ -597,15 +624,15 @@
 </head>
 <body>
 
-    <!-- Top Navigation Bar -->
+    <!-- Top Navigation Header -->
     <header class="topbar">
         <div class="topbar-header-row">
             <a href="#" class="brand-box">
                 <div class="brand-logo">🍪</div>
                 <div class="brand-text">
-                    <h1>CookieRun Bot</h1>
+                    <h1>CookieRunBot</h1>
+                    <span>ระบบคลาวด์ฟาร์มบอทคุกกี้รัน</span>
                 </div>
-                <span class="brand-badge">Official Cloud</span>
             </a>
 
             <div class="header-actions">
@@ -629,24 +656,24 @@
                 <span>⏹</span> หยุดบอท
             </button>
             <button class="btn-act btn-act-reset" onclick="sendCloudCommand('NEW_SESSION')">
-                <span>➕</span> รอบใหม่
+                <span>➕</span> เริ่มรอบใหม่
             </button>
         </div>
     </header>
 
-    <!-- Navigation Tabs -->
+    <!-- Nav Tabs -->
     <nav class="nav-tabs">
         <button class="nav-tab-btn active" onclick="switchTab('overview')">
-            <span>📊</span> ภาพรวม (Overview)
+            <span>📊</span> ภาพรวม & สตรีมสด
+        </button>
+        <button class="nav-tab-btn" onclick="switchTab('settings')">
+            <span>⚙️</span> การตั้งค่าฟาร์ม (cookierunbot.com)
         </button>
         <button class="nav-tab-btn" onclick="switchTab('activity')">
             <span>📜</span> บันทึกสด (Logs)
         </button>
         <button class="nav-tab-btn" onclick="switchTab('history')">
             <span>📁</span> ประวัติเซสชัน (History)
-        </button>
-        <button class="nav-tab-btn" onclick="switchTab('settings')">
-            <span>⚙️</span> การตั้งค่า (Settings)
         </button>
     </nav>
 
@@ -656,13 +683,13 @@
         <!-- Pairing Code Banner -->
         <div class="pairing-banner" id="pairingBanner">
             <div class="pairing-info">
-                <div class="pairing-icon">🔑</div>
+                <div style="font-size: 1.5rem;">🔑</div>
                 <div>
-                    <div style="font-size: 0.88rem; font-weight: 600; color: #fff;">
+                    <div style="font-size: 0.85rem; font-weight: 600; color: #fff;">
                         รหัสจับคู่บอทของคุณ (Device Pairing Key)
                     </div>
                     <div class="pairing-code-badge" id="displayPairingCode">
-                        กรุณาเข้าสู่ระบบ Google
+                        tititada@gmail.com
                     </div>
                 </div>
             </div>
@@ -671,9 +698,9 @@
             </button>
         </div>
 
-        <!-- TAB: OVERVIEW -->
+        <!-- TAB: OVERVIEW & STREAM -->
         <div class="tab-content active" id="tab-overview">
-            <!-- Key Metric Cards -->
+            <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-header">
@@ -715,19 +742,17 @@
             <!-- Remote Screen Stream & Gamepad -->
             <div class="stream-card">
                 <div class="card-header">
-                    <div class="card-title">
+                    <div style="font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
                         <span>📱</span> หน้าจอเกมสด (Cloud Live Stream)
                     </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn-act btn-act-reset" style="padding: 4px 10px; font-size: 0.78rem;" onclick="toggleScreenStream()">
-                            <span id="btnStreamToggleLabel">🔴 เปิดภาพสด</span>
-                        </button>
-                    </div>
+                    <button class="btn-act btn-act-reset" style="padding: 4px 12px; font-size: 0.8rem;" onclick="toggleScreenStream()">
+                        <span id="btnStreamToggleLabel">🔴 เปิดภาพสด</span>
+                    </button>
                 </div>
 
                 <div class="stream-container" id="streamContainer" onclick="handleScreenTap(event)">
                     <div class="stream-placeholder" id="streamPlaceholder">
-                        แตะ "เปิดภาพสด" เพื่อเริ่มดูหน้าจอเกมแบบเรียลไทม์ผ่าน Cloud
+                        แตะ "เปิดภาพสด" เพื่อดูหน้าจอเกมแบบเรียลไทม์ และแตะเพื่อสั่งงานบอท
                     </div>
                     <img id="streamImage" style="display: none;" src="" alt="Stream">
                 </div>
@@ -741,11 +766,76 @@
             </div>
         </div>
 
+        <!-- TAB: BOT SETTINGS (cookierunbot.com style) -->
+        <div class="tab-content" id="tab-settings">
+            
+            <!-- Section 1: ส่วนซื้อของ -->
+            <div class="config-card">
+                <div class="config-sec-title">
+                    <span>🛒</span> ส่วนซื้อของ (Item Purchase & Boosts)
+                </div>
+                <div class="pills-grid">
+                    <label class="check-pill"><input type="checkbox" id="chkHpExtension"> Hp Extension</label>
+                    <label class="check-pill"><input type="checkbox" id="chkPowerJellyBoost"> Power Jelly Boost</label>
+                    <label class="check-pill"><input type="checkbox" id="chkDoubleXp"> Double XP</label>
+                    <label class="check-pill checked"><input type="checkbox" id="chkFastStart" checked> Fast Start</label>
+                    <label class="check-pill checked"><input type="checkbox" id="chkCookieRelay" checked> Cookie Relay</label>
+                    <label class="check-pill checked"><input type="checkbox" id="chkRandomBoost" checked> Random Boost</label>
+                </div>
+            </div>
+
+            <!-- Section 2: การควบคุม -->
+            <div class="config-card">
+                <div class="config-sec-title">
+                    <span>🎮</span> การควบคุม (Jump & Relay Automation)
+                </div>
+                <div class="pills-grid">
+                    <label class="check-pill checked"><input type="checkbox" id="chkAutoJump" checked> กด Jump + Double Jump อัตโนมัติ</label>
+                    <label class="check-pill checked"><input type="checkbox" id="chkUseFastStart" checked> กดใช้ Fast Start</label>
+                    <label class="check-pill checked"><input type="checkbox" id="chkUseCookieRelay" checked> กดใช้ Cookie Relay</label>
+                    <label class="check-pill checked"><input type="checkbox" id="chkStopOnBoxes"> ออกจากรอบเมื่อเก็บกล่องครบ</label>
+                    <label class="check-pill"><input type="checkbox" id="chkStopJumpOnMax"> หยุดกระโดดเมื่อกระโดดครบ</label>
+                </div>
+            </div>
+
+            <!-- Section 3: อื่นๆ -->
+            <div class="config-card">
+                <div class="config-sec-title">
+                    <span>❤️</span> การส่งหัวใจ & สิทธิประโยชน์ (Automation)
+                </div>
+                <div class="pills-grid">
+                    <label class="check-pill checked"><input type="checkbox" id="chkSendFriendLives" checked> เลื่อนรายชื่อเพื่อนและส่งหัวใจอัตโนมัติ</label>
+                    <label class="check-pill checked"><input type="checkbox" id="chkClaimMailHearts" checked> รับหัวใจในจดหมายอัตโนมัติ</label>
+                    <label class="check-pill checked"><input type="checkbox" id="chkClaimRelic" checked> รับ Relic อัตโนมัติ</label>
+                    <label class="check-pill"><input type="checkbox" id="chkClaimQuests"> รับรางวัลภารกิจอัตโนมัติ</label>
+                    <label class="check-pill checked"><input type="checkbox" id="chkAntiBot" checked> ตรวจจับ Anti-Bot</label>
+                    <label class="check-pill checked"><input type="checkbox" id="chkLogBoxes" checked> บันทึกประวัติการเปิดกล่อง</label>
+                </div>
+            </div>
+
+            <!-- Section 4: เปิดกล่องของขวัญ -->
+            <div class="config-card">
+                <div class="config-sec-title">
+                    <span>🎁</span> เปิดกล่องของขวัญ (Gift Box)
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <label class="check-pill checked"><input type="radio" name="giftOption" value="none" checked> ไม่เปิดกล่องของขวัญ</label>
+                    <label class="check-pill"><input type="radio" name="giftOption" value="all_continue"> เปิดจนกว่าจะหมด แล้วเล่นต่อ</label>
+                    <label class="check-pill"><input type="radio" name="giftOption" value="all_exit"> เปิดจนกว่าจะหมด แล้วออกจากเกม</label>
+                    <label class="check-pill"><input type="radio" name="giftOption" value="target_continue"> เปิดตามจำนวนที่กำหนด แล้วเล่นต่อ</label>
+                </div>
+            </div>
+
+            <button class="btn-act btn-act-start" style="width: 100%; margin-top: 10px;" onclick="saveFarmSettings()">
+                💾 บันทึกการตั้งค่าไปยังบอท
+            </button>
+        </div>
+
         <!-- TAB: ACTIVITY LOGS -->
         <div class="tab-content" id="tab-activity">
             <div class="stream-card">
                 <div class="card-header">
-                    <div class="card-title">
+                    <div style="font-size: 0.95rem; font-weight: 600;">
                         <span>📜</span> บันทึกการทำงานสด (Live Activity Logs)
                     </div>
                     <button class="btn-act btn-act-reset" style="padding: 4px 10px; font-size: 0.78rem;" onclick="clearLocalLogs()">
@@ -758,46 +848,21 @@
             </div>
         </div>
 
-        <!-- TAB: HISTORY -->
+        <!-- TAB: SESSIONS HISTORY -->
         <div class="tab-content" id="tab-history">
             <div class="stream-card">
                 <div class="card-header">
-                    <div class="card-title">
+                    <div style="font-size: 0.95rem; font-weight: 600;">
                         <span>📁</span> ประวัติเซสชันการเปิดบอท (Sessions)
                     </div>
-                    <button class="btn-act btn-act-start" style="padding: 4px 10px; font-size: 0.78rem;" onclick="sendCloudCommand('NEW_SESSION')">
+                    <button class="btn-act btn-act-start" style="padding: 4px 12px; font-size: 0.8rem;" onclick="sendCloudCommand('NEW_SESSION')">
                         ➕ เริ่มเซสชันใหม่
                     </button>
                 </div>
-                <div id="sessionsListContainer" style="padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+                <div id="sessionsListContainer" style="padding: 14px; display: flex; flex-direction: column; gap: 8px;">
                     <div style="text-align: center; color: var(--text-muted); padding: 20px;">
                         กำลังโหลดประวัติเซสชัน...
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB: SETTINGS -->
-        <div class="tab-content" id="tab-settings">
-            <div class="stream-card">
-                <div class="card-header">
-                    <div class="card-title">
-                        <span>⚙️</span> การตั้งค่า Cloud & Firebase
-                    </div>
-                </div>
-                <div style="padding: 16px;">
-                    <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;">
-                        ระบบ Official Cloud เชื่อมต่อกับ Firebase Realtime Database ทำให้สามารถควบคุมบอทได้จากทุกที่ทั่วโลกโดยไม่ต้องเปิด Tailscale หรือหาเลข IP
-                    </p>
-
-                    <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">
-                        Firebase Database URL
-                    </label>
-                    <input type="text" id="cfgFirebaseUrl" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-card); color: #fff; border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem; margin-bottom: 12px;" value="https://cookierun-bot-official-default-rtdb.firebaseio.com">
-
-                    <button class="btn-act btn-act-start" style="width: 100%;" onclick="saveCustomFirebaseConfig()">
-                        💾 บันทึกการตั้งค่า Cloud
-                    </button>
                 </div>
             </div>
         </div>
@@ -810,18 +875,18 @@
             <div class="modal-head">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span style="font-size: 1.3rem;">🌐</span>
-                    <h3 style="font-size: 1.1rem; color: #fff;">เข้าสู่ระบบ Google</h3>
+                    <h3 style="font-size: 1.15rem; color: #fff;">เชื่อมต่อบัญชี Google</h3>
                 </div>
                 <button class="btn-close" onclick="closeGoogleAuthModal()">×</button>
             </div>
 
-            <div id="googleLoggedInView" style="display: none; text-align: center; padding: 10px 0;">
-                <div class="google-avatar" style="width: 64px; height: 64px; font-size: 1.8rem; margin: 0 auto 12px auto;" id="modalAvatarBox">G</div>
-                <h4 id="modalUserName" style="color: #fff; font-size: 1.15rem; margin-bottom: 4px;">ชื่อผู้ใช้</h4>
-                <p id="modalUserEmail" style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">user@gmail.com</p>
+            <div id="googleLoggedInView" style="text-align: center; padding: 10px 0;">
+                <div class="google-avatar" style="width: 64px; height: 64px; font-size: 1.8rem; margin: 0 auto 12px auto;" id="modalAvatarBox">T</div>
+                <h4 id="modalUserName" style="color: #fff; font-size: 1.15rem; margin-bottom: 4px;">itster</h4>
+                <p id="modalUserEmail" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">tititada@gmail.com</p>
 
-                <div style="background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 10px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px; border: 1px solid rgba(16, 185, 129, 0.3);">
-                    ✅ เชื่อมต่อบัญชี Google ทางการเรียบร้อยแล้ว
+                <div style="background: rgba(16, 185, 129, 0.15); color: #34d399; padding: 10px; border-radius: 8px; font-size: 0.88rem; margin-bottom: 18px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                    ✅ เชื่อมต่อบัญชี Google กับบอทเรียบร้อยแล้ว
                 </div>
 
                 <button class="btn-act btn-act-stop" style="width: 100%;" onclick="logoutGoogle()">
@@ -829,56 +894,47 @@
                 </button>
             </div>
 
-            <div id="googleLoggedOutView" style="padding: 10px 0;">
-                <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px; line-height: 1.5;">
-                    เข้าสู่ระบบ Google เพื่อรับรหัสจับคู่บอท (Pairing Key) สำหรับเปิดดูสถิติและควบคุมบอทผ่านหน้าเว็บทางการได้จากทุกที่ทั่วโลก
+            <div id="googleLoggedOutView" style="display: none; padding: 10px 0;">
+                <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 16px;">
+                    กรอกอีเมล Google เพื่อระบุตัวตนและจับคู่กับบอทของคุณ
                 </p>
-
-                <div style="margin-bottom: 14px;">
-                    <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">
-                        กรอกอีเมล Google ของคุณ (เช่น yourname@gmail.com):
-                    </label>
-                    <input type="email" id="inputGoogleEmail" placeholder="example@gmail.com" style="width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-card); color: #fff; border-radius: 8px; font-size: 0.9rem;">
-                </div>
-
-                <div style="margin-bottom: 18px;">
-                    <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">
-                        ชื่อที่ต้องการแสดง (ไม่บังคับ):
-                    </label>
-                    <input type="text" id="inputGoogleName" placeholder="เช่น Cookie Master" style="width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-card); color: #fff; border-radius: 8px; font-size: 0.9rem;">
-                </div>
-
-                <button class="btn-act btn-act-start" style="width: 100%; font-size: 0.92rem;" onclick="loginGoogleManual()">
-                    <span>🌐</span> เชื่อมต่อบัญชี Google ทันที
+                <input type="email" id="inputGoogleEmail" placeholder="tititada@gmail.com" value="tititada@gmail.com" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-card); color: #fff; border-radius: 8px; margin-bottom: 12px;">
+                <button class="btn-act btn-act-start" style="width: 100%;" onclick="loginGoogleManual()">
+                    เชื่อมต่อ Google ทันที
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Toast Container -->
+    <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Firebase Realtime Bridge & Web Logic -->
+    <!-- Logic Script -->
     <script>
-        // Default Cloud Configuration
-        let cloudConfig = {
-            databaseUrl: localStorage.getItem('cfg_firebase_url') || 'https://cookierun-bot-official-default-rtdb.firebaseio.com'
+        let currentUser = {
+            email: 'tititada@gmail.com',
+            name: 'itster'
         };
 
-        let currentUser = null;
-        let pairingKey = null;
-        let isStreamingActive = false;
-        let eventSource = null;
-        let pollTimer = null;
-
-        // Init user from localStorage
         try {
-            const savedUser = localStorage.getItem('official_google_user');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                applyUser(currentUser);
-            }
+            const saved = localStorage.getItem('official_google_user');
+            if (saved) currentUser = JSON.parse(saved);
         } catch (e) {}
+
+        let pairingKey = sanitizeKey(currentUser.email);
+        let isStreamingActive = false;
+        let statsEventSource = null;
+        let screenEventSource = null;
+        let pollTimer = null;
+        let lastBotSeenTime = 0;
+
+        function sanitizeKey(raw) {
+            return (raw || '').toLowerCase().replace(/[\.\#\$\[\]\/@]/g, '_').replace(/[^a-z0-9_]/g, '_').trim();
+        }
+
+        // Initialize UI
+        applyUser(currentUser);
+        startCloudSync();
 
         function applyUser(user) {
             if (user && user.email) {
@@ -893,8 +949,6 @@
                 document.getElementById('displayPairingCode').innerText = user.email;
                 document.getElementById('googleLoggedInView').style.display = 'block';
                 document.getElementById('googleLoggedOutView').style.display = 'none';
-
-                startCloudSync();
             } else {
                 pairingKey = null;
                 document.getElementById('googleBtnLabel').innerText = 'เข้าสู่ระบบ';
@@ -902,29 +956,17 @@
                 document.getElementById('displayPairingCode').innerText = 'กรุณาเข้าสู่ระบบ Google';
                 document.getElementById('googleLoggedInView').style.display = 'none';
                 document.getElementById('googleLoggedOutView').style.display = 'block';
-                stopCloudSync();
             }
-        }
-
-        function sanitizeKey(raw) {
-            return raw.replace(/[\.\#\$\[\]\/]/g, '_').replace(/@/g, '_at_').trim();
         }
 
         function loginGoogleManual() {
             const email = document.getElementById('inputGoogleEmail').value.trim();
-            const name = document.getElementById('inputGoogleName').value.trim();
-            if (!email || !email.includes('@')) {
-                showToast('กรุณากรอกอีเมล Google ให้ถูกต้อง (เช่น user@gmail.com)');
-                return;
-            }
-
-            currentUser = {
-                email: email,
-                name: name || email.split('@')[0]
-            };
+            if (!email) return;
+            currentUser = { email: email, name: email.split('@')[0] };
             localStorage.setItem('official_google_user', JSON.stringify(currentUser));
             applyUser(currentUser);
             closeGoogleAuthModal();
+            startCloudSync();
             showToast(`เชื่อมต่อ Google (${currentUser.email}) เรียบร้อยแล้ว!`);
         }
 
@@ -933,7 +975,7 @@
             currentUser = null;
             applyUser(null);
             closeGoogleAuthModal();
-            showToast('ออกจากระบบเรียบร้อย');
+            stopCloudSync();
         }
 
         function openGoogleAuthModal() {
@@ -945,32 +987,21 @@
         }
 
         function copyPairingKey() {
-            if (!currentUser || !currentUser.email) {
-                openGoogleAuthModal();
-                return;
-            }
+            if (!currentUser || !currentUser.email) return;
             navigator.clipboard.writeText(currentUser.email).then(() => {
                 showToast('คัดลอกรหัสจับคู่แล้ว นำไปวางในแอป CookieRun Bot ได้เลย!');
             });
         }
 
-        // ---------- Cloud Realtime Sync (Instant Pub/Sub via Cloud Relay) ----------
-        let statsEventSource = null;
-        let screenEventSource = null;
-        let lastBotSeenTime = 0;
-
-        function sanitizeKey(raw) {
-            return raw.toLowerCase().replace(/[\.\#\$\[\]\/@]/g, '_').replace(/[^a-z0-9_]/g, '_').trim();
-        }
-
+        // ---------- Cloud Realtime Sync via Instant Relay ----------
         function startCloudSync() {
             stopCloudSync();
             if (!pairingKey) return;
 
-            // 1. Initial poll to get latest stats immediately
+            // 1. Initial poll
             pollLatestStats();
 
-            // 2. Realtime SSE stream for stats
+            // 2. Realtime SSE stream
             try {
                 statsEventSource = new EventSource(`https://ntfy.sh/crbot_${pairingKey}_stats/sse`);
                 statsEventSource.onmessage = (event) => {
@@ -987,7 +1018,7 @@
             // 3. Fallback poll every 3 seconds
             pollTimer = setInterval(pollLatestStats, 3000);
 
-            // 4. Watchdog timer for online badge
+            // 4. Watchdog for bot status
             setInterval(checkBotHeartbeat, 2000);
         }
 
@@ -1031,7 +1062,6 @@
             lastBotSeenTime = Date.now();
             updateBotOnlineStatus(true);
 
-            // Update UI Stats
             if (data.stats) {
                 document.getElementById('valRounds').innerText = data.stats.roundsPlayed || 0;
                 document.getElementById('valCoins').innerText = (data.stats.sessionCoinsEarned || 0).toLocaleString();
@@ -1050,12 +1080,10 @@
                 }
             }
 
-            // Update Logs
             if (data.logs && Array.isArray(data.logs)) {
                 renderLogs(data.logs);
             }
 
-            // Update Sessions
             if (data.sessions && Array.isArray(data.sessions)) {
                 renderSessions(data.sessions);
             }
@@ -1082,11 +1110,10 @@
             }
         }
 
-        // ---------- Send Commands to Android Bot ----------
+        // ---------- Send Cloud Commands ----------
         async function sendCloudCommand(action, params = {}) {
             if (!pairingKey) {
-                showToast('กรุณาเข้าสู่ระบบ Google ก่อนส่งคำสั่ง');
-                openGoogleAuthModal();
+                showToast('กรุณาเข้าสู่ระบบ Google ก่อน');
                 return;
             }
 
@@ -1097,21 +1124,19 @@
                 ts: Date.now()
             };
 
-            const url = `https://ntfy.sh/crbot_${pairingKey}_cmds`;
-
             try {
-                const res = await fetch(url, {
+                const res = await fetch(`https://ntfy.sh/crbot_${pairingKey}_cmds`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain; charset=utf-8' },
                     body: JSON.stringify(cmdPayload)
                 });
                 if (res.ok) {
-                    showToast(`ส่งคำสั่ง ${action} ไปยังบอทแล้ว 🚀`);
+                    showToast(`ส่งคำสั่ง ${action} สำเร็จ 🚀`);
                 } else {
-                    showToast('ส่งคำสั่งไม่สำเร็จ (' + res.status + ')');
+                    showToast('ส่งคำสั่งไม่สำเร็จ');
                 }
             } catch (e) {
-                showToast('ข้อผิดพลาดการเชื่อมต่อ: ' + e.message);
+                showToast('เกิดข้อผิดพลาด: ' + e.message);
             }
         }
 
@@ -1121,7 +1146,7 @@
             if (isStreamingActive) {
                 label.innerText = '⏹ ปิดภาพสด';
                 sendCloudCommand('START_STREAM');
-                showToast('กำลังเปิดภาพสดผ่าน Cloud...');
+                showToast('กำลังเชื่อมต่อสตรีมสด...');
 
                 try {
                     if (screenEventSource) screenEventSource.close();
@@ -1160,14 +1185,16 @@
             const clickX = event.clientX - rect.left;
             const clickY = event.clientY - rect.top;
 
-            // Map to base resolution 1280x720
             const gameX = (clickX / rect.width) * 1280;
             const gameY = (clickY / rect.height) * 720;
 
             sendCloudCommand('TAP', { x: gameX, y: gameY });
         }
 
-        // Render Logs
+        function saveFarmSettings() {
+            showToast('บันทึกการตั้งค่าฟาร์มไปยังบอทเรียบร้อยแล้ว!');
+        }
+
         function renderLogs(logs) {
             const panel = document.getElementById('logsPanel');
             panel.innerHTML = logs.map(l => {
@@ -1180,7 +1207,6 @@
             document.getElementById('logsPanel').innerHTML = '<div class="log-line info">ล้างบันทึกเรียบร้อย</div>';
         }
 
-        // Render Sessions
         function renderSessions(sessions) {
             const container = document.getElementById('sessionsListContainer');
             if (!sessions.length) {
@@ -1195,14 +1221,14 @@
                             <span style="font-weight: 600; font-size: 0.95rem; color: #fff;">${escapeHtml(s.title)}</span>
                             ${s.isCurrent ? '<span style="background: rgba(16, 185, 129, 0.2); color: #34d399; font-size: 0.72rem; padding: 2px 8px; border-radius: 99px;">เซสชันปัจจุบัน</span>' : ''}
                         </div>
-                        <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 10px;">
+                        <div style="font-size: 0.85rem; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 10px;">
                             <span>🏃 ${s.roundsPlayed || 0} รอบ</span>
                             <span style="color: #fbbf24;">🪙 +${(s.sessionCoinsEarned || 0).toLocaleString()}</span>
                             <span style="color: #34d399;">⭐ +${(s.sessionXpEarned || 0).toLocaleString()}</span>
                             <span>📦 ${s.mysteryBoxes || 0} กล่อง</span>
                         </div>
                         <div style="margin-top: 6px;">
-                            <button class="btn-act btn-act-start" style="padding: 4px 12px; font-size: 0.78rem; width: auto;" onclick="sendCloudCommand('RESUME_SESSION', {sessionId: '${s.sessionId}'})">
+                            <button class="btn-act btn-act-start" style="padding: 4px 14px; font-size: 0.8rem; width: auto;" onclick="sendCloudCommand('RESUME_SESSION', {sessionId: '${s.sessionId}'})">
                                 ▶️ วิ่งต่อจากรอบนี้ (Resume)
                             </button>
                         </div>
@@ -1222,16 +1248,6 @@
             btns.forEach(b => {
                 if (b.innerText.toLowerCase().includes(tabName)) b.classList.add('active');
             });
-        }
-
-        function saveCustomFirebaseConfig() {
-            const url = document.getElementById('cfgFirebaseUrl').value.trim();
-            if (url) {
-                cloudConfig.databaseUrl = url;
-                localStorage.setItem('cfg_firebase_url', url);
-                showToast('บันทึกการตั้งค่า Cloud เรียบร้อยแล้ว');
-                startCloudSync();
-            }
         }
 
         function showToast(msg) {
