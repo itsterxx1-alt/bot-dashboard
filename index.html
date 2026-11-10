@@ -942,11 +942,11 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Logic Script (Pure Native HTTP / SSE - No External Libraries Required) -->
-        <script>
-        // ==========================================
-        // CONSTANTS & GLOBAL STATE (TOP OF SCRIPT)
-        // ==========================================
-        const BASE_RELAY_URL = "https://ntfy.sh";
+            <script>
+        // ===================================================================
+        // GOOGLE FIREBASE REALTIME DATABASE CONFIG & GLOBAL STATE
+        // ===================================================================
+        const FIREBASE_RTDB_URL = "https://cookie-run-bot-default-rtdb.asia-southeast1.firebasedatabase.app";
         const DEFAULT_USER = {
             email: 'tititada@gmail.com',
             name: 'tititada'
@@ -977,9 +977,9 @@
         let pollingTimer = null;
         let screenPollTimer = null;
 
-        // ==========================================
+        // ===================================================================
         // USER AUTHENTICATION & PROFILE
-        // ==========================================
+        // ===================================================================
         function applyUser(user) {
             if (!user || !user.email) {
                 user = DEFAULT_USER;
@@ -1080,58 +1080,28 @@
         }
 
         function updateRelayStatusBadge(status) {
-            // legacy status updater
+            // legacy badge
         }
 
-        // ==========================================
-        // CLOUD REALTIME SYNC (HTTP REST + SSE)
-        // ==========================================
-        async function handleBotStatsPayload(obj) {
-            if (!obj) return;
-            try {
-                // If payload was stored as an attachment by ntfy (payload > 4KB)
-                if (obj.attachment && obj.attachment.url) {
-                    const fileRes = await fetch(obj.attachment.url);
-                    if (fileRes.ok) {
-                        const botData = await fileRes.json();
-                        applyBotData(botData);
-                        console.log('✅ Applied stats from attachment:', botData);
-                        return;
-                    }
-                }
-                // If payload is inline in obj.message
-                if (obj.message && typeof obj.message === 'string' && obj.message.trim().startsWith('{')) {
-                    const botData = JSON.parse(obj.message);
-                    applyBotData(botData);
-                    console.log('✅ Applied stats from message body:', botData);
-                }
-            } catch (e) {
-                console.warn('Error handling bot stats payload:', e);
-            }
-        }
-
+        // ===================================================================
+        // GOOGLE FIREBASE REALTIME DATABASE SYNC (REST + SSE)
+        // ===================================================================
         async function fetchInitialBotState() {
             if (!pairingKey) {
                 pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
             }
             if (!pairingKey) return;
+
             try {
-                const res = await fetch(`${BASE_RELAY_URL}/crbot_${pairingKey}_stats/json?poll=1`);
+                const res = await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/state.json`);
                 if (!res.ok) return;
-                const text = await res.text();
-                const lines = text.split(/?
-/).filter(l => l.trim());
-                for (let i = lines.length - 1; i >= 0; i--) {
-                    try {
-                        const obj = JSON.parse(lines[i]);
-                        if (obj && obj.event === 'message') {
-                            await handleBotStatsPayload(obj);
-                            break;
-                        }
-                    } catch (_) {}
+                const botData = await res.json();
+                if (botData) {
+                    applyBotData(botData);
+                    console.log('✅ Instant state applied from Google Firebase:', botData);
                 }
             } catch (e) {
-                console.warn('Initial fetch error:', e);
+                console.warn('Initial Firebase fetch error:', e);
             }
         }
 
@@ -1142,51 +1112,52 @@
             }
             if (!pairingKey) return;
 
-            const statsUrl = `${BASE_RELAY_URL}/crbot_${pairingKey}_stats/sse?since=2m`;
-            const screenUrl = `${BASE_RELAY_URL}/crbot_${pairingKey}_screen/sse`;
+            const statsUrl = `${FIREBASE_RTDB_URL}/bots/${pairingKey}/state.json`;
+            const screenUrl = `${FIREBASE_RTDB_URL}/bots/${pairingKey}/screen.json`;
 
-            // 1. Fetch current cached state immediately
+            // 1. Fetch current state immediately
             fetchInitialBotState();
 
-            // 2. Open SSE stream for realtime updates
+            // 2. Open SSE stream with Firebase Realtime Database
             try {
                 statsEventSource = new EventSource(statsUrl);
 
                 statsEventSource.onopen = () => {
-                    console.log('✅ Connected to HTTP Cloud SSE:', statsUrl);
+                    console.log('✅ Connected to Google Firebase SSE:', statsUrl);
                 };
 
-                statsEventSource.onmessage = async (event) => {
+                // Firebase sends 'put' events on every data change
+                statsEventSource.addEventListener('put', (event) => {
                     try {
-                        const parsed = JSON.parse(event.data);
-                        if (parsed.event === 'message') {
-                            await handleBotStatsPayload(parsed);
+                        const payload = JSON.parse(event.data);
+                        if (payload.path === '/' && payload.data) {
+                            applyBotData(payload.data);
+                        } else if (payload.data) {
+                            fetchInitialBotState();
                         }
                     } catch (e) {
-                        console.warn('Error parsing stats payload:', e);
+                        console.warn('Error parsing Firebase payload:', e);
                     }
-                };
+                });
 
                 statsEventSource.onerror = () => {
-                    // SSE reconnection handled automatically by browser
+                    // Firebase auto-reconnects
                 };
 
-                // Stream listener
+                // Screen Stream SSE Listener
                 screenEventSource = new EventSource(screenUrl);
-                screenEventSource.onmessage = async (event) => {
+                screenEventSource.addEventListener('put', (event) => {
                     try {
-                        const parsed = JSON.parse(event.data);
-                        if (parsed.event === 'message') {
-                            await handleScreenPayload(parsed);
-                        }
+                        const payload = JSON.parse(event.data);
+                        handleScreenPayload(payload.data);
                     } catch (e) {}
-                };
+                });
             } catch (e) {
-                console.error('EventSource error:', e);
+                console.error('Firebase SSE error:', e);
             }
 
-            // 3. Keep-alive polling fallback every 3s (guarantees sync on mobile Safari)
-            pollingTimer = setInterval(fetchInitialBotState, 3000);
+            // 3. Fallback Keep-alive polling every 2.5s (Rock solid on mobile Safari)
+            pollingTimer = setInterval(fetchInitialBotState, 2500);
 
             if (!window._heartbeatTimer) {
                 window._heartbeatTimer = setInterval(checkBotHeartbeat, 1500);
@@ -1273,9 +1244,9 @@
             }
         }
 
-        // ==========================================
-        // COMMAND SENDER (START / STOP / PING / GAMEPAD)
-        // ==========================================
+        // ===================================================================
+        // COMMAND SENDER (WRITES TO FIREBASE /command.json)
+        // ===================================================================
         async function sendCloudCommand(action, params = {}) {
             if (!pairingKey) {
                 pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
@@ -1289,17 +1260,16 @@
             };
 
             try {
-                const res = await fetch(`${BASE_RELAY_URL}/crbot_${pairingKey}_cmd`, {
-                    method: 'POST',
+                const res = await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/command.json`, {
+                    method: 'PUT',
                     headers: {
-                        'Title': 'cmd',
-                        'Content-Type': 'text/plain; charset=utf-8'
+                        'Content-Type': 'application/json; charset=utf-8'
                     },
                     body: JSON.stringify(cmdPayload)
                 });
 
                 if (res.ok) {
-                    showToast(`ส่งคำสั่ง ${action} สำเร็จ 🚀`);
+                    showToast(`ส่งคำสั่ง ${action} สำเร็จ 🚀 (Firebase)`);
                 } else {
                     showToast(`ส่งคำสั่งไม่สำเร็จ (HTTP ${res.status})`);
                 }
@@ -1308,28 +1278,13 @@
             }
         }
 
-        // ==========================================
+        // ===================================================================
         // SCREEN STREAMING & TOUCH CONTROL
-        // ==========================================
-        async function handleScreenPayload(obj) {
-            if (!obj || !isStreamingActive) return;
+        // ===================================================================
+        function handleScreenPayload(data) {
+            if (!data || !isStreamingActive) return;
             try {
-                let frameUrl = null;
-                if (obj.attachment && obj.attachment.url) {
-                    const attUrl = obj.attachment.url;
-                    if (attUrl.endsWith('.jpg') || attUrl.endsWith('.jpeg') || attUrl.endsWith('.png') || obj.attachment.type?.startsWith('image/')) {
-                        frameUrl = attUrl;
-                    } else {
-                        // .txt attachment containing data:image/jpeg;base64,...
-                        const r = await fetch(attUrl);
-                        if (r.ok) {
-                            frameUrl = (await r.text()).trim();
-                        }
-                    }
-                } else if (obj.message && typeof obj.message === 'string') {
-                    frameUrl = obj.message.trim();
-                }
-
+                let frameUrl = (typeof data === 'object') ? data.frame : data;
                 if (frameUrl && (frameUrl.startsWith('data:image') || frameUrl.startsWith('http'))) {
                     const img = document.getElementById('streamImage');
                     if (img) {
@@ -1347,20 +1302,10 @@
         async function fetchLatestScreenFrame() {
             if (!isStreamingActive || !pairingKey) return;
             try {
-                const res = await fetch(`${BASE_RELAY_URL}/crbot_${pairingKey}_screen/json?poll=1`);
+                const res = await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/screen.json`);
                 if (!res.ok) return;
-                const text = await res.text();
-                const lines = text.split(/?
-/).filter(l => l.trim());
-                for (let i = lines.length - 1; i >= 0; i--) {
-                    try {
-                        const obj = JSON.parse(lines[i]);
-                        if (obj && obj.event === 'message') {
-                            await handleScreenPayload(obj);
-                            break;
-                        }
-                    } catch (_) {}
-                }
+                const data = await res.json();
+                handleScreenPayload(data);
             } catch (_) {}
         }
 
@@ -1370,7 +1315,7 @@
             if (isStreamingActive) {
                 if (label) label.innerText = '⏹ ปิดภาพสด';
                 sendCloudCommand('START_STREAM');
-                showToast('กำลังเปิดภาพสดผ่าน HTTP Cloud...');
+                showToast('กำลังเปิดภาพสดผ่าน Google Firebase...');
                 fetchLatestScreenFrame();
                 if (!screenPollTimer) {
                     screenPollTimer = setInterval(fetchLatestScreenFrame, 800);
@@ -1481,9 +1426,9 @@
             return div.innerHTML;
         }
 
-        // ==========================================
-        // INITIALIZATION (AT BOTTOM OF SCRIPT)
-        // ==========================================
+        // ===================================================================
+        // INITIALIZATION
+        // ===================================================================
         function initDashboard() {
             try {
                 applyUser(currentUser);
