@@ -695,7 +695,7 @@
                         tititada@gmail.com
                     </div>
                     <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 5px;" id="relayNodesStatus">
-                        🌐 เครือข่ายคลาวด์: <span id="statusHiveMQ" style="color: #fbbf24;">HiveMQ (กำลังต่อ...)</span> | <span id="statusEMQX" style="color: #fbbf24;">EMQX (กำลังต่อ...)</span>
+                        🌐 เครือข่ายคลาวด์: <span id="statusHttpRelay" style="color: #34d399;">HTTP Cloud Relay (🟢 พร้อมใช้งาน พอร์ต 443)</span>
                     </div>
                 </div>
             </div>
@@ -923,15 +923,7 @@
     <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- MQTT Client Library for Real-Time Cloud Relay -->
-    <script src="mqtt.min.js"></script>
-    <script>
-        if (typeof mqtt === 'undefined') {
-            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.3.5/mqtt.min.js"><\/script>');
-        }
-    </script>
-
-    <!-- Logic Script -->
+    <!-- Logic Script (Pure Native HTTP / SSE - No External Libraries Required) -->
     <script>
         let currentUser = {
             email: 'tititada@gmail.com',
@@ -1013,40 +1005,23 @@
             });
         }
 
-        // ---------- Cloud Realtime Sync via Dual-Mesh MQTT Relay (HiveMQ + EMQX) ----------
-        const WSS_BROKERS = [
-            { name: 'HiveMQ', url: 'wss://broker.hivemq.com:8884/mqtt' },
-            { name: 'EMQX', url: 'wss://broker.emqx.io:8084/mqtt' }
-        ];
-        let activeClients = [];
-        let brokerStatuses = { HiveMQ: 'connecting', EMQX: 'connecting' };
+        // ---------- Cloud Realtime Sync via HTTP Server-Sent Events (SSE) & REST ----------
+        const BASE_RELAY_URL = "https://ntfy.sh";
+        let statsEventSource = null;
+        let screenEventSource = null;
 
-        function updateRelayStatusBadge() {
-            const hElem = document.getElementById('statusHiveMQ');
-            const eElem = document.getElementById('statusEMQX');
-            if (hElem) {
-                if (brokerStatuses.HiveMQ === 'connected') {
-                    hElem.style.color = '#34d399';
-                    hElem.innerText = 'HiveMQ (🟢 เชื่อมต่อแล้ว)';
-                } else if (brokerStatuses.HiveMQ === 'disconnected') {
-                    hElem.style.color = '#94a3b8';
-                    hElem.innerText = 'HiveMQ (ตัดการเชื่อมต่อ)';
-                } else {
-                    hElem.style.color = '#fbbf24';
-                    hElem.innerText = 'HiveMQ (กำลังต่อ...)';
-                }
-            }
-            if (eElem) {
-                if (brokerStatuses.EMQX === 'connected') {
-                    eElem.style.color = '#34d399';
-                    eElem.innerText = 'EMQX (🟢 เชื่อมต่อแล้ว)';
-                } else if (brokerStatuses.EMQX === 'disconnected') {
-                    eElem.style.color = '#94a3b8';
-                    eElem.innerText = 'EMQX (ตัดการเชื่อมต่อ)';
-                } else {
-                    eElem.style.color = '#fbbf24';
-                    eElem.innerText = 'EMQX (กำลังต่อ...)';
-                }
+        function updateRelayStatusBadge(status) {
+            const elem = document.getElementById('statusHttpRelay');
+            if (!elem) return;
+            if (status === 'connected') {
+                elem.style.color = '#34d399';
+                elem.innerText = 'HTTP Cloud Relay (🟢 เชื่อมต่อแล้ว พอร์ต 443)';
+            } else if (status === 'connecting') {
+                elem.style.color = '#fbbf24';
+                elem.innerText = 'HTTP Cloud Relay (กำลังต่อ...)';
+            } else {
+                elem.style.color = '#94a3b8';
+                elem.innerText = 'HTTP Cloud Relay (รอการเชื่อมต่อ)';
             }
         }
 
@@ -1054,59 +1029,56 @@
             stopCloudSync();
             if (!pairingKey) return;
 
-            WSS_BROKERS.forEach((broker, idx) => {
-                try {
-                    const clientId = 'crbot_web_' + idx + '_' + pairingKey + '_' + Math.random().toString(36).substr(2, 6);
-                    if (typeof mqtt !== 'undefined') {
-                        const client = mqtt.connect(broker.url, {
-                            clientId: clientId,
-                            clean: true,
-                            reconnectPeriod: 2500,
-                            connectTimeout: 8000
-                        });
+            updateRelayStatusBadge('connecting');
+            const statsUrl = `${BASE_RELAY_URL}/crbot_${pairingKey}_stats/sse`;
+            const screenUrl = `${BASE_RELAY_URL}/crbot_${pairingKey}_screen/sse`;
 
-                        client.on('connect', () => {
-                            console.log('✅ Connected to', broker.name, broker.url);
-                            brokerStatuses[broker.name] = 'connected';
-                            updateRelayStatusBadge();
-                            client.subscribe(`crbot/${pairingKey}/stats`, { qos: 0 });
-                            client.subscribe(`crbot/${pairingKey}/screen`, { qos: 0 });
-                        });
+            try {
+                statsEventSource = new EventSource(statsUrl);
 
-                        client.on('message', (topic, payload) => {
-                            if (topic === `crbot/${pairingKey}/stats`) {
-                                try {
-                                    const data = JSON.parse(payload.toString());
-                                    applyBotData(data);
-                                } catch (e) {}
-                            } else if (topic === `crbot/${pairingKey}/screen`) {
-                                const frameStr = payload.toString();
-                                if (frameStr.startsWith('data:image')) {
-                                    const img = document.getElementById('streamImage');
-                                    img.src = frameStr;
-                                    img.style.display = 'block';
-                                    document.getElementById('streamPlaceholder').style.display = 'none';
-                                }
-                            }
-                        });
+                statsEventSource.onopen = () => {
+                    console.log('✅ Connected to HTTP Cloud SSE:', statsUrl);
+                    updateRelayStatusBadge('connected');
+                };
 
-                        client.on('close', () => {
-                            brokerStatuses[broker.name] = 'disconnected';
-                            updateRelayStatusBadge();
-                        });
-
-                        client.on('error', (err) => {
-                            console.warn('Error on', broker.name, err);
-                            brokerStatuses[broker.name] = 'error';
-                            updateRelayStatusBadge();
-                        });
-
-                        activeClients.push(client);
+                statsEventSource.onmessage = (event) => {
+                    try {
+                        const parsed = JSON.parse(event.data);
+                        if (parsed.event === 'message' && parsed.message) {
+                            const data = JSON.parse(parsed.message);
+                            applyBotData(data);
+                        }
+                    } catch (e) {
+                        console.warn('Error parsing stats payload:', e);
                     }
-                } catch (e) {
-                    console.error('MQTT connect error for', broker.name, e);
-                }
-            });
+                };
+
+                statsEventSource.onerror = () => {
+                    updateRelayStatusBadge('connecting');
+                };
+
+                // Stream listener
+                screenEventSource = new EventSource(screenUrl);
+                screenEventSource.onmessage = (event) => {
+                    try {
+                        const parsed = JSON.parse(event.data);
+                        if (parsed.event === 'message' && parsed.message) {
+                            let frameStr = parsed.message;
+                            if (parsed.attachment && parsed.attachment.url) {
+                                frameStr = parsed.attachment.url;
+                            }
+                            if (frameStr.startsWith('data:image') || frameStr.startsWith('http')) {
+                                const img = document.getElementById('streamImage');
+                                img.src = frameStr;
+                                img.style.display = 'block';
+                                document.getElementById('streamPlaceholder').style.display = 'none';
+                            }
+                        }
+                    } catch (e) {}
+                };
+            } catch (e) {
+                console.error('EventSource error:', e);
+            }
 
             if (!window._heartbeatTimer) {
                 window._heartbeatTimer = setInterval(checkBotHeartbeat, 1500);
@@ -1114,13 +1086,15 @@
         }
 
         function stopCloudSync() {
-            activeClients.forEach(c => {
-                try { c.end(); } catch (e) {}
-            });
-            activeClients = [];
-            brokerStatuses.HiveMQ = 'disconnected';
-            brokerStatuses.EMQX = 'disconnected';
-            updateRelayStatusBadge();
+            if (statsEventSource) {
+                try { statsEventSource.close(); } catch (e) {}
+                statsEventSource = null;
+            }
+            if (screenEventSource) {
+                try { screenEventSource.close(); } catch (e) {}
+                screenEventSource = null;
+            }
+            updateRelayStatusBadge('disconnected');
             updateBotOnlineStatus(false);
         }
 
@@ -1191,23 +1165,40 @@
                 ts: Date.now()
             };
 
-            let sentCount = 0;
-            activeClients.forEach(c => {
-                if (c && c.connected) {
-                    c.publish(`crbot/${pairingKey}/cmd`, JSON.stringify(cmdPayload), { qos: 1 });
-                    sentCount++;
-                }
-            });
+            try {
+                const res = await fetch(`${BASE_RELAY_URL}/crbot_${pairingKey}_cmd`, {
+                    method: 'POST',
+                    headers: {
+                        'Title': 'cmd',
+                        'Content-Type': 'text/plain; charset=utf-8'
+                    },
+                    body: JSON.stringify(cmdPayload)
+                });
 
-            if (sentCount > 0) {
-                showToast(`ส่งคำสั่ง ${action} สำเร็จ 🚀 (ผ่าน ${sentCount} เครือข่าย)`);
-            } else {
-                showToast('กำลังเชื่อมต่อ Cloud Relay กรุณารอสักครู่...');
+                if (res.ok) {
+                    showToast(`ส่งคำสั่ง ${action} สำเร็จ 🚀 (HTTP Cloud)`);
+                } else {
+                    showToast(`ส่งคำสั่งไม่สำเร็จ (HTTP ${res.status})`);
+                }
+            } catch (err) {
+                showToast('ส่งคำสั่งไม่สำเร็จ: ' + err.message);
             }
         }
 
         function toggleScreenStream() {
             isStreamingActive = !isStreamingActive;
+            const label = document.getElementById('btnStreamToggleLabel');
+            if (isStreamingActive) {
+                label.innerText = '⏹ ปิดภาพสด';
+                sendCloudCommand('START_STREAM');
+                showToast('กำลังเปิดภาพสดผ่าน HTTP Cloud...');
+            } else {
+                label.innerText = '🔴 เปิดภาพสด';
+                sendCloudCommand('STOP_STREAM');
+                document.getElementById('streamImage').style.display = 'none';
+                document.getElementById('streamPlaceholder').style.display = 'block';
+            }
+        }
             const label = document.getElementById('btnStreamToggleLabel');
             if (isStreamingActive) {
                 label.innerText = '⏹ ปิดภาพสด';
