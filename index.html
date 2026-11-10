@@ -886,6 +886,20 @@
             transform: translateY(0);
         }
     </style>
+    <script>
+        // Check saved session immediately to prevent flashing login screen on page refresh
+        (function() {
+            try {
+                var saved = localStorage.getItem('cookierun_auth_user');
+                if (saved) {
+                    var u = JSON.parse(saved);
+                    if (u && u.email) {
+                        document.write('<style>#viewLogin { display: none !important; } #viewDashboard { display: block !important; }</style>');
+                    }
+                }
+            } catch(e) {}
+        })();
+    </script>
 </head>
 <body>
 
@@ -1797,11 +1811,16 @@
                         photo: user.photoURL || '',
                         uid: user.uid
                     };
+                    pairingKey = sanitizeKey(currentUser.email);
                     localStorage.setItem('cookierun_auth_user', JSON.stringify(currentUser));
                     localStorage.setItem('official_google_user', JSON.stringify(currentUser));
                     closeGoogleAuthModal();
+                    loadDeletedSessionsBlacklist();
+                    applyUser(currentUser);
+                    showView('dashboard');
+                    startCloudSync();
                     showToast(`✅ ยืนยันตัวตนสำเร็จ: ยินดีต้อนรับ ${currentUser.name}!`);
-                    await checkBotLinkAndRender(true);
+                    checkBotLinkAndRender(true);
                 }
             } catch (err) {
                 console.error("Google Sign-In Error:", err);
@@ -2007,12 +2026,48 @@
         }
 
         let latestBotData = null;
+        let deletedSessionIds = new Set();
+
+        function loadDeletedSessionsBlacklist() {
+            if (!pairingKey) return;
+            try {
+                const saved = localStorage.getItem('cookierun_deleted_sessions_' + pairingKey);
+                if (saved) {
+                    const arr = JSON.parse(saved);
+                    if (Array.isArray(arr)) {
+                        arr.forEach(id => deletedSessionIds.add(id));
+                    }
+                }
+            } catch (e) {}
+
+            try {
+                fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/deleted_sessions.json`)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data && typeof data === 'object') {
+                            Object.keys(data).forEach(id => {
+                                if (data[id]) deletedSessionIds.add(id);
+                            });
+                            localStorage.setItem('cookierun_deleted_sessions_' + pairingKey, JSON.stringify([...deletedSessionIds]));
+                            if (latestBotData) {
+                                applyBotData(latestBotData);
+                            }
+                        }
+                    })
+                    .catch(() => {});
+            } catch (e) {}
+        }
 
         function applyBotData(data) {
             if (!data) return;
             latestBotData = data;
             lastBotSeenTime = Date.now();
             updateBotOnlineStatus(true);
+
+            // Filter out any deleted sessions so they never reappear
+            if (data.sessions && Array.isArray(data.sessions)) {
+                data.sessions = data.sessions.filter(s => s && s.sessionId && !deletedSessionIds.has(s.sessionId));
+            }
 
             const setTxt = (id, val) => {
                 const el = document.getElementById(id);
@@ -2634,13 +2689,33 @@
             const ok = confirm(`คุณต้องการลบ "${title || 'เซสชันนี้'}" ใช่หรือไม่?\nข้อมูลสถิติการวิ่งในเซสชันนี้จะถูกลบออก`);
             if (!ok) return;
 
-            // 1. Send command to bot
+            // 1. Add to blacklist immediately so incoming polls or SSE never show it again
+            deletedSessionIds.add(sessionId);
+            if (pairingKey) {
+                try {
+                    localStorage.setItem('cookierun_deleted_sessions_' + pairingKey, JSON.stringify([...deletedSessionIds]));
+                } catch (e) {}
+            }
+
+            // 2. Send command to bot app
             sendCloudCommand('DELETE_SESSION', { sessionId: sessionId });
 
-            // 2. Optimistic UI update & direct Firebase update
+            // 3. Mark deleted in Firebase RTDB
+            if (pairingKey) {
+                try {
+                    fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/deleted_sessions/${sessionId}.json`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                        body: 'true'
+                    });
+                } catch (e) {}
+            }
+
+            // 4. Optimistic UI update & direct Firebase update
             if (latestBotData && Array.isArray(latestBotData.sessions)) {
-                latestBotData.sessions = latestBotData.sessions.filter(s => s.sessionId !== sessionId);
-                
+                latestBotData.sessions = latestBotData.sessions.filter(s => s.sessionId !== sessionId && !deletedSessionIds.has(s.sessionId));
+                applyBotData(latestBotData);
+
                 if (pairingKey) {
                     try {
                         await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/state/sessions.json`, {
@@ -2648,11 +2723,9 @@
                             headers: { 'Content-Type': 'application/json; charset=utf-8' },
                             body: JSON.stringify(latestBotData.sessions)
                         });
-                    } catch (err) {
-                        console.warn('Direct RTDB sessions update failed:', err);
-                    }
+                    } catch (err) {}
                 }
-
+            } else if (latestBotData) {
                 applyBotData(latestBotData);
             }
 
@@ -2692,9 +2765,36 @@
         // ===================================================================
         // INITIALIZATION
         // ===================================================================
-        function initDashboard() {
+        async function initDashboard() {
+            // 1. Immediately restore user from localStorage if exists
+            let hasSavedUser = false;
+            try {
+                const savedUserStr = localStorage.getItem('cookierun_auth_user');
+                if (savedUserStr) {
+                    const parsed = JSON.parse(savedUserStr);
+                    if (parsed && parsed.email) {
+                        currentUser = parsed;
+                        pairingKey = sanitizeKey(parsed.email);
+                        applyUser(currentUser);
+                        showView('dashboard');
+                        loadDeletedSessionsBlacklist();
+                        startCloudSync();
+                        hasSavedUser = true;
+                    }
+                }
+            } catch (e) {
+                console.warn("Restore saved user error:", e);
+            }
+
+            // 2. Setup Firebase Auth persistence and state change listener
             try {
                 if (fbAuth) {
+                    try {
+                        await fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+                    } catch (pe) {
+                        console.warn("Firebase setPersistence error:", pe);
+                    }
+
                     fbAuth.onAuthStateChanged(async (user) => {
                         if (user && user.email) {
                             currentUser = {
@@ -2705,44 +2805,35 @@
                             };
                             localStorage.setItem('cookierun_auth_user', JSON.stringify(currentUser));
                             pairingKey = sanitizeKey(currentUser.email);
-                            await checkBotLinkAndRender(false);
+                            applyUser(currentUser);
+                            showView('dashboard');
+                            loadDeletedSessionsBlacklist();
+                            startCloudSync();
                         } else {
-                            const savedUserStr = localStorage.getItem('cookierun_auth_user');
-                            if (savedUserStr) {
+                            // If user is null from Firebase, check if we have saved user in localStorage
+                            const saved = localStorage.getItem('cookierun_auth_user');
+                            if (saved) {
                                 try {
-                                    const parsed = JSON.parse(savedUserStr);
+                                    const parsed = JSON.parse(saved);
                                     if (parsed && parsed.email) {
-                                        currentUser = parsed;
-                                        pairingKey = sanitizeKey(parsed.email);
-                                        await checkBotLinkAndRender(false);
+                                        // Do not log out! Keep dashboard open
                                         return;
                                     }
                                 } catch (e) {}
                             }
+                            // Only switch to login if user is truly logged out
                             currentUser = null;
                             pairingKey = null;
                             stopCloudSync();
                             showView('login');
                         }
                     });
-                } else {
-                    const savedUserStr = localStorage.getItem('cookierun_auth_user');
-                    if (savedUserStr) {
-                        try {
-                            const parsed = JSON.parse(savedUserStr);
-                            if (parsed && parsed.email) {
-                                currentUser = parsed;
-                                pairingKey = sanitizeKey(parsed.email);
-                                checkBotLinkAndRender(false);
-                                return;
-                            }
-                        } catch (e) {}
-                    }
+                } else if (!hasSavedUser) {
                     showView('login');
                 }
             } catch (err) {
                 console.error("Dashboard init error:", err);
-                showView('login');
+                if (!hasSavedUser) showView('login');
             }
         }
 
