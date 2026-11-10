@@ -1004,8 +1004,7 @@
             const mAvt = document.getElementById('modalAvatarBox');
             if (mAvt) mAvt.innerText = displayLetter;
 
-            const dispCode = document.getElementById('displayPairingCode');
-            if (dispCode) dispCode.innerText = user.email;
+            // pairing code obsolete
 
             const dispEmail = document.getElementById('displayUserEmail');
             if (dispEmail) dispEmail.innerText = user.email;
@@ -1054,8 +1053,7 @@
             const avt = document.getElementById('googleAvatarBox');
             if (avt) avt.innerText = 'G';
 
-            const dispCode = document.getElementById('displayPairingCode');
-            if (dispCode) dispCode.innerText = 'กรุณาเข้าสู่ระบบ Google';
+            // pairing code obsolete
 
             const loggedInView = document.getElementById('googleLoggedInView');
             if (loggedInView) loggedInView.style.display = 'none';
@@ -1091,8 +1089,7 @@
         let pollingTimer = null;
 
         function updateRelayStatusBadge(status) {
-            const elem = document.getElementById('statusHttpRelay');
-            if (!elem) return;
+            return;
             if (status === 'connected') {
                 elem.style.color = '#34d399';
                 elem.innerText = 'HTTP Cloud Relay (🟢 เชื่อมต่อแล้ว พอร์ต 443)';
@@ -1106,19 +1103,25 @@
         }
 
         async function fetchInitialBotState() {
+            if (!pairingKey) {
+                pairingKey = sanitizeKey(currentUser ? currentUser.email : DEFAULT_USER.email);
+            }
             if (!pairingKey) return;
             try {
                 const res = await fetch(`${BASE_RELAY_URL}/crbot_${pairingKey}_stats/json?poll=1`);
                 if (!res.ok) return;
                 const text = await res.text();
                 const lines = text.split('\n').filter(l => l.trim());
-                if (lines.length > 0) {
-                    const latestObj = JSON.parse(lines[lines.length - 1]);
-                    if (latestObj && latestObj.message) {
-                        const botData = JSON.parse(latestObj.message);
-                        applyBotData(botData);
-                        console.log('✅ Instant state applied from cloud cache:', botData);
-                    }
+                for (let i = lines.length - 1; i >= 0; i--) {
+                    try {
+                        const obj = JSON.parse(lines[i]);
+                        if (obj && obj.event === 'message' && obj.message) {
+                            const botData = (typeof obj.message === 'string') ? JSON.parse(obj.message) : obj.message;
+                            applyBotData(botData);
+                            console.log('✅ Instant state applied from cloud cache:', botData);
+                            break;
+                        }
+                    } catch (_) {}
                 }
             } catch (e) {
                 console.warn('Initial fetch error:', e);
@@ -1213,24 +1216,30 @@
         }
 
         function applyBotData(data) {
+            if (!data) return;
             lastBotSeenTime = Date.now();
             updateBotOnlineStatus(true);
 
             if (data.stats) {
-                document.getElementById('valRounds').innerText = data.stats.roundsPlayed || 0;
-                document.getElementById('valCoins').innerText = (data.stats.sessionCoinsEarned || 0).toLocaleString();
-                document.getElementById('valXp').innerText = (data.stats.sessionXpEarned || 0).toLocaleString();
-                document.getElementById('valBoxes').innerText = data.stats.mysteryBoxes || 0;
-                document.getElementById('valStage').innerText = data.stats.currentStage || 'STOPPED';
-                document.getElementById('valCoinsPerHr').innerText = (data.stats.coinsPerHour || 0).toLocaleString();
+                const s = data.stats;
+                const setTxt = (id, val) => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerText = val;
+                };
+                setTxt('valRounds', s.roundsPlayed || 0);
+                setTxt('valCoins', (s.sessionCoinsEarned || 0).toLocaleString());
+                setTxt('valXp', (s.sessionXpEarned || 0).toLocaleString());
+                setTxt('valBoxes', s.mysteryBoxes || 0);
+                setTxt('valStage', s.currentStage || (s.isRunning ? 'RUNNING' : 'STOPPED'));
+                setTxt('valCoinsPerHr', (s.coinsPerHour || 0).toLocaleString());
 
-                if (data.stats.lastRound) {
-                    document.getElementById('valLastXp').innerText = (data.stats.lastRound.xp || 0).toLocaleString();
+                if (s.lastRound) {
+                    setTxt('valLastXp', (s.lastRound.xp || 0).toLocaleString());
                 }
 
-                if (data.stats.boxCounts) {
-                    const b = data.stats.boxCounts;
-                    document.getElementById('valBoxTypes').innerText = `🪵${b.wood||0} 🥈${b.silver||0} 🥇${b.gold||0} 🌈${b.rainbow||0}`;
+                if (s.boxCounts) {
+                    const b = s.boxCounts;
+                    setTxt('valBoxTypes', `🪵${b.wood||0} 🥈${b.silver||0} 🥇${b.gold||0} 🌈${b.rainbow||0}`);
                 }
             }
 
@@ -1299,30 +1308,61 @@
             }
         }
 
+        let screenPollTimer = null;
+
+        async function fetchLatestScreenFrame() {
+            if (!isStreamingActive || !pairingKey) return;
+            try {
+                const res = await fetch(`${BASE_RELAY_URL}/crbot_${pairingKey}_screen/json?poll=1`);
+                if (!res.ok) return;
+                const text = await res.text();
+                const lines = text.split('\n').filter(l => l.trim());
+                for (let i = lines.length - 1; i >= 0; i--) {
+                    try {
+                        const obj = JSON.parse(lines[i]);
+                        if (obj && obj.event === 'message' && obj.message) {
+                            let frameStr = obj.message;
+                            if (obj.attachment && obj.attachment.url) {
+                                frameStr = obj.attachment.url;
+                            }
+                            if (frameStr.startsWith('data:image') || frameStr.startsWith('http')) {
+                                const img = document.getElementById('streamImage');
+                                if (img) {
+                                    img.src = frameStr;
+                                    img.style.display = 'block';
+                                }
+                                const ph = document.getElementById('streamPlaceholder');
+                                if (ph) ph.style.display = 'none';
+                                break;
+                            }
+                        }
+                    } catch (_) {}
+                }
+            } catch (_) {}
+        }
+
         function toggleScreenStream() {
             isStreamingActive = !isStreamingActive;
             const label = document.getElementById('btnStreamToggleLabel');
             if (isStreamingActive) {
-                label.innerText = '⏹ ปิดภาพสด';
+                if (label) label.innerText = '⏹ ปิดภาพสด';
                 sendCloudCommand('START_STREAM');
                 showToast('กำลังเปิดภาพสดผ่าน HTTP Cloud...');
+                fetchLatestScreenFrame();
+                if (!screenPollTimer) {
+                    screenPollTimer = setInterval(fetchLatestScreenFrame, 800);
+                }
             } else {
-                label.innerText = '🔴 เปิดภาพสด';
+                if (label) label.innerText = '🔴 เปิดภาพสด';
                 sendCloudCommand('STOP_STREAM');
-                document.getElementById('streamImage').style.display = 'none';
-                document.getElementById('streamPlaceholder').style.display = 'block';
-            }
-        }
-            const label = document.getElementById('btnStreamToggleLabel');
-            if (isStreamingActive) {
-                label.innerText = '⏹ ปิดภาพสด';
-                sendCloudCommand('START_STREAM');
-                showToast('กำลังเปิดภาพสดผ่าน Cloud...');
-            } else {
-                label.innerText = '🔴 เปิดภาพสด';
-                sendCloudCommand('STOP_STREAM');
-                document.getElementById('streamImage').style.display = 'none';
-                document.getElementById('streamPlaceholder').style.display = 'block';
+                if (screenPollTimer) {
+                    clearInterval(screenPollTimer);
+                    screenPollTimer = null;
+                }
+                const img = document.getElementById('streamImage');
+                if (img) img.style.display = 'none';
+                const ph = document.getElementById('streamPlaceholder');
+                if (ph) ph.style.display = 'block';
             }
         }
 
