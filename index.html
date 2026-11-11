@@ -2455,6 +2455,11 @@
                         const payload = JSON.parse(event.data);
                         const ack = (payload.path === '/' && payload.data) ? payload.data : payload;
                         if (ack && ack.id) {
+                            if (ack.status === 'error') {
+                                pendingCommand = null;
+                                showToast(ack.message || '⚠️ ข้อผิดพลาดในการเริ่มบอท');
+                                alert(ack.message || '⚠️ ไม่สามารถเริ่มบอทได้ กรุณาตรวจสอบสิทธิ์การใช้งานบนมือถือ');
+                            }
                             fetchInitialBotState();
                         }
                     } catch (e) {}
@@ -3006,6 +3011,10 @@
             const botPill = document.getElementById('pillBotRunning');
 
             if (actUpper === 'START') {
+                if (latestBotData && latestBotData.device && latestBotData.device.accessibility === false) {
+                    alert('⚠️ ไม่สามารถเริ่มบอทได้: สิทธิ์การเข้าถึง (Accessibility Service) บนมือถือถูกปิดอยู่\n\n(เมื่อมีการอัปเดตแอป ระบบ Android จะปิดสิทธิ์นี้โดยอัตโนมัติ)\n\nกรุณาเปิดแอป CookieRunBot บนมือถือ แล้วกดเปิดสิทธิ์ "1. Accessibility Service" ให้เป็นสีเขียวก่อน แล้วจึงกดเริ่มบอทอีกครั้งครับ');
+                    return;
+                }
                 pendingCommand = 'START';
                 pendingCommandTime = Date.now();
                 if (btnStart) {
