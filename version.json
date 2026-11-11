@@ -1,6 +1,6 @@
 {
-  "versionCode": 10,
-  "versionName": "0.7.3",
-  "changelog": "- เพิ่มระบบจัดเก็บ Crash Log อัตโนมัติลงในโฟลเดอร์ Download/CookieRunBot บนมือถือ\n- เพิ่มปุ่มดู/คัดลอก/ล้าง Crash Log ในแอปและบนหน้าเว็บ Cloud Dashboard เรียลไทม์\n- ระบบ LMK Zero-Allocation และ Battery Whitelist เต็มรูปแบบ",
+  "versionCode": 11,
+  "versionName": "0.7.4",
+  "changelog": "- แก้ไขข้อผิดพลาด BadTokenException (permission denied for window type 2038) ใน FloatingOverlayService\n- ป้องกันระบบแครชหากมือถือบล็อกหน้าต่างป๊อปอัปเบื้องหลัง บอทจะทำงานต่อได้ตามปกติ\n- ปรับปรุงความเสถียร 100%",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
