@@ -1,6 +1,6 @@
 {
-  "versionCode": 9,
-  "versionName": "0.7.2",
-  "changelog": "- แก้ไขปัญหาบอทหยุดทำงาน / สิทธิ์ทั้ง 3 ข้อปิดเอง (LMK Zero-Allocation Fix)\n- เพิ่มระบบ WakeLock ป้องกัน CPU Sleep ระหว่างวิ่งบอท\n- เพิ่มการตรวจเช็คและขอสิทธิ์ยกเว้นการประหยัดแบตเตอรี่ (Battery Optimization)",
+  "versionCode": 10,
+  "versionName": "0.7.3",
+  "changelog": "- เพิ่มระบบจัดเก็บ Crash Log อัตโนมัติลงในโฟลเดอร์ Download/CookieRunBot บนมือถือ\n- เพิ่มปุ่มดู/คัดลอก/ล้าง Crash Log ในแอปและบนหน้าเว็บ Cloud Dashboard เรียลไทม์\n- ระบบ LMK Zero-Allocation และ Battery Whitelist เต็มรูปแบบ",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }

@@ -1274,7 +1274,7 @@
             </div>
             <h2 class="auth-title">CookieRunBot Official</h2>
             <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 6px;">
-                <span class="app-version-display" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 9999px;">v0.7.2</span>
+                <span class="app-version-display" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 9999px;">v0.7.3</span>
             </div>
             <p class="auth-subtitle">ระบบคลาวด์ควบคุมและฟาร์มอัตโนมัติ (Live Cloud Controller)</p>
 
@@ -1405,7 +1405,7 @@
                 <div class="brand-text">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <h1>CookieRunBot</h1>
-                        <span class="version-badge app-version-display" id="appVersionBadge" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 1px 7px; border-radius: 9999px;">v0.7.2</span>
+                        <span class="version-badge app-version-display" id="appVersionBadge" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 1px 7px; border-radius: 9999px;">v0.7.3</span>
                     </div>
                     <span>ระบบคลาวด์ฟาร์มบอทคุกกี้รัน</span>
                 </div>
@@ -1413,7 +1413,7 @@
 
             <div class="header-actions">
                 <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-download-apk" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 6px 13px; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; text-decoration: none; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35); transition: transform 0.15s ease;" title="ดาวน์โหลดแอปสำหรับมือถือ Android (APK)">
-                    <span>📲</span> <span>โหลดแอป (<span class="app-version-display">v0.7.2</span>)</span>
+                    <span>📲</span> <span>โหลดแอป (<span class="app-version-display">v0.7.3</span>)</span>
                 </a>
 
                 <div class="cloud-status-badge offline" id="cloudStatusBadge">
@@ -1490,8 +1490,32 @@
                     🚀 อัปเดตแอป (OTA)
                 </button>
                 <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-copy-code btn-download-banner" style="background: #059669; text-decoration: none;">
-                    📥 ดาวน์โหลด APK (<span class="app-version-display">v0.7.2</span>)
+                    📥 ดาวน์โหลด APK (<span class="app-version-display">v0.7.3</span>)
                 </a>
+            </div>
+        </div>
+
+        <!-- Crash Alert Banner -->
+        <div id="crashAlertBanner" style="display: none; background: linear-gradient(90deg, rgba(239, 68, 68, 0.18), rgba(185, 28, 28, 0.18)); border: 1px solid rgba(239, 68, 68, 0.45); border-radius: var(--radius-sm); padding: 10px 16px; margin-bottom: 14px; align-items: center; justify-content: space-between; gap: 12px; box-shadow: 0 2px 10px rgba(239, 68, 68, 0.15);">
+            <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0;">
+                <span style="font-size: 1.5rem;">🚨</span>
+                <div style="min-width: 0;">
+                    <div style="font-weight: 700; color: #fca5a5; font-size: 0.92rem; display: flex; align-items: center; gap: 6px;">
+                        <span>ตรวจพบประวัติแอปหยุดทำงาน (Crash Log)</span>
+                        <span id="crashAppVerBadge" style="background: rgba(239, 68, 68, 0.3); border: 1px solid #ef4444; color: #fecaca; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px;">v0.7.3</span>
+                    </div>
+                    <div id="crashAlertSub" style="color: #cbd5e1; font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        กำลังโหลดรายละเอียด...
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 8px; flex-shrink: 0;">
+                <button onclick="openCrashModal()" style="background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 8px; font-weight: 600; font-size: 0.82rem; cursor: pointer; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35);">
+                    🔍 ดูรายละเอียด
+                </button>
+                <button onclick="clearCloudCrashLog()" style="background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 8px; font-size: 0.82rem; cursor: pointer;">
+                    ล้าง
+                </button>
             </div>
         </div>
 
@@ -1500,7 +1524,7 @@
             <div class="device-status-item main-status" style="display: flex; align-items: center; gap: 8px; color: var(--text-muted);">
                 <span>📱 บอท:</span>
                 <span id="pillBotRunning" style="color: #94a3b8; font-weight: 600;">⏹ บอทหยุด</span>
-                <span id="pillBotVersion" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd; padding: 2px 7px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">แอป: <span class="app-version-display">v0.7.2</span></span>
+                <span id="pillBotVersion" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd; padding: 2px 7px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">แอป: <span class="app-version-display">v0.7.3</span></span>
             </div>
             <div class="device-status-perms" style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
                 <span id="pillAccessStatus" class="perm-pill" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
@@ -1924,7 +1948,7 @@
         </div>
 
         <footer style="text-align: center; margin-top: 28px; padding: 18px 10px; font-size: 0.78rem; color: #64748b; border-top: 1px solid var(--border-card);">
-            CookieRunBot Cloud Dashboard • เวอร์ชันแดชบอร์ด: <span class="app-version-display" style="color: #94a3b8; font-weight: 600;">v0.7.2</span> • เวอร์ชันแอปที่เชื่อมต่อ: <span id="footerBotVersion" style="color: #60a5fa; font-weight: 600;">v0.7.2</span>
+            CookieRunBot Cloud Dashboard • เวอร์ชันแดชบอร์ด: <span class="app-version-display" style="color: #94a3b8; font-weight: 600;">v0.7.3</span> • เวอร์ชันแอปที่เชื่อมต่อ: <span id="footerBotVersion" style="color: #60a5fa; font-weight: 600;">v0.7.3</span>
         </footer>
 
     </main>
@@ -1981,6 +2005,40 @@
                     <a href="CookieRunBot.apk" download="CookieRunBot.apk" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 10px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-decoration: none; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);">
                         📲 ดาวน์โหลดแอป CookieRunBot (APK)
                     </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crash Details Modal -->
+    <div class="modal-overlay" id="crashDetailModal">
+        <div class="modal-card" style="max-width: 680px; width: 92%;">
+            <div class="modal-head">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 1.3rem;">🚨</span>
+                    <h3 style="margin: 0; font-size: 1.1rem; color: #fff;">บันทึกข้อผิดพลาดแอป (Crash Report)</h3>
+                </div>
+                <button class="modal-close" onclick="closeCrashModal()">✕</button>
+            </div>
+            <div class="modal-body" style="padding: 16px;">
+                <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-card); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; font-size: 0.82rem; color: #cbd5e1; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                    <div>📱 อุปกรณ์: <span id="crashModalDevice" style="color: #fff; font-weight: 600;">-</span></div>
+                    <div>🕒 เวลา: <span id="crashModalTime" style="color: #fff; font-weight: 600;">-</span></div>
+                </div>
+                <div style="font-size: 0.8rem; font-weight: 600; color: #94a3b8; margin-bottom: 6px;">Stack Trace / รายละเอียด:</div>
+                <pre id="crashModalLogText" style="background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 12px; color: #f87171; font-family: monospace; font-size: 0.76rem; max-height: 320px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; margin: 0 0 16px 0;"></pre>
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                    <button onclick="clearCloudCrashLog()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer;">
+                        🗑️ ล้างบันทึก (Clear)
+                    </button>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="copyCrashLog()" style="background: #3b82f6; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer;">
+                            📋 คัดลอก (Copy)
+                        </button>
+                        <button onclick="closeCrashModal()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer;">
+                            ปิด
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2343,8 +2401,12 @@
             // 1. Fetch permanent sessions and current state immediately
             syncPermanentSessions();
             fetchInitialBotState();
+            checkCrashLog();
             if (!window._permSyncTimer) {
                 window._permSyncTimer = setInterval(syncPermanentSessions, 10000);
+            }
+            if (!window._crashCheckTimer) {
+                window._crashCheckTimer = setInterval(checkCrashLog, 15000);
             }
 
             // 2. Open SSE stream with Firebase Realtime Database
@@ -2410,7 +2472,85 @@
                 clearInterval(screenPollTimer);
                 screenPollTimer = null;
             }
+            if (window._crashCheckTimer) {
+                clearInterval(window._crashCheckTimer);
+                window._crashCheckTimer = null;
+            }
             updateBotOnlineStatus(false);
+        }
+
+        let currentCrashData = null;
+
+        async function checkCrashLog() {
+            if (!pairingKey) {
+                pairingKey = sanitizeKey(currentUser ? currentUser.email : '');
+            }
+            if (!pairingKey) return;
+            try {
+                const res = await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/crash.json`);
+                if (!res.ok) return;
+                const data = await res.json();
+                updateCrashBanner(data);
+            } catch (e) {
+                console.warn('checkCrashLog error:', e);
+            }
+        }
+
+        function updateCrashBanner(data) {
+            const banner = document.getElementById('crashAlertBanner');
+            if (!banner) return;
+            if (data && data.crashLog) {
+                currentCrashData = data;
+                banner.style.display = 'flex';
+                const sub = document.getElementById('crashAlertSub');
+                const timeStr = data.timestamp ? new Date(data.timestamp).toLocaleString('th-TH') : '-';
+                const devStr = data.deviceModel || 'อุปกรณ์ Android';
+                if (sub) sub.innerText = `เวลา: ${timeStr} | ${devStr}`;
+            } else {
+                currentCrashData = null;
+                banner.style.display = 'none';
+            }
+        }
+
+        function openCrashModal() {
+            if (!currentCrashData) return;
+            const modal = document.getElementById('crashDetailModal');
+            if (!modal) return;
+            const dev = document.getElementById('crashModalDevice');
+            const time = document.getElementById('crashModalTime');
+            const pre = document.getElementById('crashModalLogText');
+            if (dev) dev.innerText = currentCrashData.deviceModel || '-';
+            if (time) time.innerText = currentCrashData.timestamp ? new Date(currentCrashData.timestamp).toLocaleString('th-TH') : '-';
+            if (pre) pre.innerText = currentCrashData.crashLog || '';
+            modal.classList.add('open');
+        }
+
+        function closeCrashModal() {
+            const modal = document.getElementById('crashDetailModal');
+            if (modal) modal.classList.remove('open');
+        }
+
+        function copyCrashLog() {
+            if (!currentCrashData || !currentCrashData.crashLog) return;
+            navigator.clipboard.writeText(currentCrashData.crashLog).then(() => {
+                showToast('📋 คัดลอก Crash Log เรียบร้อยแล้ว!');
+            }).catch(() => {
+                showToast('⚠️ ไม่สามารถคัดลอกได้');
+            });
+        }
+
+        async function clearCloudCrashLog() {
+            if (!pairingKey) return;
+            try {
+                await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/crash.json`, {
+                    method: 'DELETE'
+                });
+                closeCrashModal();
+                updateCrashBanner(null);
+                showToast('🗑️ ล้างบันทึก Crash Log แล้ว');
+            } catch (e) {
+                showToast('⚠️ ไม่สามารถล้างบันทึกได้: ' + e.message);
+            }
         }
 
         function uptimeToSec(uptimeStr) {
@@ -3289,7 +3429,7 @@
                             el.innerText = 'v' + info.versionName;
                         });
                         const footVer = document.getElementById('footerBotVersion');
-                        if (footVer && footVer.innerText === 'v0.7.2') footVer.innerText = 'v' + info.versionName;
+                        if (footVer && footVer.innerText === 'v0.7.3') footVer.innerText = 'v' + info.versionName;
                     }
                 }
             } catch (e) {}
