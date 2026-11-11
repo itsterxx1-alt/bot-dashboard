@@ -1,6 +1,6 @@
 {
-  "versionCode": 8,
-  "versionName": "0.7.1",
-  "changelog": "- แก้ไขข้อผิดพลาดการเปิดแอป (Startup Crash Fix)\n- ปรับปรุงการโหลดแคชเซสชันให้ปลอดภัย 100%\n- ปรับปรุง UI และการแสดงเวอร์ชันในแอปและแดชบอร์ด",
+  "versionCode": 9,
+  "versionName": "0.7.2",
+  "changelog": "- แก้ไขปัญหาบอทหยุดทำงาน / สิทธิ์ทั้ง 3 ข้อปิดเอง (LMK Zero-Allocation Fix)\n- เพิ่มระบบ WakeLock ป้องกัน CPU Sleep ระหว่างวิ่งบอท\n- เพิ่มการตรวจเช็คและขอสิทธิ์ยกเว้นการประหยัดแบตเตอรี่ (Battery Optimization)",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
