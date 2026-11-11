@@ -1,6 +1,6 @@
 {
-  "versionCode": 15,
-  "versionName": "0.7.8",
-  "changelog": "- แก้ไขปัญหากดเริ่มบอทจากหน้าเว็บแล้วสถานะดีดกลับเป็น Idle โดยเริ่มทำงานทันทีในครั้งแรกที่กด\n- ยกเลิกการเด้งแจ้งเตือนความละเอียดหน้าจอขัดจังหวะคำสั่งจากเว็บและเปิดระบบสเกลพิกัดอัตโนมัติ\n- เพิ่ม Pending Command Guard ป้องกันแดชบอร์ดสลับสถานะก่อนบอทเริ่มทำงานเสร็จสมบูรณ์",
+  "versionCode": 16,
+  "versionName": "0.7.9",
+  "changelog": "- แก้ไขข้อผิดพลาด CalledFromWrongThreadException เมื่ออัปเดตสถานะปุ่มลอยจาก Coroutine เธรด\n- เพิ่มการตรวจสอบ Main Thread Safety (updateHandler.post) ครบทุกฟังก์ชัน UI\n- ป้องกันการแครช 100% เมื่อเปลี่ยนสถานะบอทหรือบันทึกสถิติรอบวิ่ง",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
