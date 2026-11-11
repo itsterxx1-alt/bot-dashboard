@@ -1,6 +1,6 @@
 {
-  "versionCode": 12,
-  "versionName": "0.7.5",
-  "changelog": "- แก้ไขข้อผิดพลาด ConcurrentModificationException ในการแสดงผลเซสชันและรอบการวิ่ง (Thread-Safe Snapshot)\n- ป้องกันแอปหยุดทำงานเมื่อมีการบันทึกรอบขณะ UI กำลังรีเฟรช 100%\n- ปรับปรุงความเสถียรของ SessionManager และ CloudRelayClient",
+  "versionCode": 13,
+  "versionName": "0.7.6",
+  "changelog": "- ปรับตำแหน่งเริ่มต้นของปุ่มลอย (Floating Bubble) ให้มาชิดขอบซ้ายกึ่งกลางจอแนวตั้ง\n- ปรับปรุงการคำนวณตำแหน่งพิกัดปุ่มลอยตามขนาดหน้าจออุปกรณ์จริงอัตโนมัติ",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
