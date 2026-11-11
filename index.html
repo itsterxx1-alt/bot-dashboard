@@ -1274,7 +1274,7 @@
             </div>
             <h2 class="auth-title">CookieRunBot Official</h2>
             <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 6px;">
-                <span class="app-version-display" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 9999px;">v0.7.6</span>
+                <span class="app-version-display" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 9999px;">v0.7.7</span>
             </div>
             <p class="auth-subtitle">ระบบคลาวด์ควบคุมและฟาร์มอัตโนมัติ (Live Cloud Controller)</p>
 
@@ -1405,7 +1405,7 @@
                 <div class="brand-text">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <h1>CookieRunBot</h1>
-                        <span class="version-badge app-version-display" id="appVersionBadge" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 1px 7px; border-radius: 9999px;">v0.7.6</span>
+                        <span class="version-badge app-version-display" id="appVersionBadge" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 1px 7px; border-radius: 9999px;">v0.7.7</span>
                     </div>
                     <span>ระบบคลาวด์ฟาร์มบอทคุกกี้รัน</span>
                 </div>
@@ -1413,7 +1413,7 @@
 
             <div class="header-actions">
                 <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-download-apk" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 6px 13px; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; text-decoration: none; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35); transition: transform 0.15s ease;" title="ดาวน์โหลดแอปสำหรับมือถือ Android (APK)">
-                    <span>📲</span> <span>โหลดแอป (<span class="app-version-display">v0.7.6</span>)</span>
+                    <span>📲</span> <span>โหลดแอป (<span class="app-version-display">v0.7.7</span>)</span>
                 </a>
 
                 <div class="cloud-status-badge offline" id="cloudStatusBadge">
@@ -1434,13 +1434,13 @@
         </div>
 
         <div class="topbar-action-row">
-            <button class="btn-act btn-act-start" onclick="sendCloudCommand('START')">
+            <button id="btnStartBot" class="btn-act btn-act-start" onclick="sendCloudCommand('START')">
                 <span>▶</span> เริ่มบอท
             </button>
-            <button class="btn-act btn-act-stop" onclick="sendCloudCommand('STOP')">
+            <button id="btnStopBot" class="btn-act btn-act-stop" onclick="sendCloudCommand('STOP')">
                 <span>⏹</span> หยุดบอท
             </button>
-            <button class="btn-act btn-act-reset" onclick="sendCloudCommand('NEW_SESSION')">
+            <button id="btnNewSession" class="btn-act btn-act-reset" onclick="sendCloudCommand('NEW_SESSION')">
                 <span>➕</span> เริ่มรอบใหม่
             </button>
         </div>
@@ -1490,7 +1490,7 @@
                     🚀 อัปเดตแอป (OTA)
                 </button>
                 <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-copy-code btn-download-banner" style="background: #059669; text-decoration: none;">
-                    📥 ดาวน์โหลด APK (<span class="app-version-display">v0.7.6</span>)
+                    📥 ดาวน์โหลด APK (<span class="app-version-display">v0.7.7</span>)
                 </a>
             </div>
         </div>
@@ -1502,7 +1502,7 @@
                 <div style="min-width: 0;">
                     <div style="font-weight: 700; color: #fca5a5; font-size: 0.92rem; display: flex; align-items: center; gap: 6px;">
                         <span>ตรวจพบประวัติแอปหยุดทำงาน (Crash Log)</span>
-                        <span id="crashAppVerBadge" style="background: rgba(239, 68, 68, 0.3); border: 1px solid #ef4444; color: #fecaca; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px;">v0.7.6</span>
+                        <span id="crashAppVerBadge" style="background: rgba(239, 68, 68, 0.3); border: 1px solid #ef4444; color: #fecaca; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px;">v0.7.7</span>
                     </div>
                     <div id="crashAlertSub" style="color: #cbd5e1; font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                         กำลังโหลดรายละเอียด...
@@ -1524,7 +1524,7 @@
             <div class="device-status-item main-status" style="display: flex; align-items: center; gap: 8px; color: var(--text-muted);">
                 <span>📱 บอท:</span>
                 <span id="pillBotRunning" style="color: #94a3b8; font-weight: 600;">⏹ บอทหยุด</span>
-                <span id="pillBotVersion" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd; padding: 2px 7px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">แอป: <span class="app-version-display">v0.7.6</span></span>
+                <span id="pillBotVersion" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd; padding: 2px 7px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">แอป: <span class="app-version-display">v0.7.7</span></span>
             </div>
             <div class="device-status-perms" style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
                 <span id="pillAccessStatus" class="perm-pill" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
@@ -1948,7 +1948,7 @@
         </div>
 
         <footer style="text-align: center; margin-top: 28px; padding: 18px 10px; font-size: 0.78rem; color: #64748b; border-top: 1px solid var(--border-card);">
-            CookieRunBot Cloud Dashboard • เวอร์ชันแดชบอร์ด: <span class="app-version-display" style="color: #94a3b8; font-weight: 600;">v0.7.6</span> • เวอร์ชันแอปที่เชื่อมต่อ: <span id="footerBotVersion" style="color: #60a5fa; font-weight: 600;">v0.7.6</span>
+            CookieRunBot Cloud Dashboard • เวอร์ชันแดชบอร์ด: <span class="app-version-display" style="color: #94a3b8; font-weight: 600;">v0.7.7</span> • เวอร์ชันแอปที่เชื่อมต่อ: <span id="footerBotVersion" style="color: #60a5fa; font-weight: 600;">v0.7.7</span>
         </footer>
 
     </main>
@@ -2094,6 +2094,7 @@
         let isStreamingActive = false;
         let lastBotSeenTime = 0;
         let statsEventSource = null;
+        let ackEventSource = null;
         let screenEventSource = null;
         let pollingTimer = null;
         let screenPollTimer = null;
@@ -2443,6 +2444,19 @@
                         handleScreenPayload(payload.data);
                     } catch (e) {}
                 });
+
+                // Real-time Command Acknowledgment SSE Listener
+                const ackUrl = `${FIREBASE_RTDB_URL}/bots/${pairingKey}/command_ack.json`;
+                ackEventSource = new EventSource(ackUrl);
+                ackEventSource.addEventListener('put', (event) => {
+                    try {
+                        const payload = JSON.parse(event.data);
+                        const ack = (payload.path === '/' && payload.data) ? payload.data : payload;
+                        if (ack && ack.id) {
+                            fetchInitialBotState();
+                        }
+                    } catch (e) {}
+                });
             } catch (e) {
                 console.error('Firebase SSE error:', e);
             }
@@ -2459,6 +2473,10 @@
             if (statsEventSource) {
                 try { statsEventSource.close(); } catch (e) {}
                 statsEventSource = null;
+            }
+            if (ackEventSource) {
+                try { ackEventSource.close(); } catch (e) {}
+                ackEventSource = null;
             }
             if (screenEventSource) {
                 try { screenEventSource.close(); } catch (e) {}
@@ -2741,6 +2759,37 @@
                     }
                 }
 
+                // Sync top action buttons with live bot state
+                const btnStart = document.getElementById('btnStartBot');
+                const btnStop = document.getElementById('btnStopBot');
+                const btnNew = document.getElementById('btnNewSession');
+                if (btnStart && btnStop) {
+                    if (s.isRunning) {
+                        btnStart.disabled = true;
+                        btnStart.innerHTML = '<span>▶</span> กำลังทำงาน';
+                        btnStart.style.opacity = '0.6';
+                        btnStart.style.cursor = 'not-allowed';
+                        btnStop.disabled = false;
+                        btnStop.innerHTML = '<span>⏹</span> หยุดบอท';
+                        btnStop.style.opacity = '1.0';
+                        btnStop.style.cursor = 'pointer';
+                    } else {
+                        btnStart.disabled = false;
+                        btnStart.innerHTML = '<span>▶</span> เริ่มบอท';
+                        btnStart.style.opacity = '1.0';
+                        btnStart.style.cursor = 'pointer';
+                        btnStop.disabled = true;
+                        btnStop.innerHTML = '<span>⏹</span> หยุดแล้ว';
+                        btnStop.style.opacity = '0.6';
+                        btnStop.style.cursor = 'not-allowed';
+                    }
+                }
+                if (btnNew) {
+                    btnNew.disabled = false;
+                    btnNew.innerHTML = '<span>➕</span> เริ่มรอบใหม่';
+                    btnNew.style.opacity = '1.0';
+                }
+
                 if (s.boxCounts) {
                     const b = s.boxCounts;
                     setTxt('valBoxTypes', `🪵${b.wood||0} 🥈${b.silver||0} 🥇${b.gold||0} 🌈${b.rainbow||0}`);
@@ -2926,6 +2975,38 @@
                 pairingKey = sanitizeKey(currentUser ? currentUser.email : '');
             }
 
+            // Optimistic UI updates for immediate responsiveness
+            const actUpper = (action || '').toUpperCase();
+            const btnStart = document.getElementById('btnStartBot');
+            const btnStop = document.getElementById('btnStopBot');
+            const btnNew = document.getElementById('btnNewSession');
+            const botPill = document.getElementById('pillBotRunning');
+
+            if (actUpper === 'START') {
+                if (btnStart) {
+                    btnStart.disabled = true;
+                    btnStart.innerHTML = '<span>⏳</span> กำลังสั่งเริ่มบอท...';
+                }
+                if (botPill) {
+                    botPill.style.color = '#f59e0b';
+                    botPill.innerText = '⏳ กำลังสั่งเริ่มบอท...';
+                }
+            } else if (actUpper === 'STOP') {
+                if (btnStop) {
+                    btnStop.disabled = true;
+                    btnStop.innerHTML = '<span>⏳</span> กำลังสั่งหยุดบอท...';
+                }
+                if (botPill) {
+                    botPill.style.color = '#f59e0b';
+                    botPill.innerText = '⏳ กำลังสั่งหยุดบอท...';
+                }
+            } else if (actUpper === 'NEW_SESSION') {
+                if (btnNew) {
+                    btnNew.disabled = true;
+                    btnNew.innerHTML = '<span>⏳</span> กำลังเริ่มรอบใหม่...';
+                }
+            }
+
             const cmdPayload = {
                 id: 'cmd_' + Date.now(),
                 action: action,
@@ -2943,12 +3024,19 @@
                 });
 
                 if (res.ok) {
-                    showToast(`ส่งคำสั่ง ${action} สำเร็จ 🚀 (Firebase)`);
+                    showToast(`⚡ ส่งคำสั่ง ${action} สำเร็จ (Real-time)`);
+                    // Burst polling ensures instant sub-second reflection of state
+                    setTimeout(fetchInitialBotState, 100);
+                    setTimeout(fetchInitialBotState, 350);
+                    setTimeout(fetchInitialBotState, 700);
+                    setTimeout(fetchInitialBotState, 1200);
                 } else {
                     showToast(`ส่งคำสั่งไม่สำเร็จ (HTTP ${res.status})`);
+                    fetchInitialBotState();
                 }
             } catch (err) {
                 showToast('ส่งคำสั่งไม่สำเร็จ: ' + err.message);
+                fetchInitialBotState();
             }
         }
 
@@ -3429,7 +3517,7 @@
                             el.innerText = 'v' + info.versionName;
                         });
                         const footVer = document.getElementById('footerBotVersion');
-                        if (footVer && footVer.innerText === 'v0.7.6') footVer.innerText = 'v' + info.versionName;
+                        if (footVer && footVer.innerText === 'v0.7.7') footVer.innerText = 'v' + info.versionName;
                     }
                 }
             } catch (e) {}

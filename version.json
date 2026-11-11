@@ -1,6 +1,6 @@
 {
-  "versionCode": 13,
-  "versionName": "0.7.6",
-  "changelog": "- ปรับตำแหน่งเริ่มต้นของปุ่มลอย (Floating Bubble) ให้มาชิดขอบซ้ายกึ่งกลางจอแนวตั้ง\n- ปรับปรุงการคำนวณตำแหน่งพิกัดปุ่มลอยตามขนาดหน้าจออุปกรณ์จริงอัตโนมัติ",
+  "versionCode": 14,
+  "versionName": "0.7.7",
+  "changelog": "- ปรับปรุงระบบส่งคำสั่งแบบ Real-time ความหน่วงต่ำ (Low Latency) ระหว่างแดชบอร์ดและแอป\n- ระบบ Dual Engine สำหรับรับคำสั่ง (SSE Stream + Fast Watchdog Polling 400ms)\n- ซิงก์สถานะกลับแดชบอร์ดทันทีเมื่อบอทรับคำสั่งหรือเปลี่ยนสถานะ โดยไม่ต้องรอรอบเวลา",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
