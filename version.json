@@ -1,6 +1,6 @@
 {
-  "versionCode": 11,
-  "versionName": "0.7.4",
-  "changelog": "- แก้ไขข้อผิดพลาด BadTokenException (permission denied for window type 2038) ใน FloatingOverlayService\n- ป้องกันระบบแครชหากมือถือบล็อกหน้าต่างป๊อปอัปเบื้องหลัง บอทจะทำงานต่อได้ตามปกติ\n- ปรับปรุงความเสถียร 100%",
+  "versionCode": 12,
+  "versionName": "0.7.5",
+  "changelog": "- แก้ไขข้อผิดพลาด ConcurrentModificationException ในการแสดงผลเซสชันและรอบการวิ่ง (Thread-Safe Snapshot)\n- ป้องกันแอปหยุดทำงานเมื่อมีการบันทึกรอบขณะ UI กำลังรีเฟรช 100%\n- ปรับปรุงความเสถียรของ SessionManager และ CloudRelayClient",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
