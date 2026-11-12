@@ -1,6 +1,6 @@
 {
-  "versionCode": 20,
-  "versionName": "0.8.3",
-  "changelog": "- เพิ่มปุ่มออกจากระบบ (Logout) ในแอปเพื่อสลับบัญชีหรือกลับไปหน้า Login ได้ทันที\n- ปรับปรุงประสิทธิภาพหน้าแอป (UI Optimization) แก้ไขปัญหาหน้าจอเลื่อนกระตุกอย่างเด็ดขาด\n- ปรับปรุงความลื่นไหลของปุ่มลอย (Floating Overlay) เปิดใช้งาน Hardware Acceleration และ Snap ขอบจอแบบไร้ความหน่วง",
+  "versionCode": 21,
+  "versionName": "0.8.4",
+  "changelog": "- แยกคลาวด์และเซสชันการวิ่งของแต่ละบัญชี Google อย่างเด็ดขาด (Strict Multi-Account Cloud Vault)\n- ดึงข้อมูลเซสชันตรงจาก Cloud ของแต่ละบัญชี ไม่มีการปนข้อมูลข้ามบัญชีอีกต่อไป\n- แก้ไขบั๊กเมื่อสลับบัญชีในมือถือเครื่องเดียวกัน ระบบจะรีเซ็ตและโหลดเฉพาะประวัติของบัญชีที่เลือกทันที",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
