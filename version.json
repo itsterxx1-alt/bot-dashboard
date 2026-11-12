@@ -1,6 +1,6 @@
-﻿{
-  "versionCode": 25,
-  "versionName": "0.8.8",
-  "changelog": "- เพิ่มระบบ Owner Guard: ทุกเซสชันผูกเจ้าของบัญชี และห้ามอัปโหลดข้อมูลข้ามบัญชี\n- ทิ้งผลลัพธ์ Cloud ที่ตอบกลับช้าหลังสลับบัญชี (stale response) ทั้งในแอปและเว็บ\n- เว็บตรวจ ownerKey ของข้อมูลก่อนแสดงผล กรองเซสชันที่ไม่ใช่ของบัญชีปัจจุบัน",
+{
+  "versionCode": 26,
+  "versionName": "0.8.9",
+  "changelog": "- อัปเกรดระบบยืนยันตัวตนด้วย Firebase Auth + Google Play Services อย่างเป็นทางการ\n- แยกพื้นที่จัดเก็บข้อมูลด้วย User UID เฉพาะของแต่ละบัญชี ไม่ซ้อนทับกันอย่างเด็ดขาด\n- ระบบ Auto-Migrate ถ่ายโอนสถิติและเซสชันเดิมไปยังพื้นที่ UID อัตโนมัติ ปลอดภัย 100%\n- รองรับ Security Rules ระดับ Cloud Database บัญชีไหนเข้าถึงได้เฉพาะข้อมูลของตัวเอง",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
