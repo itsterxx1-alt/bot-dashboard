@@ -2542,6 +2542,14 @@
                     cloudPermanentSessions = {};
                     latestBotData = null;
                     deletedSessionIds.clear();
+                    const sTbody = document.getElementById('sessionTbody');
+                    if (sTbody) sTbody.innerHTML = '';
+                    const rTbody = document.getElementById('roundHistoryTbody');
+                    if (rTbody) rTbody.innerHTML = '';
+                    const sList = document.getElementById('sessionsListContainer');
+                    if (sList) sList.innerHTML = '';
+                    const rList = document.getElementById('roundHistoryContainer');
+                    if (rList) rList.innerHTML = '';
                     localStorage.setItem('cookierun_auth_user', JSON.stringify(currentUser));
                     localStorage.setItem('official_google_user', JSON.stringify(currentUser));
                     closeGoogleAuthModal();
@@ -2942,14 +2950,20 @@
                 const res = await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/permanent_sessions.json`);
                 if (res.ok) {
                     const data = await res.json();
-                    if (data && typeof data === 'object') {
+                    if (data && typeof data === 'object' && Object.keys(data).length > 0) {
                         cloudPermanentSessions = data;
                         try {
                             localStorage.setItem('cookierun_perm_sessions_' + pairingKey, JSON.stringify(data));
                         } catch (e) {}
-                        if (latestBotData) {
-                            applyBotData(latestBotData);
-                        }
+                    } else {
+                        // Strictly reset if this account has no permanent sessions in cloud
+                        cloudPermanentSessions = {};
+                        try {
+                            localStorage.removeItem('cookierun_perm_sessions_' + pairingKey);
+                        } catch (e) {}
+                    }
+                    if (latestBotData) {
+                        applyBotData(latestBotData);
                     }
                 }
             } catch (e) {
@@ -3004,46 +3018,25 @@
                 if (footVer) footVer.innerText = `v${v}`;
             }
 
-            // --- CLOUD PERMANENT SESSIONS MERGER (Ensures data NEVER disappears across updates) ---
+            // --- STRICT ACCOUNT-ISOLATED CLOUD SESSIONS MERGER ---
             const sessionsMap = new Map();
 
-            // A. Load from offline localStorage vault
-            try {
-                const cached = localStorage.getItem('cookierun_perm_sessions_' + pairingKey);
-                if (cached) {
-                    const parsed = JSON.parse(cached);
-                    Object.values(parsed).forEach(s => {
-                        if (s && s.sessionId) sessionsMap.set(s.sessionId, s);
-                    });
-                }
-            } catch (e) {}
-
-            // B. Load from cloud permanent vault
-            Object.values(cloudPermanentSessions).forEach(s => {
-                if (s && s.sessionId) {
-                    const ex = sessionsMap.get(s.sessionId);
-                    if (!ex || (s.roundsPlayed || 0) >= (ex.roundsPlayed || 0)) {
+            // A. Load strictly this account's sessions from cloudPermanentSessions
+            if (cloudPermanentSessions && typeof cloudPermanentSessions === 'object') {
+                Object.values(cloudPermanentSessions).forEach(s => {
+                    if (s && s.sessionId) {
                         sessionsMap.set(s.sessionId, s);
                     }
-                }
-            });
+                });
+            }
 
-            // C. Merge live incoming data from bot app
+            // B. Merge live incoming data from bot app for this specific account
             if (data.sessions && Array.isArray(data.sessions)) {
                 data.sessions.forEach(s => {
                     if (s && s.sessionId) {
                         const ex = sessionsMap.get(s.sessionId);
                         if (!ex || (s.roundsPlayed || 0) >= (ex.roundsPlayed || 0) || s.isCurrent) {
                             sessionsMap.set(s.sessionId, s);
-                            // Auto-archive active session with progress to cloud permanent vault
-                            if (pairingKey && ((s.roundsPlayed || 0) > 0 || (s.roundHistory && s.roundHistory.length > 0))) {
-                                cloudPermanentSessions[s.sessionId] = s;
-                                fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/permanent_sessions/${s.sessionId}.json`, {
-                                    method: 'PUT',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify(s)
-                                }).catch(() => {});
-                            }
                         }
                     }
                 });
@@ -3053,12 +3046,16 @@
             let allSessionsList = Array.from(sessionsMap.values());
             data.sessions = allSessionsList.filter(s => s && s.sessionId && (!deletedSessionIds.has(s.sessionId) || s.isCurrent));
 
-            // Keep localStorage vault synchronized
+            // Keep localStorage vault synchronized only for this pairingKey
             if (pairingKey && allSessionsList.length > 0) {
                 try {
                     const obj = {};
                     allSessionsList.forEach(s => { obj[s.sessionId] = s; });
                     localStorage.setItem('cookierun_perm_sessions_' + pairingKey, JSON.stringify(obj));
+                } catch (e) {}
+            } else if (pairingKey && allSessionsList.length === 0) {
+                try {
+                    localStorage.removeItem('cookierun_perm_sessions_' + pairingKey);
                 } catch (e) {}
             }
 
@@ -4365,8 +4362,23 @@
 
                     fbAuth.onAuthStateChanged(async (user) => {
                         if (user && user.email) {
+                            const newEmail = user.email.toLowerCase();
+                            const isAccountChange = !currentUser || currentUser.email !== newEmail;
+                            if (isAccountChange) {
+                                cloudPermanentSessions = {};
+                                latestBotData = null;
+                                deletedSessionIds.clear();
+                                const sTbody = document.getElementById('sessionTbody');
+                                if (sTbody) sTbody.innerHTML = '';
+                                const rTbody = document.getElementById('roundHistoryTbody');
+                                if (rTbody) rTbody.innerHTML = '';
+                                const sList = document.getElementById('sessionsListContainer');
+                                if (sList) sList.innerHTML = '';
+                                const rList = document.getElementById('roundHistoryContainer');
+                                if (rList) rList.innerHTML = '';
+                            }
                             currentUser = {
-                                email: user.email.toLowerCase(),
+                                email: newEmail,
                                 name: user.displayName || user.email.split('@')[0],
                                 photo: user.photoURL || '',
                                 uid: user.uid
