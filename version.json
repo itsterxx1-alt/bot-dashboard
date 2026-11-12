@@ -1,6 +1,6 @@
 {
-  "versionCode": 16,
-  "versionName": "0.7.9",
-  "changelog": "- แก้ไขข้อผิดพลาด CalledFromWrongThreadException เมื่ออัปเดตสถานะปุ่มลอยจาก Coroutine เธรด\n- เพิ่มการตรวจสอบ Main Thread Safety (updateHandler.post) ครบทุกฟังก์ชัน UI\n- ป้องกันการแครช 100% เมื่อเปลี่ยนสถานะบอทหรือบันทึกสถิติรอบวิ่ง",
+  "versionCode": 17,
+  "versionName": "0.8.0",
+  "changelog": "- ปรับระบบอัปเดตและซิงก์การตั้งค่าแบบ Real-time ทันทีระหว่างการวิ่งบอท (กระโดด, บูสต์, วิ่งผลัด, โบราณวัตถุ, แจ้งเตือน)\n- ปรับปรุงการเชื่อมต่อ Dual-Engine Firebase SSE + Fast Sync แบบ 2 ทางระหว่างแอปและหน้าเว็บแบบเรียลไทม์เสมอทุกฟังก์ชัน\n- ลูปกระโดด Auto Jump ปรับเปลี่ยนความถี่และเปอร์เซ็นต์ได้ทันทีตามค่าหน้าเว็บแบบ On-the-fly",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
