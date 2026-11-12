@@ -1,6 +1,6 @@
 {
-  "versionCode": 28,
-  "versionName": "0.9.1",
-  "changelog": "- แก้ไขคีย์เชื่อมต่อ Cloud ให้ตรงกัน 100% ทั้งแอปและหน้าเว็บแดชบอร์ด\n- ตัดการเรียกเชื่อมต่อซ้ำซ้อนตอนเปิดแอป ทำให้เชื่อมต่อ HTTP Cloud สำเร็จทันที",
+  "versionCode": 29,
+  "versionName": "0.9.2",
+  "changelog": "- โหมดประหยัดโควตา Cloud สูงสุด (Quota Saver Mode): ซิงก์เฉพาะเมื่อค่าเปลี่ยนจริง (Diff-Only Sync) ลดการใช้ Bandwidth กว่า 80%\n- ตั้งเวลาพักภาพหน้าจอสดอัตโนมัติใน 60 วินาที และจำกัดประวัติบน Cloud เพื่อรองรับผู้ใช้งานบนแพ็กเกจฟรีได้มากขึ้น 5-10 เท่า",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
