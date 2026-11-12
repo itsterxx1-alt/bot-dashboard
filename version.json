@@ -1,6 +1,6 @@
 {
-  "versionCode": 19,
-  "versionName": "0.8.2",
-  "changelog": "- เพิ่มหน้าจอล็อกอิน Gatekeeper & ตรวจสอบสิทธิ์ VIP ก่อนเริ่มใช้งานแอป ป้องกันการใช้งานโดยไม่มีสิทธิ์\n- แก้ไขข้อผิดพลาดระบบบัญชี Google ดึงข้อมูลปนกันระหว่างหลายบัญชี (แยกแคชและเซสชันสมบูรณ์ต่อบัญชี)\n- กำหนดสิทธิ์สมาชิก Lifetime ให้จำกัดเฉพาะบัญชีผู้ดูแลระบบ tititada@gmail.com เท่านั้น\n- รองรับการกรอก Redeem Code เพื่อเปิดใช้งานสิทธิ์ VIP ได้ทันทีจากหน้า Gatekeeper ของแอป",
+  "versionCode": 20,
+  "versionName": "0.8.3",
+  "changelog": "- เพิ่มปุ่มออกจากระบบ (Logout) ในแอปเพื่อสลับบัญชีหรือกลับไปหน้า Login ได้ทันที\n- ปรับปรุงประสิทธิภาพหน้าแอป (UI Optimization) แก้ไขปัญหาหน้าจอเลื่อนกระตุกอย่างเด็ดขาด\n- ปรับปรุงความลื่นไหลของปุ่มลอย (Floating Overlay) เปิดใช้งาน Hardware Acceleration และ Snap ขอบจอแบบไร้ความหน่วง",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
