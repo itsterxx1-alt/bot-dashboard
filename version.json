@@ -1,6 +1,6 @@
 {
-  "versionCode": 27,
-  "versionName": "0.9.0",
-  "changelog": "- แก้ไขคีย์จับคู่ Cloud Pairing Code ให้ตรงกันระหว่าง UID และ Account Owner\n- ปรับปรุงการเชื่อมต่อ HTTP Cloud ให้เปลี่ยนเป็นสีเขียว (เชื่อมต่อสำเร็จ) รวดเร็วภายใน 1-2 วินาที\n- ป้องกันการบล็อกการส่งข้อมูลสถิติเนื่องจากคีย์ไม่ตรงกัน",
+  "versionCode": 28,
+  "versionName": "0.9.1",
+  "changelog": "- แก้ไขคีย์เชื่อมต่อ Cloud ให้ตรงกัน 100% ทั้งแอปและหน้าเว็บแดชบอร์ด\n- ตัดการเรียกเชื่อมต่อซ้ำซ้อนตอนเปิดแอป ทำให้เชื่อมต่อ HTTP Cloud สำเร็จทันที",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
