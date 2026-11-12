@@ -1274,7 +1274,7 @@
             </div>
             <h2 class="auth-title">CookieRunBot Official</h2>
             <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 6px;">
-                <span class="app-version-display" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 9999px;">v0.8.0</span>
+                <span class="app-version-display" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 9999px;">v0.8.1</span>
             </div>
             <p class="auth-subtitle">ระบบคลาวด์ควบคุมและฟาร์มอัตโนมัติ (Live Cloud Controller)</p>
 
@@ -1405,7 +1405,7 @@
                 <div class="brand-text">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <h1>CookieRunBot</h1>
-                        <span class="version-badge app-version-display" id="appVersionBadge" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 1px 7px; border-radius: 9999px;">v0.8.0</span>
+                        <span class="version-badge app-version-display" id="appVersionBadge" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 1px 7px; border-radius: 9999px;">v0.8.1</span>
                     </div>
                     <span>ระบบคลาวด์ฟาร์มบอทคุกกี้รัน</span>
                 </div>
@@ -1413,7 +1413,7 @@
 
             <div class="header-actions">
                 <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-download-apk" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 6px 13px; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; text-decoration: none; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35); transition: transform 0.15s ease;" title="ดาวน์โหลดแอปสำหรับมือถือ Android (APK)">
-                    <span>📲</span> <span>โหลดแอป (<span class="app-version-display">v0.8.0</span>)</span>
+                    <span>📲</span> <span>โหลดแอป (<span class="app-version-display">v0.8.1</span>)</span>
                 </a>
 
                 <div class="cloud-status-badge offline" id="cloudStatusBadge">
@@ -1460,6 +1460,9 @@
         <button class="nav-tab-btn" onclick="switchTab('history')">
             <span>📁</span> <span class="nav-tab-label-full">ประวัติเซสชัน (History)</span><span class="nav-tab-label-short">เซสชัน</span>
         </button>
+        <button class="nav-tab-btn" onclick="switchTab('membership')" style="color: #fbbf24;">
+            <span>👑</span> <span class="nav-tab-label-full">สมาชิก VIP (Packages)</span><span class="nav-tab-label-short">สมาชิก VIP</span>
+        </button>
     </nav>
 
     <!-- Main Container -->
@@ -1490,7 +1493,7 @@
                     🚀 อัปเดตแอป (OTA)
                 </button>
                 <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-copy-code btn-download-banner" style="background: #059669; text-decoration: none;">
-                    📥 ดาวน์โหลด APK (<span class="app-version-display">v0.8.0</span>)
+                    📥 ดาวน์โหลด APK (<span class="app-version-display">v0.8.1</span>)
                 </a>
             </div>
         </div>
@@ -1502,7 +1505,7 @@
                 <div style="min-width: 0;">
                     <div style="font-weight: 700; color: #fca5a5; font-size: 0.92rem; display: flex; align-items: center; gap: 6px;">
                         <span>ตรวจพบประวัติแอปหยุดทำงาน (Crash Log)</span>
-                        <span id="crashAppVerBadge" style="background: rgba(239, 68, 68, 0.3); border: 1px solid #ef4444; color: #fecaca; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px;">v0.8.0</span>
+                        <span id="crashAppVerBadge" style="background: rgba(239, 68, 68, 0.3); border: 1px solid #ef4444; color: #fecaca; font-size: 0.7rem; padding: 1px 6px; border-radius: 4px;">v0.8.1</span>
                     </div>
                     <div id="crashAlertSub" style="color: #cbd5e1; font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                         กำลังโหลดรายละเอียด...
@@ -1524,7 +1527,8 @@
             <div class="device-status-item main-status" style="display: flex; align-items: center; gap: 8px; color: var(--text-muted);">
                 <span>📱 บอท:</span>
                 <span id="pillBotRunning" style="color: #94a3b8; font-weight: 600;">⏹ บอทหยุด</span>
-                <span id="pillBotVersion" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd; padding: 2px 7px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">แอป: <span class="app-version-display">v0.8.0</span></span>
+                <span id="pillBotVersion" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); color: #93c5fd; padding: 2px 7px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">แอป: <span class="app-version-display">v0.8.1</span></span>
+                <span id="pillMemberStatus" onclick="switchTab('membership')" style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.35); color: #fbbf24; padding: 2px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer;" title="คลิกเพื่อดูรายละเอียดและแพ็กเกจสมาชิก">👑 สมาชิก: VIP</span>
             </div>
             <div class="device-status-perms" style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
                 <span id="pillAccessStatus" class="perm-pill" style="color: #94a3b8; display: flex; align-items: center; gap: 4px;">
@@ -1947,8 +1951,217 @@
             </div>
         </div>
 
+        <!-- TAB: MEMBERSHIP (ระบบสมาชิก VIP) -->
+        <div class="tab-content" id="tab-membership">
+            <!-- VIP Member Status Card -->
+            <div class="config-card" style="background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(20, 24, 39, 0.8) 100%); border: 1px solid rgba(245, 158, 11, 0.4); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.1);">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);">
+                            👑
+                        </div>
+                        <div>
+                            <div style="font-size: 1.1rem; font-weight: 700; color: #fbbf24; display: flex; align-items: center; gap: 8px;">
+                                <span>CookieRun Bot VIP Member</span>
+                                <span id="badgeMemberPlan" style="font-size: 0.72rem; background: rgba(245, 158, 11, 0.2); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.4); padding: 2px 8px; border-radius: 99px;">
+                                    กำลังตรวจสอบ...
+                                </span>
+                            </div>
+                            <div style="font-size: 0.82rem; color: #cbd5e1; margin-top: 2px;" id="txtMemberEmailDisplay">
+                                บัญชี: กำลังเชื่อมต่อ...
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div id="badgeMemberStatusBox" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 99px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35); color: #34d399; font-weight: 700; font-size: 0.88rem;">
+                            <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
+                            <span id="txtMemberStatus">ใช้งานได้ปกติ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+                    <div>
+                        <div style="font-size: 0.76rem; color: #94a3b8; font-weight: 500;">⏳ เวลาการใช้งานที่เหลือ:</div>
+                        <div id="txtMemberRemainingTime" style="font-size: 1.35rem; font-weight: 800; color: #fde68a; margin-top: 2px;">
+                            --
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.76rem; color: #94a3b8; font-weight: 500;">📅 วันที่หมดอายุ:</div>
+                        <div id="txtMemberExpireDate" style="font-size: 1.05rem; font-weight: 600; color: #e2e8f0; margin-top: 4px;">
+                            --
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Packages Grid (1 วัน 15บ. / 7 วัน 90บ. / 30 วัน 350บ.) -->
+            <div style="margin-top: 20px; margin-bottom: 20px;">
+                <div style="font-size: 1rem; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+                    <span>💎</span> เลือกแพ็กเกจสมาชิก VIP (Subscription Plans)
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                    <!-- Plan 1: 1 วัน 15 บาท -->
+                    <div class="config-card" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; position: relative; border: 1px solid rgba(59, 130, 246, 0.3);">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div style="font-size: 1.5rem;">⚡</div>
+                                <span style="font-size: 0.72rem; background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); padding: 2px 8px; border-radius: 99px;">
+                                    แพ็กเกจรายวัน
+                                </span>
+                            </div>
+                            <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 4px;">1 วัน (24 ชั่วโมง)</h3>
+                            <div style="font-size: 1.8rem; font-weight: 800; color: #60a5fa; margin-bottom: 12px;">
+                                15 <span style="font-size: 0.95rem; font-weight: 500; color: #94a3b8;">บาท</span>
+                            </div>
+                            <ul style="font-size: 0.82rem; color: #cbd5e1; list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;">
+                                <li>✅ ปล่อยฟาร์ม 24 ชม. ไม่จำกัดรอบ</li>
+                                <li>✅ สตรีมจอสดผ่านคลาวด์</li>
+                                <li>✅ เหมาะสำหรับทดลองหรือฟาร์มเฉพาะวัน</li>
+                            </ul>
+                        </div>
+                        <button class="btn-copy-code" style="width: 100%; background: #2563eb; padding: 10px; font-size: 0.88rem; font-weight: 600;" onclick="selectPackageForPayment('1_DAY', '1 วัน (15 บาท)', 15)">
+                            🛒 เลือกแพ็กเกจ 1 วัน
+                        </button>
+                    </div>
+
+                    <!-- Plan 2: 7 วัน 90 บาท -->
+                    <div class="config-card" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; position: relative; border: 2px solid rgba(245, 158, 11, 0.5); background: linear-gradient(180deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);">
+                        <div style="position: absolute; top: -11px; right: 14px; background: linear-gradient(90deg, #f59e0b, #d97706); color: #000; font-size: 0.7rem; font-weight: 800; padding: 2px 10px; border-radius: 99px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+                            🌟 ยอดนิยม (ประหยัด 15บ.)
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div style="font-size: 1.5rem;">🌟</div>
+                                <span style="font-size: 0.72rem; background: rgba(245, 158, 11, 0.2); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.4); padding: 2px 8px; border-radius: 99px;">
+                                    แพ็กเกจ 1 สัปดาห์
+                                </span>
+                            </div>
+                            <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 4px;">7 วัน (1 สัปดาห์)</h3>
+                            <div style="font-size: 1.8rem; font-weight: 800; color: #fbbf24; margin-bottom: 12px;">
+                                90 <span style="font-size: 0.95rem; font-weight: 500; color: #94a3b8;">บาท</span>
+                                <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 400;">(~12 บ./วัน)</span>
+                            </div>
+                            <ul style="font-size: 0.82rem; color: #cbd5e1; list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;">
+                                <li>✅ ปล่อยฟาร์ม 7 วันเต็ม 24/7</li>
+                                <li>✅ ระบบสุ่มบูสต์ + ส่งหัวใจ + เก็บ Relic</li>
+                                <li>✅ ประหยัดและคุ้มค่าสำหรับ 1 สัปดาห์</li>
+                            </ul>
+                        </div>
+                        <button class="btn-copy-code" style="width: 100%; background: linear-gradient(135deg, #d97706, #b45309); padding: 10px; font-size: 0.88rem; font-weight: 700;" onclick="selectPackageForPayment('7_DAYS', '7 วัน (90 บาท)', 90)">
+                            🌟 เลือกแพ็กเกจ 7 วัน
+                        </button>
+                    </div>
+
+                    <!-- Plan 3: 30 วัน 350 บาท -->
+                    <div class="config-card" style="margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; position: relative; border: 2px solid rgba(168, 85, 247, 0.5); background: linear-gradient(180deg, rgba(46, 16, 101, 0.3) 0%, rgba(15, 23, 42, 0.9) 100%);">
+                        <div style="position: absolute; top: -11px; right: 14px; background: linear-gradient(90deg, #a855f7, #7c3aed); color: #fff; font-size: 0.7rem; font-weight: 800; padding: 2px 10px; border-radius: 99px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+                            👑 สุดคุ้ม (ประหยัด 100บ.)
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div style="font-size: 1.5rem;">👑</div>
+                                <span style="font-size: 0.72rem; background: rgba(168, 85, 247, 0.2); color: #e9d5ff; border: 1px solid rgba(168, 85, 247, 0.4); padding: 2px 8px; border-radius: 99px;">
+                                    แพ็กเกจรายเดือน
+                                </span>
+                            </div>
+                            <h3 style="font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 4px;">30 วัน (1 เดือน)</h3>
+                            <div style="font-size: 1.8rem; font-weight: 800; color: #c084fc; margin-bottom: 12px;">
+                                350 <span style="font-size: 0.95rem; font-weight: 500; color: #94a3b8;">บาท</span>
+                                <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 400;">(~11 บ./วัน)</span>
+                            </div>
+                            <ul style="font-size: 0.82rem; color: #cbd5e1; list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px;">
+                                <li>✅ ปล่อยฟาร์ม 30 วันเต็ม ไม่จำกัดรอบ 24/7</li>
+                                <li>✅ ปลดล็อกทุกฟีเจอร์ + แจ้งเตือน Discord ส่วนตัว</li>
+                                <li>✅ อัปเดตแพตช์และฟีเจอร์ก่อนใคร</li>
+                            </ul>
+                        </div>
+                        <button class="btn-copy-code" style="width: 100%; background: linear-gradient(135deg, #7c3aed, #6d28d9); padding: 10px; font-size: 0.88rem; font-weight: 700;" onclick="selectPackageForPayment('30_DAYS', '30 วัน (350 บาท)', 350)">
+                            👑 เลือกแพ็กเกจ 30 วัน
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activation / Redeem Code Section -->
+            <div class="config-card">
+                <div class="config-sec-title">
+                    <span>🔑</span> กรอกรหัสเปิดใช้งาน (Redeem License Key)
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
+                    หากคุณได้รับรหัส License Key จากการโอนเงินหรือกิจกรรม สามารถกรอกรหัสเพื่อเติมเวลาการใช้งานได้ทันที:
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="txtRedeemKeyInput" placeholder="เช่น CRB-30D-XXXXXX" class="config-text-input" style="flex: 1; min-width: 220px; font-family: monospace; font-size: 1rem; text-transform: uppercase;">
+                    <button class="btn-act btn-act-start" style="padding: 10px 22px; font-size: 0.9rem;" onclick="redeemLicenseKeyOnWeb()">
+                        ✨ ยืนยันการเติมสิทธิ์ (Redeem)
+                    </button>
+                </div>
+                <div id="txtRedeemResult" style="margin-top: 10px; font-size: 0.85rem; display: none;"></div>
+            </div>
+
+            <!-- Payment Instructions Section -->
+            <div class="config-card" id="paymentSectionCard">
+                <div class="config-sec-title">
+                    <span>💳</span> ช่องทางการชำระเงิน (PromptPay / โอนเงิน)
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; align-items: center;">
+                    <div>
+                        <div style="font-size: 0.88rem; color: #f1f5f9; font-weight: 600; margin-bottom: 6px;">
+                            ขั้นตอนการสั่งซื้อสิทธิ์สมาชิก:
+                        </div>
+                        <ol style="font-size: 0.82rem; color: var(--text-muted); padding-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                            <li>เลือกแพ็กเกจที่ต้องการ (1 วัน 15บ. / 7 วัน 90บ. / 30 วัน 350บ.)</li>
+                            <li>โอนเงินผ่านระบบพร้อมเพย์ (PromptPay) ตามยอดที่ระบุ</li>
+                            <li>ส่งสลิปหลักฐานการโอนเงินให้แอดมิน เพื่อรับ **License Key**</li>
+                            <li>นำรหัส Key มากด **Redeem** ในช่องด้านบนเพื่อเริ่มใช้งานทันที!</li>
+                        </ol>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); border: 1px dashed var(--border-card); border-radius: 12px; padding: 14px; text-align: center;">
+                        <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 4px;">พร้อมเพย์ (PromptPay)</div>
+                        <div style="font-size: 1.15rem; font-weight: 700; color: #38bdf8; font-family: monospace;">08X-XXX-XXXX</div>
+                        <div style="font-size: 0.78rem; color: #94a3b8; margin-top: 2px;">(ชื่อบัญชี: บอท CookieRun อัตโนมัติ)</div>
+                        <div style="margin-top: 8px;">
+                            <span style="font-size: 0.75rem; background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 3px 10px; border-radius: 99px;">
+                                💬 ติดต่อแอดมิน / ส่งสลิปทาง Line หรือ Discord
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ADMIN ONLY: License Key Generator -->
+            <div class="config-card" id="adminKeyGeneratorCard" style="border: 1px dashed rgba(239, 68, 68, 0.4); display: none;">
+                <div class="config-sec-title" style="color: #f87171;">
+                    <span>🛡️</span> จัดการ License Key (เฉพาะผู้ดูแลระบบ / แอดมิน)
+                </div>
+                <div style="font-size: 0.82rem; color: #94a3b8; margin-bottom: 12px;">
+                    สร้าง License Key สำหรับส่งให้ลูกค้า หรือเติม VIP ให้เครื่องนี้โดยตรง:
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;">
+                    <button class="btn-copy-code" style="background: #2563eb;" onclick="generateLicenseKey('1_DAY', 1, 15)">
+                        ⚡ สร้าง Key 1 วัน (15บ.)
+                    </button>
+                    <button class="btn-copy-code" style="background: #d97706;" onclick="generateLicenseKey('7_DAYS', 7, 90)">
+                        🌟 สร้าง Key 7 วัน (90บ.)
+                    </button>
+                    <button class="btn-copy-code" style="background: #7c3aed;" onclick="generateLicenseKey('30_DAYS', 30, 350)">
+                        👑 สร้าง Key 30 วัน (350บ.)
+                    </button>
+                    <button class="btn-copy-code" style="background: #059669;" onclick="quickAddVip(30, '30_DAYS')">
+                        ⚡ เติม VIP 30 วันให้เครื่องนี้ทันที
+                    </button>
+                </div>
+                <div id="adminKeyListContainer" style="max-height: 240px; overflow-y: auto; background: rgba(0,0,0,0.3); border-radius: 8px; padding: 10px; font-size: 0.78rem;">
+                    <div style="color: #64748b; text-align: center;">กำลังโหลดรายการคีย์ทั้งหมด...</div>
+                </div>
+            </div>
+        </div>
+
         <footer style="text-align: center; margin-top: 28px; padding: 18px 10px; font-size: 0.78rem; color: #64748b; border-top: 1px solid var(--border-card);">
-            CookieRunBot Cloud Dashboard • เวอร์ชันแดชบอร์ด: <span class="app-version-display" style="color: #94a3b8; font-weight: 600;">v0.8.0</span> • เวอร์ชันแอปที่เชื่อมต่อ: <span id="footerBotVersion" style="color: #60a5fa; font-weight: 600;">v0.8.0</span>
+            CookieRunBot Cloud Dashboard • เวอร์ชันแดชบอร์ด: <span class="app-version-display" style="color: #94a3b8; font-weight: 600;">v0.8.1</span> • เวอร์ชันแอปที่เชื่อมต่อ: <span id="footerBotVersion" style="color: #60a5fa; font-weight: 600;">v0.8.1</span>
         </footer>
 
     </main>
@@ -2976,6 +3189,300 @@
             if (data.device) {
                 applyDeviceStatus(data.device);
             }
+
+            if (data.membership) {
+                applyMembershipData(data.membership);
+            }
+        }
+
+        // ===================================================================
+        // VIP Membership & License Key Logic (1 วัน 15บ. / 7 วัน 90บ. / 30 วัน 350บ.)
+        // ===================================================================
+        function applyMembershipData(mem) {
+            if (!mem) return;
+            const pill = document.getElementById('pillMemberStatus');
+            const badgePlan = document.getElementById('badgeMemberPlan');
+            const txtEmail = document.getElementById('txtMemberEmailDisplay');
+            const statusBox = document.getElementById('badgeMemberStatusBox');
+            const txtStatus = document.getElementById('txtMemberStatus');
+            const txtRemain = document.getElementById('txtMemberRemainingTime');
+            const txtExpire = document.getElementById('txtMemberExpireDate');
+            const adminCard = document.getElementById('adminKeyGeneratorCard');
+
+            const isOwner = !!mem.isOwner || (currentUser && currentUser.email === 'tititada@gmail.com');
+            const isActive = isOwner || !!mem.isActive;
+            const remaining = isOwner ? 'VIP ตลอดชีพ (Lifetime)' : (mem.remainingTime || 'หมดอายุ');
+
+            if (pill) {
+                if (isActive) {
+                    pill.style.background = 'rgba(245, 158, 11, 0.15)';
+                    pill.style.borderColor = 'rgba(245, 158, 11, 0.35)';
+                    pill.style.color = '#fbbf24';
+                    pill.innerHTML = `👑 VIP: ${remaining}`;
+                } else {
+                    pill.style.background = 'rgba(239, 68, 68, 0.15)';
+                    pill.style.borderColor = 'rgba(239, 68, 68, 0.35)';
+                    pill.style.color = '#f87171';
+                    pill.innerHTML = `⚠️ สิทธิ์หมดอายุ (กดต่ออายุ)`;
+                }
+            }
+
+            if (badgePlan) {
+                badgePlan.innerText = isOwner ? '👑 VIP ตลอดชีพ (Owner)' : (mem.plan || 'FREE');
+            }
+            if (txtEmail) {
+                txtEmail.innerText = `บัญชี: ${currentUser ? currentUser.email : 'กำลังเชื่อมต่อ...'}`;
+            }
+
+            if (statusBox && txtStatus) {
+                if (isActive) {
+                    statusBox.style.background = 'rgba(16, 185, 129, 0.15)';
+                    statusBox.style.borderColor = 'rgba(16, 185, 129, 0.35)';
+                    statusBox.style.color = '#34d399';
+                    txtStatus.innerText = 'ใช้งานได้ปกติ (VIP Active)';
+                } else {
+                    statusBox.style.background = 'rgba(239, 68, 68, 0.15)';
+                    statusBox.style.borderColor = 'rgba(239, 68, 68, 0.35)';
+                    statusBox.style.color = '#f87171';
+                    txtStatus.innerText = 'หมดอายุแล้ว (Expired)';
+                }
+            }
+
+            if (txtRemain) {
+                txtRemain.innerText = remaining;
+                txtRemain.style.color = isActive ? '#fde68a' : '#f87171';
+            }
+
+            if (txtExpire) {
+                if (isOwner) {
+                    txtExpire.innerText = 'ไม่มีวันหมดอายุ (Permanent Lifetime)';
+                } else if (mem.expireAt && mem.expireAt > 0) {
+                    const d = new Date(mem.expireAt);
+                    txtExpire.innerText = d.toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' });
+                } else {
+                    txtExpire.innerText = 'ไม่มีข้อมูลการเปิดสิทธิ์';
+                }
+            }
+
+            if (adminCard) {
+                adminCard.style.display = isOwner ? 'block' : 'none';
+                if (isOwner && !window._keysLoaded) {
+                    window._keysLoaded = true;
+                    loadAllLicenseKeys();
+                }
+            }
+        }
+
+        function selectPackageForPayment(plan, name, price) {
+            const card = document.getElementById('paymentSectionCard');
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth' });
+                card.style.borderColor = '#fbbf24';
+                card.style.boxShadow = '0 0 15px rgba(245, 158, 11, 0.3)';
+                setTimeout(() => {
+                    card.style.borderColor = '';
+                    card.style.boxShadow = '';
+                }, 2000);
+            }
+            showToast(`🛒 เลือกแพ็กเกจ ${name} — กรุณาโอน ${price} บาท แล้วส่งสลิปเพื่อรับ Key ครับ`);
+        }
+
+        async function redeemLicenseKeyOnWeb() {
+            const inp = document.getElementById('txtRedeemKeyInput');
+            const resBox = document.getElementById('txtRedeemResult');
+            const rawKey = (inp ? inp.value : '').trim().toUpperCase();
+
+            if (!rawKey) {
+                showToast('กรุณากรอกรหัส License Key');
+                return;
+            }
+
+            if (resBox) {
+                resBox.style.display = 'block';
+                resBox.style.color = '#38bdf8';
+                resBox.innerText = '⏳ กำลังตรวจสอบรหัส Key...';
+            }
+
+            try {
+                const res = await fetch(`${FIREBASE_RTDB_URL}/license_keys/${rawKey}.json`);
+                if (!res.ok) throw new Error('ไม่สามารถตรวจสอบได้ (HTTP ' + res.status + ')');
+                const keyData = await res.json();
+
+                if (!keyData) {
+                    if (resBox) {
+                        resBox.style.color = '#f87171';
+                        resBox.innerText = '❌ ไม่พบรหัส License Key นี้ในระบบ กรุณาตรวจสอบตัวสะกด';
+                    }
+                    return;
+                }
+
+                if (keyData.used) {
+                    if (resBox) {
+                        resBox.style.color = '#f87171';
+                        resBox.innerText = `❌ รหัส Key นี้ถูกใช้งานไปแล้วเมื่อ ${new Date(keyData.usedAt).toLocaleString('th-TH')}`;
+                    }
+                    return;
+                }
+
+                const durationMs = keyData.durationMs || (keyData.days ? keyData.days * 86400000 : 86400000);
+                const now = Date.now();
+                const curExpire = (latestBotData && latestBotData.membership && latestBotData.membership.expireAt) ? latestBotData.membership.expireAt : 0;
+                const newExpire = Math.max(now, curExpire) + durationMs;
+                const userEmail = currentUser ? currentUser.email : pairingKey;
+
+                // 1. Mark key as used
+                await fetch(`${FIREBASE_RTDB_URL}/license_keys/${rawKey}.json`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        used: true,
+                        usedBy: userEmail,
+                        usedAt: now
+                    })
+                });
+
+                // 2. Update membership in bot DB
+                const memPayload = {
+                    isActive: true,
+                    plan: keyData.plan || 'VIP',
+                    expireAt: newExpire,
+                    lastRedeemedKey: rawKey,
+                    updatedAt: now
+                };
+
+                await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/membership.json`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(memPayload)
+                });
+
+                // 3. Send command to bot in real time
+                sendCloudCommand('SET_MEMBERSHIP', {
+                    expireAt: newExpire,
+                    plan: keyData.plan || 'VIP'
+                });
+
+                if (resBox) {
+                    resBox.style.color = '#34d399';
+                    resBox.innerText = `🎉 เติมสิทธิ์สมาชิกสำเร็จ! ได้รับสิทธิ์แพ็กเกจ ${keyData.planName || keyData.plan} (+${Math.round(durationMs / 86400000)} วัน)`;
+                }
+                showToast(`🎉 เติมสิทธิ์สมาชิก VIP สำเร็จ!`);
+                inp.value = '';
+
+                // Reload state & keys
+                setTimeout(fetchInitialBotState, 500);
+                loadAllLicenseKeys();
+            } catch (err) {
+                if (resBox) {
+                    resBox.style.color = '#f87171';
+                    resBox.innerText = '⚠️ เกิดข้อผิดพลาด: ' + err.message;
+                }
+            }
+        }
+
+        async function generateLicenseKey(plan, days, price) {
+            const rand = Math.random().toString(36).substring(2, 8).toUpperCase();
+            const planTag = plan === '1_DAY' ? '1D' : (plan === '7_DAYS' ? '7D' : '30D');
+            const key = `CRB-${planTag}-${rand}`;
+            const planName = `${days} วัน (${price} บาท)`;
+            const now = Date.now();
+            const durationMs = days * 86400000;
+
+            const payload = {
+                key: key,
+                plan: plan,
+                planName: planName,
+                days: days,
+                durationMs: durationMs,
+                price: price,
+                used: false,
+                createdAt: now,
+                createdBy: currentUser ? currentUser.email : 'admin'
+            };
+
+            try {
+                await fetch(`${FIREBASE_RTDB_URL}/license_keys/${key}.json`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                showToast(`✅ สร้าง Key สำเร็จ: ${key}`);
+                loadAllLicenseKeys();
+
+                // Put key in redeem input for convenience
+                const inp = document.getElementById('txtRedeemKeyInput');
+                if (inp) inp.value = key;
+            } catch (err) {
+                alert('เกิดข้อผิดพลาดในการสร้างคีย์: ' + err.message);
+            }
+        }
+
+        async function quickAddVip(days, plan) {
+            const now = Date.now();
+            const durationMs = days * 86400000;
+            const curExpire = (latestBotData && latestBotData.membership && latestBotData.membership.expireAt) ? latestBotData.membership.expireAt : 0;
+            const newExpire = Math.max(now, curExpire) + durationMs;
+
+            try {
+                await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/membership.json`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        isActive: true,
+                        plan: plan,
+                        expireAt: newExpire,
+                        updatedAt: now
+                    })
+                });
+
+                sendCloudCommand('SET_MEMBERSHIP', {
+                    expireAt: newExpire,
+                    plan: plan
+                });
+
+                showToast(`⚡ เติม VIP ${days} วันให้เครื่องนี้สำเร็จ!`);
+                setTimeout(fetchInitialBotState, 500);
+            } catch (err) {
+                alert('เกิดข้อผิดพลาด: ' + err.message);
+            }
+        }
+
+        async function loadAllLicenseKeys() {
+            const container = document.getElementById('adminKeyListContainer');
+            if (!container) return;
+
+            try {
+                const res = await fetch(`${FIREBASE_RTDB_URL}/license_keys.json`);
+                if (!res.ok) return;
+                const data = await res.json();
+                if (!data) {
+                    container.innerHTML = '<div style="color: #64748b; text-align: center;">ยังไม่มี License Key ในระบบ — กดปุ่มด้านบนเพื่อสร้างคีย์</div>';
+                    return;
+                }
+
+                const keys = Object.values(data).reverse();
+                let html = '<table style="width: 100%; border-collapse: collapse; font-size: 0.78rem;">';
+                html += '<tr style="color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.1);"><th style="text-align: left; padding: 4px;">Key</th><th style="text-align: left; padding: 4px;">แพ็กเกจ</th><th style="text-align: center; padding: 4px;">สถานะ</th><th style="text-align: right; padding: 4px;">การกระทำ</th></tr>';
+                keys.forEach(k => {
+                    const statusBadge = k.used 
+                        ? `<span style="color: #94a3b8;">⚪ ใช้แล้ว (${k.usedBy || '-'})</span>` 
+                        : `<span style="color: #34d399; font-weight: 700;">🟢 ยังไม่ใช้</span>`;
+                    html += `
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 6px 4px; font-family: monospace; font-weight: 700; color: #fde68a;">${k.key}</td>
+                            <td style="padding: 6px 4px; color: #cbd5e1;">${k.planName || k.plan}</td>
+                            <td style="padding: 6px 4px; text-align: center;">${statusBadge}</td>
+                            <td style="padding: 6px 4px; text-align: right;">
+                                <button onclick="navigator.clipboard.writeText('${k.key}'); showToast('📋 คัดลอก Key แล้ว: ${k.key}');" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; cursor: pointer;">
+                                    คัดลอก
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                html += '</table>';
+                container.innerHTML = html;
+            } catch (_) {}
         }
 
         function checkBotHeartbeat() {
@@ -3017,6 +3524,11 @@
             const botPill = document.getElementById('pillBotRunning');
 
             if (actUpper === 'START') {
+                if (latestBotData && latestBotData.membership && latestBotData.membership.isActive === false) {
+                    alert('⚠️ ไม่สามารถเริ่มบอทได้: สิทธิ์สมาชิกของคุณหมดอายุแล้ว\n\nกรุณาเลือกแพ็กเกจสมาชิก (1 วัน 15บ. / 7 วัน 90บ. / 30 วัน 350บ.) หรือกรอกรหัส Redeem License Key ที่แท็บ "👑 สมาชิก VIP" ครับ');
+                    switchTab('membership');
+                    return;
+                }
                 if (latestBotData && latestBotData.device && latestBotData.device.accessibility === false) {
                     alert('⚠️ ไม่สามารถเริ่มบอทได้: สิทธิ์การเข้าถึง (Accessibility Service) บนมือถือถูกปิดอยู่\n\n(เมื่อมีการอัปเดตแอป ระบบ Android จะปิดสิทธิ์นี้โดยอัตโนมัติ)\n\nกรุณาเปิดแอป CookieRunBot บนมือถือ แล้วกดเปิดสิทธิ์ "1. Accessibility Service" ให้เป็นสีเขียวก่อน แล้วจึงกดเริ่มบอทอีกครั้งครับ');
                     return;
@@ -3563,7 +4075,7 @@
                             el.innerText = 'v' + info.versionName;
                         });
                         const footVer = document.getElementById('footerBotVersion');
-                        if (footVer && footVer.innerText === 'v0.8.0') footVer.innerText = 'v' + info.versionName;
+                        if (footVer && footVer.innerText === 'v0.8.1') footVer.innerText = 'v' + info.versionName;
                     }
                 }
             } catch (e) {}
