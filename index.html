@@ -3489,11 +3489,8 @@
         }
 
         function contactAdminForSlip() {
-            alert('💬 ช่องทางติดต่อแอดมินเพื่อส่งสลิป:
-
-1. แจ้งสลิปหลักฐานการโอนเงิน
-2. ระบุอีเมล Google ของคุณ: ' + (currentUser ? currentUser.email : '-') + '
-3. แอดมินจะออกรหัส License Key (เช่น CRB-30D-XXXXXX) ให้คุณนำมากรอกในช่อง Redeem ด้านบนเพื่อเริ่มใช้งานทันทีครับ!');
+            const userEmail = (currentUser && currentUser.email) ? currentUser.email : '-';
+            alert(`💬 ช่องทางติดต่อแอดมินเพื่อส่งสลิป:\n\n1. แจ้งสลิปหลักฐานการโอนเงิน\n2. ระบุอีเมล Google ของคุณ: ${userEmail}\n3. แอดมินจะออกรหัส License Key (เช่น CRB-30D-XXXXXX) ให้คุณนำมากรอกในช่อง Redeem ด้านบนเพื่อเริ่มใช้งานทันทีครับ!`);
         }
 
         function focusRedeemInput() {
