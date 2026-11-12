@@ -1,6 +1,6 @@
 {
-  "versionCode": 26,
-  "versionName": "0.8.9",
-  "changelog": "- อัปเกรดระบบยืนยันตัวตนด้วย Firebase Auth + Google Play Services อย่างเป็นทางการ\n- แยกพื้นที่จัดเก็บข้อมูลด้วย User UID เฉพาะของแต่ละบัญชี ไม่ซ้อนทับกันอย่างเด็ดขาด\n- ระบบ Auto-Migrate ถ่ายโอนสถิติและเซสชันเดิมไปยังพื้นที่ UID อัตโนมัติ ปลอดภัย 100%\n- รองรับ Security Rules ระดับ Cloud Database บัญชีไหนเข้าถึงได้เฉพาะข้อมูลของตัวเอง",
+  "versionCode": 27,
+  "versionName": "0.9.0",
+  "changelog": "- แก้ไขคีย์จับคู่ Cloud Pairing Code ให้ตรงกันระหว่าง UID และ Account Owner\n- ปรับปรุงการเชื่อมต่อ HTTP Cloud ให้เปลี่ยนเป็นสีเขียว (เชื่อมต่อสำเร็จ) รวดเร็วภายใน 1-2 วินาที\n- ป้องกันการบล็อกการส่งข้อมูลสถิติเนื่องจากคีย์ไม่ตรงกัน",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
