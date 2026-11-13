@@ -1,6 +1,6 @@
 {
-  "versionCode": 31,
-  "versionName": "0.9.4",
-  "changelog": "- แก้ไขปัญหาปุ่มกดใน Discord ขึ้น 'The application didn't respond in time' 100% (แก้ไข Heartbeat JSON op:1 และตอบกลับ Interaction แบบทันที <50ms)\n- รองรับคำสั่ง /panel ใน Discord โดยไม่ต้องเปิด Privileged Intent",
+  "versionCode": 32,
+  "versionName": "0.9.5",
+  "changelog": "- ปรับปรุงระบบ Restart เกม (Force Stop รองรับ contentDescription + ปุ่มภาษาไทย และ Fallback ปิดผ่านหน้า Recents)\n- เพิ่ม Watchdog กู้คืนเมื่อค้าง (กด Back, Timeout PRE_GAME 2 นาที, IN_GAME 15 นาที) และ Log คะแนน Template 3 อันดับเมื่อหา Stage ไม่เจอ",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
