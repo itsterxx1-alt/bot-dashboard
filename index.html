@@ -1923,12 +1923,18 @@
                     </div>
                     <div class="config-inputs-grid" style="margin-bottom: 12px;">
                         <div class="config-input-box" style="grid-column: 1 / -1;">
-                            <label>🤖 Discord Bot Token (จาก Discord Developer Portal → Bot → Reset Token):</label>
-                            <input type="password" id="txtDiscordBotToken" oninput="debounceAutoSync()" placeholder="วาง Bot Token ที่นี่ (เช่น MTIzNDU2Nzg5...)" class="config-text-input" style="font-family: monospace;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <label style="margin-bottom: 0;">🤖 Discord Bot Token (จาก Discord Developer Portal → Bot → Reset Token):</label>
+                                <div style="display: flex; gap: 6px;">
+                                    <button type="button" onclick="toggleDiscordTokenVisibility()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #cbd5e1; padding: 2px 8px; border-radius: 6px; font-size: 0.72rem; cursor: pointer;" id="btnToggleTokenVis">👁️ ซ่อน/แสดง</button>
+                                    <button type="button" onclick="clearDiscordBotInputs()" style="background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.35); color: #fca5a5; padding: 2px 8px; border-radius: 6px; font-size: 0.72rem; cursor: pointer;">🗑️ ล้างค่า</button>
+                                </div>
+                            </div>
+                            <input type="text" id="txtDiscordBotToken" autocomplete="off" spellcheck="false" oninput="onDiscordInputEdited()" placeholder="วาง Bot Token ที่นี่ (เช่น MTIzNDU2Nzg5...)" class="config-text-input" style="font-family: monospace;">
                         </div>
                         <div class="config-input-box" style="grid-column: 1 / -1;">
-                            <label>📌 Discord Channel ID (คลิกขวาที่ห้องแชท → คัดลอก ID ช่อง):</label>
-                            <input type="text" id="txtDiscordChannelId" oninput="debounceAutoSync()" placeholder="เช่น 1234567890123456789" class="config-text-input" style="font-family: monospace;">
+                            <label>📌 Discord Channel ID (คลิกขวาที่ชื่อห้องแชท → คัดลอก ID ช่อง):</label>
+                            <input type="text" id="txtDiscordChannelId" autocomplete="off" spellcheck="false" oninput="onDiscordInputEdited()" placeholder="เช่น 1234567890123456789" class="config-text-input" style="font-family: monospace;">
                         </div>
                     </div>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
@@ -2773,14 +2779,19 @@
 
             const keyAtStart = pairingKey;
             try {
-                const [resState, resMem] = await Promise.all([
+                const [resState, resMem, resCfg] = await Promise.all([
                     fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/state.json`),
-                    fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/membership.json`).catch(() => null)
+                    fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/membership.json`).catch(() => null),
+                    fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/config.json`).catch(() => null)
                 ]);
 
                 let memData = null;
                 if (resMem && resMem.ok) {
                     try { memData = await resMem.json(); } catch(e){}
+                }
+                let savedCfg = null;
+                if (resCfg && resCfg.ok) {
+                    try { savedCfg = await resCfg.json(); } catch(e){}
                 }
                 if (!memData && currentUser && currentUser.email) {
                     const legacyKey = sanitizeKey(currentUser.email);
@@ -2808,10 +2819,20 @@
                         if (memData) {
                             botData.membership = Object.assign({}, botData.membership || {}, memData);
                         }
+                        if (savedCfg && typeof savedCfg === 'object') {
+                            const mergedCfg = Object.assign({}, savedCfg, botData.config || {});
+                            if (savedCfg.discordBotToken && !mergedCfg.discordBotToken) mergedCfg.discordBotToken = savedCfg.discordBotToken;
+                            if (savedCfg.discordChannelId && !mergedCfg.discordChannelId) mergedCfg.discordChannelId = savedCfg.discordChannelId;
+                            if (savedCfg.discordWebhookUrl && !mergedCfg.discordWebhookUrl) mergedCfg.discordWebhookUrl = savedCfg.discordWebhookUrl;
+                            botData.config = mergedCfg;
+                        }
                         applyBotData(botData);
                         console.log('✅ Instant state applied from Google Firebase:', botData);
                         return;
                     }
+                }
+                if (savedCfg && typeof savedCfg === 'object') {
+                    applyBotConfig(savedCfg);
                 }
                 if (memData) {
                     applyMembershipData(memData);
@@ -4131,16 +4152,52 @@
         }
 
         let autoSyncTimer = null;
+        let lastConfigEditTime = 0;
 
         function autoSyncSetting() {
+            lastConfigEditTime = Date.now();
             saveFarmSettings(true);
         }
 
         function debounceAutoSync() {
+            lastConfigEditTime = Date.now();
             if (autoSyncTimer) clearTimeout(autoSyncTimer);
             autoSyncTimer = setTimeout(() => {
                 saveFarmSettings(true);
-            }, 250);
+            }, 400);
+        }
+
+        function onDiscordInputEdited() {
+            lastConfigEditTime = Date.now();
+            const tokenEl = document.getElementById('txtDiscordBotToken');
+            const chanEl = document.getElementById('txtDiscordChannelId');
+            try {
+                const cacheKey = 'crb_discord_cfg_' + (pairingKey || 'default');
+                const cur = JSON.parse(localStorage.getItem(cacheKey) || '{}');
+                if (tokenEl) cur.discordBotToken = tokenEl.value.trim();
+                if (chanEl) cur.discordChannelId = chanEl.value.trim();
+                localStorage.setItem(cacheKey, JSON.stringify(cur));
+            } catch (_) {}
+            debounceAutoSync();
+        }
+
+        function toggleDiscordTokenVisibility() {
+            const el = document.getElementById('txtDiscordBotToken');
+            if (!el) return;
+            el.type = (el.type === 'password') ? 'text' : 'password';
+        }
+
+        async function clearDiscordBotInputs() {
+            const tokenEl = document.getElementById('txtDiscordBotToken');
+            const chanEl = document.getElementById('txtDiscordChannelId');
+            if (tokenEl) tokenEl.value = '';
+            if (chanEl) chanEl.value = '';
+            try {
+                localStorage.removeItem('crb_discord_cfg_' + (pairingKey || 'default'));
+            } catch (_) {}
+            lastConfigEditTime = Date.now();
+            await saveFarmSettings(true, true);
+            showToast('🗑️ ล้างค่า Discord Bot Token และ Channel ID แล้ว');
         }
 
         function applyDeviceStatus(dev) {
@@ -4166,6 +4223,9 @@
 
         function applyBotConfig(cfg) {
             if (!cfg) return;
+            // ห้ามเขียนทับค่าในฟอร์มขณะที่ผู้ใช้กำลังพิมพ์หรือเพิ่งวางข้อความ (ภายใน 6 วินาที)
+            if (Date.now() - lastConfigEditTime < 6000) return;
+
             const isFocused = (id) => document.activeElement && document.activeElement.id === id;
 
             const setChk = (id, val) => {
@@ -4176,6 +4236,23 @@
                 const el = document.getElementById(id);
                 if (el && val !== undefined && val !== null && !isFocused(id)) el.value = val;
             };
+            // สำหรับช่อง Token / Channel ID / Webhook: ห้ามนำค่าว่าง ("") จาก state เก่ามาลบค่าที่ผู้ใช้กรอกไว้เด็ดขาด
+            const setValPreserveNonEmpty = (id, val, fallbackVal) => {
+                const el = document.getElementById(id);
+                if (!el || isFocused(id)) return;
+                const incoming = (val !== undefined && val !== null) ? String(val).trim() : '';
+                const fb = (fallbackVal !== undefined && fallbackVal !== null) ? String(fallbackVal).trim() : '';
+                if (incoming.length > 0) {
+                    el.value = incoming;
+                } else if (el.value.trim().length === 0 && fb.length > 0) {
+                    el.value = fb;
+                }
+            };
+
+            let cachedDiscord = {};
+            try {
+                cachedDiscord = JSON.parse(localStorage.getItem('crb_discord_cfg_' + (pairingKey || 'default')) || '{}');
+            } catch (_) {}
 
             setChk('chkUseDesiredRandomBoost', cfg.useDesiredRandomBoost);
             setVal('selDesiredBoostId', cfg.desiredBoostId || 'double_coins');
@@ -4195,17 +4272,35 @@
             setChk('chkStopGoalTimeEnabled', cfg.stopGoalTimeEnabled);
             setVal('numStopGoalTimeHours', cfg.stopGoalTimeHours ?? 2.0);
             setChk('chkDiscordEnabled', cfg.discordEnabled);
-            setVal('txtDiscordWebhookUrl', cfg.discordWebhookUrl || '');
+            setValPreserveNonEmpty('txtDiscordWebhookUrl', cfg.discordWebhookUrl, cachedDiscord.discordWebhookUrl);
             setChk('chkAttachScreenshot', cfg.attachScreenshot);
             setChk('chkNotifyRounds', cfg.notifyRounds);
             setChk('chkNotifyBoxes', cfg.notifyBoxes);
             setChk('chkNotifyAntibot', cfg.notifyAntibot);
             setChk('chkDiscordControlEnabled', cfg.discordControlEnabled ?? true);
-            setVal('txtDiscordBotToken', cfg.discordBotToken || '');
-            setVal('txtDiscordChannelId', cfg.discordChannelId || '');
+            setValPreserveNonEmpty('txtDiscordBotToken', cfg.discordBotToken, cachedDiscord.discordBotToken);
+            setValPreserveNonEmpty('txtDiscordChannelId', cfg.discordChannelId, cachedDiscord.discordChannelId);
         }
 
-        async function saveFarmSettings(silent = false) {
+        async function saveFarmSettings(silent = false, forceClearDiscord = false) {
+            lastConfigEditTime = Date.now();
+            const tokenVal = document.getElementById('txtDiscordBotToken').value.trim();
+            const chanVal = document.getElementById('txtDiscordChannelId').value.trim();
+            const webhookVal = document.getElementById('txtDiscordWebhookUrl').value.trim();
+
+            try {
+                const cacheKey = 'crb_discord_cfg_' + (pairingKey || 'default');
+                if (forceClearDiscord) {
+                    localStorage.removeItem(cacheKey);
+                } else {
+                    const cur = JSON.parse(localStorage.getItem(cacheKey) || '{}');
+                    if (tokenVal) cur.discordBotToken = tokenVal;
+                    if (chanVal) cur.discordChannelId = chanVal;
+                    if (webhookVal) cur.discordWebhookUrl = webhookVal;
+                    localStorage.setItem(cacheKey, JSON.stringify(cur));
+                }
+            } catch (_) {}
+
             const configPayload = {
                 useDesiredRandomBoost: document.getElementById('chkUseDesiredRandomBoost').checked,
                 desiredBoostId: document.getElementById('selDesiredBoostId').value,
@@ -4225,23 +4320,35 @@
                 stopGoalTimeEnabled: document.getElementById('chkStopGoalTimeEnabled').checked,
                 stopGoalTimeHours: parseFloat(document.getElementById('numStopGoalTimeHours').value) || 2.0,
                 discordEnabled: document.getElementById('chkDiscordEnabled').checked,
-                discordWebhookUrl: document.getElementById('txtDiscordWebhookUrl').value.trim(),
+                discordWebhookUrl: webhookVal,
                 attachScreenshot: document.getElementById('chkAttachScreenshot').checked,
                 notifyRounds: document.getElementById('chkNotifyRounds').checked,
                 notifyBoxes: document.getElementById('chkNotifyBoxes').checked,
                 notifyAntibot: document.getElementById('chkNotifyAntibot').checked,
                 discordControlEnabled: document.getElementById('chkDiscordControlEnabled').checked,
-                discordBotToken: document.getElementById('txtDiscordBotToken').value.trim(),
-                discordChannelId: document.getElementById('txtDiscordChannelId').value.trim()
+                discordBotToken: tokenVal,
+                discordChannelId: chanVal,
+                clearDiscordToken: forceClearDiscord
             };
 
-            // Save to Firebase RTDB for persistent dashboard cache
+            if (latestBotData) {
+                latestBotData.config = Object.assign({}, latestBotData.config || {}, configPayload);
+            }
+
+            // Save to Firebase RTDB (/config.json AND /state/config.json) so incoming SSE never reverts to empty
             try {
-                await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/config.json`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json; charset=utf-8' },
-                    body: JSON.stringify(configPayload)
-                });
+                await Promise.all([
+                    fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/config.json`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                        body: JSON.stringify(configPayload)
+                    }),
+                    fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/state/config.json`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                        body: JSON.stringify(configPayload)
+                    }).catch(() => null)
+                ]);
             } catch (_) {}
 
             // Send UPDATE_CONFIG command directly to bot
