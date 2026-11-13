@@ -1,6 +1,6 @@
 {
-  "versionCode": 30,
-  "versionName": "0.9.3",
-  "changelog": "- เพิ่มระบบแผงควบคุมบอทผ่าน Discord (Interactive Discord Control Panel) ควบคู่กับหน้าเว็บ 100%\n- รองรับปุ่มกดเริ่ม/หยุดบอท, แคปหน้าจอสด, สลับตั้งค่าฟาร์ม, ดูเซสชันตลอดกาลย้อนหลัง และหน้าต่างป๊อปอัปเติมคีย์ VIP ใน Discord โดยไม่กินโควตา Cloud",
+  "versionCode": 31,
+  "versionName": "0.9.4",
+  "changelog": "- แก้ไขปัญหาปุ่มกดใน Discord ขึ้น 'The application didn't respond in time' 100% (แก้ไข Heartbeat JSON op:1 และตอบกลับ Interaction แบบทันที <50ms)\n- รองรับคำสั่ง /panel ใน Discord โดยไม่ต้องเปิด Privileged Intent",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
