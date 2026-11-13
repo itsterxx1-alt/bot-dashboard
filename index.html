@@ -2751,9 +2751,9 @@
             const vUnlinked = document.getElementById('viewUnlinked');
             const vDash = document.getElementById('viewDashboard');
 
-            if (vLogin) vLogin.style.display = (viewName === 'login') ? 'flex' : 'none';
-            if (vUnlinked) vUnlinked.style.display = (viewName === 'unlinked') ? 'flex' : 'none';
-            if (vDash) vDash.style.display = (viewName === 'dashboard') ? 'block' : 'none';
+            if (vLogin) vLogin.style.setProperty('display', (viewName === 'login') ? 'flex' : 'none', 'important');
+            if (vUnlinked) vUnlinked.style.setProperty('display', (viewName === 'unlinked') ? 'flex' : 'none', 'important');
+            if (vDash) vDash.style.setProperty('display', (viewName === 'dashboard') ? 'block' : 'none', 'important');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -2980,7 +2980,11 @@
 
             const setTxt = (id, val) => {
                 const el = document.getElementById(id);
-                if (el) el.innerText = val;
+                if (el && el.dataset.lastVal !== String(val)) {
+                    el.dataset.lastVal = String(val);
+                    el.innerText = val;
+                    if (typeof upgradeEmojisTo8Bit === 'function') upgradeEmojisTo8Bit(el);
+                }
             };
 
             // Current Session
@@ -3035,7 +3039,8 @@
             setTxt('histLifetimeXp', '+0');
             setTxt('histLifetimeBoxes', '0 กล่อง');
 
-            // Legacy elements
+            // Legacy elements (safe helper)
+            const updateElementText = setTxt;
             updateElementText('txtTotalRounds', '0');
             updateElementText('txtTotalCoins', '0');
             updateElementText('txtTotalXp', '0');
@@ -3067,16 +3072,14 @@
 
             const botPill = document.getElementById('pillBotRunning');
             if (botPill) {
-                botPill.style.color = '#94a3b8';
+                botPill.style.color = '#6D4C41';
                 botPill.innerText = '⏹ บอทหยุด (IDLE)';
             }
             updateBotOnlineStatus(false);
         }
 
         async function handleLogout() {
-            try {
-                if (fbAuth) await fbAuth.signOut();
-            } catch (e) {}
+            // 1. Immediately clear localStorage & prehide style FIRST so onAuthStateChanged never blocks logout
             const preStyle = document.getElementById('prehideStyle');
             if (preStyle) preStyle.remove();
 
@@ -3091,7 +3094,16 @@
             window._promptedMembership = false;
             window._keysLoaded = false;
 
-            resetDashboardUiState();
+            // 2. Immediately switch to Login View and close any modal
+            stopCloudSync();
+            closeGoogleAuthModal();
+            showView('login');
+
+            try {
+                resetDashboardUiState();
+            } catch (e) {
+                console.warn('resetDashboardUiState warning:', e);
+            }
 
             const lbl = document.getElementById('googleBtnLabel');
             if (lbl) lbl.innerText = 'เข้าสู่ระบบ';
@@ -3105,10 +3117,12 @@
             const loggedOutView = document.getElementById('googleLoggedOutView');
             if (loggedOutView) loggedOutView.style.display = 'block';
 
-            stopCloudSync();
-            closeGoogleAuthModal();
+            // 3. Sign out from Firebase Auth in background and ensure Login screen stays visible
+            try {
+                if (fbAuth) await fbAuth.signOut();
+            } catch (e) {}
             showView('login');
-            showToast('ออกจากระบบเรียบร้อย');
+            showToast('🚪 ออกจากระบบเรียบร้อยแล้ว');
         }
 
         function logoutGoogle() {
@@ -3608,7 +3622,11 @@
 
             const setTxt = (id, val) => {
                 const el = document.getElementById(id);
-                if (el) el.innerText = val;
+                if (el && el.dataset.lastVal !== String(val)) {
+                    el.dataset.lastVal = String(val);
+                    el.innerText = val;
+                    if (typeof upgradeEmojisTo8Bit === 'function') upgradeEmojisTo8Bit(el);
+                }
             };
 
             // 1. Current Session Stats
@@ -5358,9 +5376,172 @@
         }
 
         // ===================================================================
+        // UNIVERSAL 8-BIT PIXEL ART ICON ENGINE (แปลงทุกไอคอนบนเว็บเป็น 8-Bit SVG)
+        // ===================================================================
+        const PIXEL_ICON_SVG_MAP = {
+            '🍪': `<rect x="5" y="1" width="6" height="2" fill="#D97706"/><rect x="3" y="3" width="10" height="2" fill="#D97706"/><rect x="2" y="5" width="12" height="6" fill="#D97706"/><rect x="3" y="11" width="10" height="2" fill="#B45309"/><rect x="5" y="13" width="6" height="2" fill="#8B5A2B"/><rect x="5" y="4" width="2" height="2" fill="#3E2723"/><rect x="10" y="5" width="2" height="2" fill="#3E2723"/><rect x="4" y="9" width="2" height="2" fill="#3E2723"/><rect x="8" y="8" width="2" height="2" fill="#3E2723"/><rect x="11" y="10" width="2" height="2" fill="#3E2723"/><rect x="6" y="2" width="2" height="1" fill="#FDE68A"/>`,
+            '🏆': `<rect x="3" y="2" width="10" height="2" fill="#F59E0B"/><rect x="2" y="4" width="12" height="3" fill="#FBBF24"/><rect x="4" y="7" width="8" height="3" fill="#D97706"/><rect x="6" y="10" width="4" height="2" fill="#B45309"/><rect x="4" y="12" width="8" height="2" fill="#78350F"/><rect x="6" y="4" width="2" height="2" fill="#FEF3C7"/>`,
+            '🏃': `<rect x="6" y="1" width="4" height="3" fill="#D97706"/><rect x="7" y="2" width="2" height="1" fill="#FEF3C7"/><rect x="5" y="4" width="6" height="4" fill="#8B5A2B"/><rect x="3" y="5" width="2" height="2" fill="#D97706"/><rect x="11" y="4" width="2" height="2" fill="#D97706"/><rect x="4" y="8" width="3" height="4" fill="#5C3A21"/><rect x="9" y="8" width="3" height="4" fill="#5C3A21"/><rect x="3" y="12" width="3" height="2" fill="#3E2723"/><rect x="10" y="11" width="3" height="2" fill="#3E2723"/>`,
+            '🦘': `<rect x="6" y="1" width="4" height="3" fill="#F59E0B"/><rect x="4" y="4" width="8" height="4" fill="#D97706"/><rect x="3" y="8" width="4" height="3" fill="#8B5A2B"/><rect x="9" y="7" width="4" height="3" fill="#8B5A2B"/><rect x="6" y="12" width="4" height="2" fill="#22C55E"/><rect x="4" y="14" width="8" height="1" fill="#16A34A"/>`,
+            '🪙': `<rect x="5" y="1" width="6" height="2" fill="#F59E0B"/><rect x="3" y="3" width="10" height="10" fill="#FBBF24"/><rect x="5" y="13" width="6" height="2" fill="#D97706"/><rect x="5" y="3" width="6" height="10" fill="#FDE047"/><rect x="7" y="5" width="2" height="6" fill="#B45309"/><rect x="6" y="4" width="1" height="2" fill="#FFFFFF"/>`,
+            '⭐': `<rect x="7" y="1" width="2" height="3" fill="#F59E0B"/><rect x="6" y="4" width="4" height="2" fill="#FBBF24"/><rect x="2" y="6" width="12" height="2" fill="#FBBF24"/><rect x="4" y="8" width="8" height="3" fill="#F59E0B"/><rect x="3" y="11" width="3" height="3" fill="#D97706"/><rect x="10" y="11" width="3" height="3" fill="#D97706"/><rect x="7" y="6" width="2" height="3" fill="#FEF9C3"/>`,
+            '🌟': `<rect x="7" y="1" width="2" height="14" fill="#F59E0B"/><rect x="1" y="7" width="14" height="2" fill="#F59E0B"/><rect x="4" y="4" width="8" height="8" fill="#FDE047"/><rect x="6" y="6" width="4" height="4" fill="#FFFFFF"/>`,
+            '✨': `<rect x="7" y="1" width="2" height="10" fill="#FBBF24"/><rect x="3" y="5" width="10" height="2" fill="#FBBF24"/><rect x="6" y="4" width="4" height="4" fill="#FEF9C3"/><rect x="11" y="10" width="2" height="4" fill="#F59E0B"/><rect x="10" y="11" width="4" height="2" fill="#FDE047"/>`,
+            '📦': `<rect x="2" y="3" width="12" height="11" fill="#8B5A2B"/><rect x="3" y="4" width="10" height="3" fill="#A06B3B"/><rect x="2" y="7" width="12" height="2" fill="#5C3A21"/><rect x="7" y="3" width="2" height="11" fill="#F59E0B"/><rect x="6" y="6" width="4" height="4" fill="#FDE68A"/>`,
+            '🎁': `<rect x="2" y="5" width="12" height="9" fill="#DC2626"/><rect x="1" y="4" width="14" height="3" fill="#EF4444"/><rect x="7" y="4" width="2" height="10" fill="#FBBF24"/><rect x="2" y="9" width="12" height="2" fill="#FBBF24"/><rect x="5" y="2" width="2" height="2" fill="#FDE047"/><rect x="9" y="2" width="2" height="2" fill="#FDE047"/>`,
+            '🪵': `<rect x="2" y="4" width="12" height="10" fill="#8B5A2B"/><rect x="3" y="5" width="10" height="3" fill="#A06B3B"/><rect x="2" y="8" width="12" height="2" fill="#4A2C17"/><rect x="7" y="7" width="2" height="4" fill="#D97706"/>`,
+            '🥈': `<rect x="2" y="4" width="12" height="10" fill="#64748B"/><rect x="3" y="5" width="10" height="3" fill="#CBD5E1"/><rect x="2" y="8" width="12" height="2" fill="#334155"/><rect x="7" y="7" width="2" height="4" fill="#38BDF8"/>`,
+            '🥇': `<rect x="2" y="4" width="12" height="10" fill="#D97706"/><rect x="3" y="5" width="10" height="3" fill="#FBBF24"/><rect x="2" y="8" width="12" height="2" fill="#92400E"/><rect x="7" y="7" width="2" height="4" fill="#EF4444"/>`,
+            '🌈': `<rect x="2" y="4" width="12" height="3" fill="#EC4899"/><rect x="2" y="7" width="12" height="3" fill="#8B5CF6"/><rect x="2" y="10" width="12" height="4" fill="#3B82F6"/><rect x="7" y="6" width="2" height="5" fill="#FDE047"/>`,
+            '👑': `<rect x="2" y="4" width="2" height="6" fill="#F59E0B"/><rect x="7" y="2" width="2" height="8" fill="#FBBF24"/><rect x="12" y="4" width="2" height="6" fill="#F59E0B"/><rect x="4" y="6" width="3" height="4" fill="#D97706"/><rect x="9" y="6" width="3" height="4" fill="#D97706"/><rect x="2" y="10" width="12" height="3" fill="#B45309"/><rect x="7" y="9" width="2" height="2" fill="#EF4444"/>`,
+            '🛡️': `<rect x="3" y="2" width="10" height="3" fill="#EF4444"/><rect x="3" y="5" width="10" height="5" fill="#DC2626"/><rect x="5" y="10" width="6" height="3" fill="#B91C1C"/><rect x="7" y="13" width="2" height="2" fill="#7F1D1D"/><rect x="7" y="4" width="2" height="6" fill="#FDE68A"/><rect x="5" y="6" width="6" height="2" fill="#FDE68A"/>`,
+            '🎮': `<rect x="2" y="4" width="12" height="8" fill="#5C3A21"/><rect x="3" y="5" width="10" height="6" fill="#F5E6D3"/><rect x="4" y="7" width="3" height="1" fill="#3E2723"/><rect x="5" y="6" width="1" height="3" fill="#3E2723"/><rect x="10" y="6" width="2" height="1" fill="#DC2626"/><rect x="9" y="8" width="2" height="1" fill="#2563EB"/>`,
+            '📜': `<rect x="3" y="2" width="10" height="12" fill="#F5E6D3"/><rect x="2" y="2" width="12" height="2" fill="#D97706"/><rect x="2" y="12" width="12" height="2" fill="#D97706"/><rect x="5" y="5" width="6" height="1" fill="#5C3A21"/><rect x="5" y="7" width="6" height="1" fill="#5C3A21"/><rect x="5" y="9" width="4" height="1" fill="#5C3A21"/>`,
+            '📋': `<rect x="3" y="3" width="10" height="11" fill="#8B5A2B"/><rect x="4" y="4" width="8" height="9" fill="#FFF8EE"/><rect x="6" y="1" width="4" height="3" fill="#D97706"/><rect x="5" y="6" width="6" height="1" fill="#5C3A21"/><rect x="5" y="8" width="6" height="1" fill="#5C3A21"/><rect x="5" y="10" width="4" height="1" fill="#5C3A21"/>`,
+            '🔑': `<rect x="2" y="5" width="6" height="6" fill="#F59E0B"/><rect x="4" y="7" width="2" height="2" fill="#3E2723"/><rect x="8" y="7" width="6" height="2" fill="#FBBF24"/><rect x="10" y="9" width="2" height="3" fill="#D97706"/><rect x="13" y="9" width="1" height="2" fill="#D97706"/>`,
+            '🔐': `<rect x="4" y="2" width="8" height="5" fill="#94A3B8"/><rect x="6" y="4" width="4" height="3" fill="#FFF8EE"/><rect x="3" y="7" width="10" height="7" fill="#F59E0B"/><rect x="7" y="9" width="2" height="3" fill="#3E2723"/>`,
+            '🔒': `<rect x="5" y="2" width="6" height="5" fill="#94A3B8"/><rect x="6" y="4" width="4" height="3" fill="#3E2723"/><rect x="3" y="7" width="10" height="7" fill="#F59E0B"/><rect x="4" y="8" width="8" height="5" fill="#FBBF24"/><rect x="7" y="9" width="2" height="3" fill="#3E2723"/>`,
+            '📱': `<rect x="4" y="1" width="8" height="14" fill="#3E2723"/><rect x="5" y="3" width="6" height="9" fill="#38BDF8"/><rect x="6" y="4" width="3" height="2" fill="#BAE6FD"/><rect x="7" y="13" width="2" height="1" fill="#F5E6D3"/>`,
+            '📲': `<rect x="4" y="1" width="8" height="14" fill="#3E2723"/><rect x="5" y="3" width="6" height="9" fill="#22C55E"/><rect x="7" y="5" width="2" height="4" fill="#FFFFFF"/><rect x="6" y="7" width="4" height="2" fill="#FFFFFF"/><rect x="7" y="13" width="2" height="1" fill="#F5E6D3"/>`,
+            '▶': `<rect x="4" y="2" width="2" height="12" fill="currentColor"/><rect x="6" y="4" width="2" height="8" fill="currentColor"/><rect x="8" y="5" width="2" height="6" fill="currentColor"/><rect x="10" y="7" width="2" height="2" fill="currentColor"/>`,
+            '▶️': `<rect x="2" y="2" width="12" height="12" fill="#16A34A"/><rect x="5" y="4" width="2" height="8" fill="#FFFFFF"/><rect x="7" y="5" width="2" height="6" fill="#FFFFFF"/><rect x="9" y="7" width="2" height="2" fill="#FFFFFF"/>`,
+            '⏹': `<rect x="3" y="3" width="10" height="10" fill="currentColor"/>`,
+            '⏸': `<rect x="4" y="3" width="3" height="10" fill="currentColor"/><rect x="9" y="3" width="3" height="10" fill="currentColor"/>`,
+            '➕': `<rect x="7" y="2" width="2" height="12" fill="currentColor"/><rect x="2" y="7" width="12" height="2" fill="currentColor"/>`,
+            '🔄': `<rect x="4" y="2" width="8" height="2" fill="#38BDF8"/><rect x="10" y="4" width="3" height="4" fill="#38BDF8"/><rect x="4" y="12" width="8" height="2" fill="#0284C7"/><rect x="3" y="8" width="3" height="4" fill="#0284C7"/><rect x="11" y="1" width="2" height="3" fill="#BAE6FD"/><rect x="3" y="12" width="2" height="3" fill="#BAE6FD"/>`,
+            '🔔': `<rect x="6" y="1" width="4" height="2" fill="#F59E0B"/><rect x="4" y="3" width="8" height="6" fill="#FBBF24"/><rect x="2" y="9" width="12" height="3" fill="#D97706"/><rect x="6" y="13" width="4" height="2" fill="#B45309"/>`,
+            '📢': `<rect x="2" y="6" width="4" height="4" fill="#EF4444"/><rect x="6" y="4" width="4" height="8" fill="#F59E0B"/><rect x="10" y="2" width="3" height="12" fill="#FBBF24"/><rect x="4" y="10" width="2" height="4" fill="#5C3A21"/>`,
+            '🚀': `<rect x="7" y="1" width="2" height="3" fill="#EF4444"/><rect x="5" y="4" width="6" height="6" fill="#F8FAFC"/><rect x="7" y="6" width="2" height="2" fill="#38BDF8"/><rect x="3" y="8" width="2" height="3" fill="#DC2626"/><rect x="11" y="8" width="2" height="3" fill="#DC2626"/><rect x="6" y="10" width="4" height="4" fill="#F59E0B"/>`,
+            '⚡': `<rect x="8" y="1" width="4" height="3" fill="#FDE047"/><rect x="6" y="4" width="4" height="3" fill="#FBBF24"/><rect x="4" y="7" width="8" height="2" fill="#F59E0B"/><rect x="6" y="9" width="4" height="3" fill="#FBBF24"/><rect x="4" y="12" width="4" height="3" fill="#D97706"/>`,
+            '📥': `<rect x="7" y="2" width="2" height="7" fill="#4ADE80"/><rect x="5" y="7" width="6" height="2" fill="#4ADE80"/><rect x="6" y="9" width="4" height="2" fill="#22C55E"/><rect x="2" y="11" width="12" height="3" fill="#D97706"/>`,
+            '💾': `<rect x="2" y="2" width="12" height="12" fill="#2563EB"/><rect x="4" y="2" width="6" height="4" fill="#E2E8F0"/><rect x="8" y="3" width="1" height="2" fill="#1E293B"/><rect x="4" y="8" width="8" height="6" fill="#FFF8EE"/><rect x="5" y="10" width="6" height="1" fill="#94A3B8"/>`,
+            '🚪': `<rect x="4" y="1" width="8" height="14" fill="#8B5A2B"/><rect x="5" y="2" width="6" height="12" fill="#A06B3B"/><rect x="9" y="7" width="2" height="2" fill="#FBBF24"/>`,
+            '🗑️': `<rect x="5" y="1" width="6" height="2" fill="#94A3B8"/><rect x="3" y="3" width="10" height="2" fill="#64748B"/><rect x="4" y="5" width="8" height="9" fill="#94A3B8"/><rect x="6" y="6" width="1" height="6" fill="#475569"/><rect x="9" y="6" width="1" height="6" fill="#475569"/>`,
+            '🧹': `<rect x="10" y="1" width="3" height="6" fill="#8B5A2B"/><rect x="7" y="6" width="5" height="3" fill="#D97706"/><rect x="3" y="9" width="8" height="5" fill="#FBBF24"/><rect x="4" y="12" width="6" height="2" fill="#B45309"/>`,
+            '👁️': `<rect x="4" y="4" width="8" height="2" fill="#3E2723"/><rect x="2" y="6" width="12" height="4" fill="#FFFFFF"/><rect x="6" y="6" width="4" height="4" fill="#2563EB"/><rect x="7" y="7" width="2" height="2" fill="#1E1B4B"/><rect x="4" y="10" width="8" height="2" fill="#3E2723"/>`,
+            '🔍': `<rect x="3" y="2" width="7" height="7" fill="#38BDF8"/><rect x="5" y="4" width="3" height="3" fill="#E0F2FE"/><rect x="9" y="9" width="2" height="2" fill="#8B5A2B"/><rect x="11" y="11" width="3" height="3" fill="#5C3A21"/>`,
+            '❤️': `<rect x="3" y="3" width="4" height="2" fill="#EF4444"/><rect x="9" y="3" width="4" height="2" fill="#EF4444"/><rect x="2" y="5" width="12" height="4" fill="#DC2626"/><rect x="4" y="9" width="8" height="2" fill="#B91C1C"/><rect x="6" y="11" width="4" height="2" fill="#991B1B"/><rect x="7" y="13" width="2" height="1" fill="#7F1D1D"/><rect x="4" y="4" width="2" height="2" fill="#FCA5A5"/>`,
+            '💌': `<rect x="2" y="4" width="12" height="9" fill="#FFF8EE"/><rect x="2" y="4" width="12" height="2" fill="#D97706"/><rect x="2" y="11" width="12" height="2" fill="#D97706"/><rect x="6" y="6" width="4" height="4" fill="#EF4444"/>`,
+            '🎯': `<rect x="4" y="2" width="8" height="12" fill="#EF4444"/><rect x="2" y="4" width="12" height="8" fill="#EF4444"/><rect x="4" y="4" width="8" height="8" fill="#FFFFFF"/><rect x="6" y="6" width="4" height="4" fill="#EF4444"/>`,
+            '🏁': `<rect x="3" y="2" width="2" height="12" fill="#5C3A21"/><rect x="5" y="2" width="8" height="6" fill="#FFFFFF"/><rect x="5" y="2" width="2" height="2" fill="#1E293B"/><rect x="9" y="2" width="2" height="2" fill="#1E293B"/><rect x="7" y="4" width="2" height="2" fill="#1E293B"/><rect x="11" y="4" width="2" height="2" fill="#1E293B"/><rect x="5" y="6" width="2" height="2" fill="#1E293B"/><rect x="9" y="6" width="2" height="2" fill="#1E293B"/>`,
+            '⏰': `<rect x="4" y="3" width="8" height="10" fill="#D97706"/><rect x="5" y="4" width="6" height="8" fill="#FFF8EE"/><rect x="7" y="5" width="1" height="3" fill="#3E2723"/><rect x="7" y="8" width="3" height="1" fill="#3E2723"/><rect x="3" y="2" width="2" height="2" fill="#EF4444"/><rect x="11" y="2" width="2" height="2" fill="#EF4444"/>`,
+            '⏱️': `<rect x="6" y="1" width="4" height="2" fill="#8B5A2B"/><rect x="4" y="3" width="8" height="10" fill="#D97706"/><rect x="5" y="4" width="6" height="8" fill="#FFF8EE"/><rect x="7" y="5" width="2" height="4" fill="#3E2723"/>`,
+            '⏱': `<rect x="6" y="1" width="4" height="2" fill="#8B5A2B"/><rect x="4" y="3" width="8" height="10" fill="#D97706"/><rect x="5" y="4" width="6" height="8" fill="#FFF8EE"/><rect x="7" y="5" width="2" height="4" fill="#3E2723"/>`,
+            '⏳': `<rect x="3" y="2" width="10" height="2" fill="#8B5A2B"/><rect x="4" y="4" width="8" height="3" fill="#FDE68A"/><rect x="6" y="7" width="4" height="2" fill="#F59E0B"/><rect x="4" y="9" width="8" height="3" fill="#D97706"/><rect x="3" y="12" width="10" height="2" fill="#8B5A2B"/>`,
+            '🕒': `<rect x="3" y="3" width="10" height="10" fill="#8B5A2B"/><rect x="4" y="4" width="8" height="8" fill="#FFF8EE"/><rect x="7" y="5" width="2" height="4" fill="#3E2723"/><rect x="7" y="8" width="3" height="2" fill="#D97706"/>`,
+            '📅': `<rect x="2" y="3" width="12" height="11" fill="#FFF8EE"/><rect x="2" y="3" width="12" height="3" fill="#DC2626"/><rect x="4" y="2" width="2" height="2" fill="#5C3A21"/><rect x="10" y="2" width="2" height="2" fill="#5C3A21"/><rect x="4" y="8" width="2" height="2" fill="#8B5A2B"/><rect x="7" y="8" width="2" height="2" fill="#8B5A2B"/><rect x="10" y="8" width="2" height="2" fill="#D97706"/>`,
+            '📁': `<rect x="2" y="3" width="5" height="2" fill="#D97706"/><rect x="2" y="5" width="12" height="8" fill="#F59E0B"/><rect x="3" y="6" width="10" height="6" fill="#FBBF24"/>`,
+            '🛒': `<rect x="2" y="3" width="3" height="2" fill="#8B5A2B"/><rect x="4" y="5" width="10" height="5" fill="#D97706"/><rect x="5" y="6" width="8" height="3" fill="#FDE68A"/><rect x="5" y="11" width="2" height="2" fill="#3E2723"/><rect x="10" y="11" width="2" height="2" fill="#3E2723"/>`,
+            '💳': `<rect x="2" y="4" width="12" height="8" fill="#D97706"/><rect x="2" y="6" width="12" height="2" fill="#3E2723"/><rect x="4" y="9" width="4" height="2" fill="#FDE68A"/>`,
+            '🏦': `<rect x="7" y="1" width="2" height="2" fill="#D97706"/><rect x="4" y="3" width="8" height="2" fill="#B45309"/><rect x="2" y="5" width="12" height="2" fill="#8B5A2B"/><rect x="3" y="7" width="2" height="5" fill="#F5E6D3"/><rect x="7" y="7" width="2" height="5" fill="#F5E6D3"/><rect x="11" y="7" width="2" height="5" fill="#F5E6D3"/><rect x="2" y="12" width="12" height="2" fill="#5C3A21"/>`,
+            '💬': `<rect x="2" y="3" width="12" height="8" fill="#FFF8EE"/><rect x="3" y="4" width="10" height="6" fill="#FDE68A"/><rect x="4" y="11" width="3" height="2" fill="#FDE68A"/><rect x="5" y="6" width="2" height="2" fill="#5C3A21"/><rect x="9" y="6" width="2" height="2" fill="#5C3A21"/>`,
+            '👤': `<rect x="5" y="2" width="6" height="5" fill="#D97706"/><rect x="3" y="8" width="10" height="6" fill="#8B5A2B"/>`,
+            '🤖': `<rect x="7" y="1" width="2" height="2" fill="#6366F1"/><rect x="3" y="3" width="10" height="9" fill="#4F46E5"/><rect x="5" y="5" width="2" height="2" fill="#38BDF8"/><rect x="9" y="5" width="2" height="2" fill="#38BDF8"/><rect x="5" y="9" width="6" height="1" fill="#E0E7FF"/>`,
+            '✅': `<rect x="2" y="2" width="12" height="12" fill="#16A34A"/><rect x="4" y="8" width="2" height="2" fill="#FFFFFF"/><rect x="6" y="10" width="2" height="2" fill="#FFFFFF"/><rect x="8" y="6" width="2" height="4" fill="#FFFFFF"/><rect x="10" y="4" width="2" height="4" fill="#FFFFFF"/>`,
+            '🟢': `<rect x="4" y="2" width="8" height="12" fill="#16A34A"/><rect x="2" y="4" width="12" height="8" fill="#22C55E"/><rect x="5" y="4" width="2" height="2" fill="#BBF7D0"/>`,
+            '🔴': `<rect x="4" y="2" width="8" height="12" fill="#DC2626"/><rect x="2" y="4" width="12" height="8" fill="#EF4444"/><rect x="5" y="4" width="2" height="2" fill="#FECACA"/>`,
+            '⚪': `<rect x="4" y="2" width="8" height="12" fill="#94A3B8"/><rect x="2" y="4" width="12" height="8" fill="#E2E8F0"/>`,
+            '⚠️': `<rect x="7" y="2" width="2" height="3" fill="#F59E0B"/><rect x="5" y="5" width="6" height="4" fill="#FBBF24"/><rect x="3" y="9" width="10" height="4" fill="#F59E0B"/><rect x="7" y="6" width="2" height="3" fill="#3E2723"/><rect x="7" y="10" width="2" height="2" fill="#3E2723"/>`,
+            '🚨': `<rect x="5" y="3" width="6" height="7" fill="#EF4444"/><rect x="6" y="4" width="2" height="4" fill="#FCA5A5"/><rect x="3" y="10" width="10" height="3" fill="#5C3A21"/>`,
+            '❌': `<rect x="3" y="3" width="3" height="3" fill="#EF4444"/><rect x="10" y="3" width="3" height="3" fill="#EF4444"/><rect x="6" y="6" width="4" height="4" fill="#DC2626"/><rect x="3" y="10" width="3" height="3" fill="#EF4444"/><rect x="10" y="10" width="3" height="3" fill="#EF4444"/>`,
+            '⛔': `<rect x="3" y="3" width="10" height="10" fill="#DC2626"/><rect x="4" y="7" width="8" height="2" fill="#FFFFFF"/>`,
+            '🔼': `<rect x="7" y="4" width="2" height="2" fill="currentColor"/><rect x="5" y="6" width="6" height="2" fill="currentColor"/><rect x="3" y="8" width="10" height="2" fill="currentColor"/>`,
+            '📌': `<rect x="5" y="2" width="6" height="2" fill="#EF4444"/><rect x="6" y="4" width="4" height="4" fill="#DC2626"/><rect x="4" y="8" width="8" height="2" fill="#B91C1C"/><rect x="7" y="10" width="2" height="4" fill="#94A3B8"/>`,
+            '💡': `<rect x="5" y="2" width="6" height="6" fill="#FDE047"/><rect x="6" y="8" width="4" height="2" fill="#F59E0B"/><rect x="6" y="10" width="4" height="3" fill="#64748B"/>`,
+            '📷': `<rect x="5" y="3" width="6" height="2" fill="#475569"/><rect x="2" y="5" width="12" height="8" fill="#334155"/><rect x="6" y="7" width="4" height="4" fill="#38BDF8"/><rect x="7" y="8" width="2" height="2" fill="#E0F2FE"/>`,
+            '⚙️': `<rect x="6" y="2" width="4" height="12" fill="#64748B"/><rect x="2" y="6" width="12" height="4" fill="#64748B"/><rect x="4" y="4" width="8" height="8" fill="#94A3B8"/><rect x="6" y="6" width="4" height="4" fill="#3E2723"/>`
+        };
+
+        const PIXEL_EMOJI_KEYS = Object.keys(PIXEL_ICON_SVG_MAP).sort((a, b) => b.length - a.length);
+        const PIXEL_EMOJI_REGEX = new RegExp('(' + PIXEL_EMOJI_KEYS.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'g');
+        const SKIP_PIXEL_TAGS = new Set(['SCRIPT', 'STYLE', 'OPTION', 'TEXTAREA', 'INPUT', 'CODE', 'PRE', 'SVG', 'TITLE']);
+
+        let pixelObserver = null;
+        let isUpgradingPixels = false;
+
+        function upgradeEmojisTo8Bit(rootNode) {
+            if (!rootNode || isUpgradingPixels) return;
+            isUpgradingPixels = true;
+            if (pixelObserver) pixelObserver.disconnect();
+
+            try {
+                const walker = document.createTreeWalker(rootNode, NodeFilter.SHOW_TEXT, {
+                    acceptNode(node) {
+                        if (!node.nodeValue || !PIXEL_EMOJI_REGEX.test(node.nodeValue)) {
+                            return NodeFilter.FILTER_REJECT;
+                        }
+                        PIXEL_EMOJI_REGEX.lastIndex = 0;
+                        let p = node.parentNode;
+                        while (p && p !== document.body) {
+                            if (SKIP_PIXEL_TAGS.has(p.nodeName)) return NodeFilter.FILTER_REJECT;
+                            if (p.classList && p.classList.contains('px-ico-wrap')) return NodeFilter.FILTER_REJECT;
+                            p = p.parentNode;
+                        }
+                        return NodeFilter.FILTER_ACCEPT;
+                    }
+                });
+
+                const textNodes = [];
+                let current;
+                while ((current = walker.nextNode())) {
+                    textNodes.push(current);
+                }
+
+                for (const textNode of textNodes) {
+                    const text = textNode.nodeValue;
+                    PIXEL_EMOJI_REGEX.lastIndex = 0;
+                    const parts = text.split(PIXEL_EMOJI_REGEX);
+                    if (parts.length <= 1) continue;
+
+                    const frag = document.createDocumentFragment();
+                    for (const part of parts) {
+                        if (!part) continue;
+                        const svgInner = PIXEL_ICON_SVG_MAP[part];
+                        if (svgInner) {
+                            const span = document.createElement('span');
+                            span.className = 'px-ico-wrap';
+                            span.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;vertical-align:-0.16em;margin:0 1px;line-height:1;';
+                            span.innerHTML = `<svg class="pixel-icon" style="width:1.12em;height:1.12em;" viewBox="0 0 16 16" shape-rendering="crispEdges">${svgInner}</svg>`;
+                            frag.appendChild(span);
+                        } else {
+                            frag.appendChild(document.createTextNode(part));
+                        }
+                    }
+                    if (textNode.parentNode) {
+                        textNode.parentNode.replaceChild(frag, textNode);
+                    }
+                }
+            } catch (e) {
+                console.warn('upgradeEmojisTo8Bit error:', e);
+            } finally {
+                isUpgradingPixels = false;
+                if (pixelObserver && document.body) {
+                    pixelObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
+                }
+            }
+        }
+
+        function init8BitPixelIcons() {
+            upgradeEmojisTo8Bit(document.body);
+            if (!pixelObserver && typeof MutationObserver !== 'undefined') {
+                let rafScheduled = false;
+                pixelObserver = new MutationObserver(() => {
+                    if (rafScheduled || isUpgradingPixels) return;
+                    rafScheduled = true;
+                    requestAnimationFrame(() => {
+                        rafScheduled = false;
+                        upgradeEmojisTo8Bit(document.body);
+                    });
+                });
+                pixelObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
+            }
+        }
+
+        // ===================================================================
         // INITIALIZATION
         // ===================================================================
         async function initDashboard() {
+            init8BitPixelIcons();
             loadVersionInfo();
             loadAdminSiteConfig();
             // 1. Immediately restore user from localStorage if exists
