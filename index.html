@@ -268,64 +268,94 @@
             border-color: #5C3A21;
         }
 
-        /* Nav Tabs — 8-Bit Cookie Category Bar */
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 14px 16px 10px 16px;
-            max-width: 1400px;
-            margin: 0 auto;
-            width: 100%;
-            scrollbar-width: none;
+        /* Pixel Art Sprite Styling */
+        .pixel-sprite {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            object-fit: contain;
+            flex-shrink: 0;
+            filter: drop-shadow(0 2px 0 rgba(43, 23, 8, 0.22));
         }
 
-        .nav-tabs::-webkit-scrollbar {
-            display: none;
+        /* Nav Tabs — Folder-Style 8-Bit Bakery Tabs (Matching Reference Mockup) */
+        .nav-tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 8px;
+            padding: 14px 16px 0 16px;
+            max-width: 1400px;
+            margin: 0 auto 14px auto;
+            width: 100%;
+            border-bottom: 3px solid #8B5A2B;
         }
 
         .nav-tab-btn {
-            background: #F5E6D3;
-            border: 2px solid #C89D70;
-            color: #5C3A21;
-            padding: 10px 18px;
-            border-radius: 12px;
+            background: linear-gradient(180deg, #E8CFAF 0%, #DFC099 100%);
+            border: 2px solid #8B5A2B;
+            border-bottom: none;
+            color: #4A2C17;
+            padding: 10px 16px;
+            border-radius: 14px 14px 0 0;
             font-family: var(--font-main);
             font-size: 0.94rem;
-            font-weight: 700;
-            white-space: nowrap;
+            font-weight: 800;
             cursor: pointer;
             transition: all 0.15s;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 9px;
-            box-shadow: 0 3px 0 #C89D70;
+            gap: 12px;
+            text-align: left;
+            position: relative;
+            top: 3px;
         }
 
         .nav-tab-btn:hover {
-            background: #EAD5B7;
-            transform: translateY(-1px);
+            background: linear-gradient(180deg, #F5E6D3 0%, #EAD5B7 100%);
         }
 
         .nav-tab-btn.active {
-            background: linear-gradient(180deg, #8B5A2B 0%, #5C3A21 100%);
-            color: #FFF8EE !important;
-            border-color: #3E2723;
-            box-shadow: 0 3px 0 #3E2723;
+            background: linear-gradient(180deg, #FFFDF9 0%, #FBF0DF 100%);
+            color: #3E2723 !important;
+            border: 3px solid #5C3A21;
+            border-bottom: 3px solid #FBF0DF;
+            z-index: 2;
+            box-shadow: 0 -3px 10px rgba(92, 58, 33, 0.1);
         }
 
         .nav-tab-btn.admin-tab-btn {
-            background: #FEE2E2;
-            border-color: #DC2626;
-            color: #991B1B;
-            box-shadow: 0 3px 0 #DC2626;
+            background: linear-gradient(180deg, #E8CFAF 0%, #DFC099 100%);
+            border-color: #8B5A2B;
+            color: #4A2C17;
         }
 
         .nav-tab-btn.admin-tab-btn.active {
-            background: linear-gradient(180deg, #DC2626 0%, #991B1B 100%);
-            color: #FFF8EE !important;
-            border-color: #450A0A;
-            box-shadow: 0 3px 0 #450A0A;
+            background: linear-gradient(180deg, #FFFDF9 0%, #FEE2E2 100%);
+            color: #991B1B !important;
+            border: 3px solid #991B1B;
+            border-bottom: 3px solid #FEE2E2;
+        }
+
+        .nav-tab-text-col {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            min-width: 0;
+        }
+
+        .nav-tab-main-lbl {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: inherit;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nav-tab-sub-lbl {
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #6D4C41;
         }
 
         /* Main Container */
@@ -430,14 +460,29 @@
         }
 
         .stat-card {
-            background: #FFFDF9;
-            border: 2px solid #C89D70;
-            border-radius: var(--radius-md);
-            padding: 14px;
+            background: linear-gradient(180deg, #F7E8D4 0%, #EFE0C9 100%);
+            border: 2px solid #A87C4F;
+            border-radius: 14px;
+            padding: 14px 16px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            box-shadow: 0 4px 0 #DEC3A5;
+            gap: 8px;
+            box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.65), 0 4px 0 #8B5A2B;
+        }
+
+        .stat-card-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .stat-sprite-lg {
+            width: 52px;
+            height: 52px;
+            image-rendering: pixelated;
+            object-fit: contain;
+            flex-shrink: 0;
+            filter: drop-shadow(0 3px 0 rgba(43, 23, 8, 0.25));
         }
 
         .stat-header {
@@ -453,23 +498,53 @@
             font-size: 1.65rem;
             font-weight: 800;
             font-family: var(--font-mono);
-            color: #3E2723;
+            color: #2B1708;
             letter-spacing: -0.02em;
+            line-height: 1.15;
         }
 
         .stat-sub {
             font-size: 0.78rem;
-            color: #6D4C41;
-            font-weight: 500;
+            color: #5C3A21;
+            font-weight: 600;
         }
 
-        /* 8-Bit Treasure Chest Breakdown Grid */
+        /* 8-Bit Treasure Chest Breakdown Showcase (Matching Mockup Image) */
+        .chest-showcase-box {
+            background: linear-gradient(180deg, #F7E8D4 0%, #EFE0C9 100%);
+            border: 2px solid #C89D70;
+            border-radius: 14px;
+            padding: 18px 16px 14px 16px;
+            position: relative;
+            box-shadow: inset 0 2px 0 rgba(255,255,255,0.6), 0 3px 0 #C89D70;
+        }
+
+        .chest-horizontal-track {
+            position: absolute;
+            left: 5%;
+            right: 5%;
+            top: 48px;
+            height: 22px;
+            background: #F5E6D3;
+            border: 2px solid #A87C4F;
+            border-radius: 99px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .chest-horizontal-track-fill {
+            width: 82%;
+            height: 100%;
+            background: linear-gradient(90deg, #D99B4E 0%, #E0A958 75%, #F3D092 100%);
+            border-radius: 99px;
+        }
+
         .chest-breakdown-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            margin-top: 12px;
-            margin-bottom: 6px;
+            position: relative;
+            z-index: 2;
         }
 
         @media (min-width: 768px) {
@@ -479,14 +554,16 @@
         }
 
         .chest-card-8bit {
-            background: linear-gradient(180deg, #FFFDF9 0%, #F5E6D3 100%);
-            border: 2px solid #8B5A2B;
+            background: rgba(255, 253, 249, 0.85);
+            border: 2px solid #C89D70;
             border-radius: 12px;
-            padding: 12px 14px;
+            padding: 10px 12px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            box-shadow: 0 4px 0 #C89D70;
+            align-items: center;
+            text-align: center;
+            gap: 4px;
+            box-shadow: 0 3px 0 #C89D70;
             position: relative;
         }
 
@@ -1282,20 +1359,8 @@
     <div id="viewLogin" class="auth-view-container">
         <div class="auth-card">
             <!-- 8-Bit Cookie Brand Badge -->
-            <div class="auth-brand-badge">
-                <svg class="pixel-icon" width="38" height="38" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                    <rect x="5" y="1" width="6" height="2" fill="#D97706"/>
-                    <rect x="3" y="3" width="10" height="2" fill="#D97706"/>
-                    <rect x="2" y="5" width="12" height="6" fill="#D97706"/>
-                    <rect x="3" y="11" width="10" height="2" fill="#B45309"/>
-                    <rect x="5" y="13" width="6" height="2" fill="#8B5A2B"/>
-                    <rect x="5" y="4" width="2" height="2" fill="#3E2723"/>
-                    <rect x="10" y="5" width="2" height="2" fill="#3E2723"/>
-                    <rect x="4" y="9" width="2" height="2" fill="#3E2723"/>
-                    <rect x="8" y="8" width="2" height="2" fill="#3E2723"/>
-                    <rect x="11" y="10" width="2" height="2" fill="#3E2723"/>
-                    <rect x="6" y="2" width="2" height="1" fill="#FDE68A"/>
-                </svg>
+            <div class="auth-brand-badge" style="background: #FFF8EE; padding: 6px;">
+                <img src="icons/gingerbread.png" alt="CookieRunBot" class="pixel-sprite" style="width: 48px; height: 48px;">
             </div>
             <h2 class="auth-title">CookieRunBot 8-Bit Bakery</h2>
             <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 6px;">
@@ -1421,17 +1486,8 @@
     <header class="topbar">
         <div class="topbar-header-row">
             <a href="#" class="brand-box" onclick="switchTab('overview'); return false;">
-                <div class="brand-logo" title="CookieRunBot 8-Bit Bakery">
-                    <svg class="pixel-icon" width="28" height="28" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                        <rect x="5" y="1" width="6" height="2" fill="#FFF8EE"/>
-                        <rect x="3" y="3" width="10" height="2" fill="#FDE68A"/>
-                        <rect x="2" y="5" width="12" height="6" fill="#FDE68A"/>
-                        <rect x="3" y="11" width="10" height="2" fill="#F59E0B"/>
-                        <rect x="5" y="13" width="6" height="2" fill="#D97706"/>
-                        <rect x="5" y="5" width="2" height="2" fill="#3E2723"/>
-                        <rect x="9" y="5" width="2" height="2" fill="#3E2723"/>
-                        <rect x="5" y="9" width="6" height="2" fill="#3E2723"/>
-                    </svg>
+                <div class="brand-logo" title="CookieRunBot 8-Bit Bakery" style="background: #FFF8EE; border-color: #8B5A2B; padding: 2px;">
+                    <img src="icons/gingerbread.png" alt="CookieRunBot" class="pixel-sprite" style="width: 36px; height: 36px;">
                 </div>
                 <div class="brand-text">
                     <div style="display: flex; align-items: center; gap: 8px;">
@@ -1483,59 +1539,38 @@
     <nav class="nav-tabs">
         <!-- หมวดที่ 1: แดชบอร์ดผลรวมตลอดทุกเซสชัน -->
         <button class="nav-tab-btn active" onclick="switchTab('overview')">
-            <svg class="pixel-icon" width="20" height="20" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                <rect x="3" y="2" width="10" height="2" fill="#F59E0B"/>
-                <rect x="2" y="4" width="12" height="3" fill="#FBBF24"/>
-                <rect x="4" y="7" width="8" height="3" fill="#D97706"/>
-                <rect x="6" y="10" width="4" height="2" fill="#B45309"/>
-                <rect x="4" y="12" width="8" height="2" fill="#78350F"/>
-                <rect x="6" y="4" width="2" height="2" fill="#FEF3C7"/>
-            </svg>
-            <span class="nav-tab-label-full">1. แดชบอร์ดผลรวม (All-Time & กล่องสมบัติ)</span>
-            <span class="nav-tab-label-short">1. แดชบอร์ด</span>
+            <img src="icons/tab_trophy.png" alt="Dashboard" class="pixel-sprite" style="width: 34px; height: 34px;">
+            <div class="nav-tab-text-col">
+                <span class="nav-tab-main-lbl">1. แดชบอร์ดผลรวม</span>
+                <span class="nav-tab-sub-lbl">All-Time &amp; กล่องสมบัติ</span>
+            </div>
         </button>
 
         <!-- หมวดที่ 2: หน้าฟังก์ชันบอทในเกมทั้งหมด + Log สดย้อนหลัง 30 นาที -->
         <button class="nav-tab-btn" onclick="switchTab('bot')">
-            <svg class="pixel-icon" width="20" height="20" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                <rect x="2" y="4" width="12" height="8" fill="#8B5A2B"/>
-                <rect x="3" y="5" width="10" height="6" fill="#F5E6D3"/>
-                <rect x="4" y="7" width="3" height="1" fill="#3E2723"/>
-                <rect x="5" y="6" width="1" height="3" fill="#3E2723"/>
-                <rect x="10" y="6" width="2" height="1" fill="#DC2626"/>
-                <rect x="9" y="8" width="2" height="1" fill="#2563EB"/>
-            </svg>
-            <span class="nav-tab-label-full">2. ฟังก์ชันบอท & Log สด (ย้อนหลัง 30 นาที)</span>
-            <span class="nav-tab-label-short">2. บอท & Log</span>
+            <img src="icons/tab_gamepad.png" alt="Bot & Logs" class="pixel-sprite" style="width: 36px; height: 32px;">
+            <div class="nav-tab-text-col">
+                <span class="nav-tab-main-lbl">2. ฟังก์ชันบอท &amp; Log สด</span>
+                <span class="nav-tab-sub-lbl">Bot Controls &amp; Log 30 นาที</span>
+            </div>
         </button>
 
         <!-- หมวดที่ 3: ข้อมูลผู้ใช้ & การต่ออายุ VIP -->
         <button class="nav-tab-btn" onclick="switchTab('membership')">
-            <svg class="pixel-icon" width="20" height="20" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                <rect x="2" y="4" width="2" height="6" fill="#F59E0B"/>
-                <rect x="7" y="3" width="2" height="7" fill="#FBBF24"/>
-                <rect x="12" y="4" width="2" height="6" fill="#F59E0B"/>
-                <rect x="4" y="6" width="3" height="4" fill="#D97706"/>
-                <rect x="9" y="6" width="3" height="4" fill="#D97706"/>
-                <rect x="2" y="10" width="12" height="3" fill="#B45309"/>
-                <rect x="7" y="10" width="2" height="2" fill="#EF4444"/>
-            </svg>
-            <span class="nav-tab-label-full">3. ข้อมูลผู้ใช้ & ต่ออายุ VIP (Subscribe)</span>
-            <span class="nav-tab-label-short">3. ข้อมูลผู้ใช้ & VIP</span>
+            <img src="icons/tab_crown.png" alt="VIP" class="pixel-sprite" style="width: 36px; height: 32px;">
+            <div class="nav-tab-text-col">
+                <span class="nav-tab-main-lbl">3. ข้อมูลผู้ใช้ &amp; ต่ออายุ VIP</span>
+                <span class="nav-tab-sub-lbl">User Info &amp; Subscribe</span>
+            </div>
         </button>
 
         <!-- หมวดที่ 4 (เฉพาะ Admin เท่านั้น): จัดการ Custom Key, เลขบัญชี, ช่องทางติดต่อ -->
         <button class="nav-tab-btn admin-tab-btn" id="navTabAdmin" style="display: none;" onclick="switchTab('admin')">
-            <svg class="pixel-icon" width="20" height="20" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                <rect x="3" y="2" width="10" height="3" fill="#EF4444"/>
-                <rect x="3" y="5" width="10" height="5" fill="#DC2626"/>
-                <rect x="5" y="10" width="6" height="3" fill="#B91C1C"/>
-                <rect x="7" y="13" width="2" height="2" fill="#7F1D1D"/>
-                <rect x="7" y="4" width="2" height="6" fill="#FDE68A"/>
-                <rect x="5" y="6" width="6" height="2" fill="#FDE68A"/>
-            </svg>
-            <span class="nav-tab-label-full">4. ตั้งค่าแอดมิน (Admin Panel)</span>
-            <span class="nav-tab-label-short">4. แอดมิน</span>
+            <img src="icons/tab_shield.png" alt="Admin" class="pixel-sprite" style="width: 32px; height: 34px;">
+            <div class="nav-tab-text-col">
+                <span class="nav-tab-main-lbl">4. แผงควบคุมแอดมิน</span>
+                <span class="nav-tab-sub-lbl">Admin Only</span>
+            </div>
         </button>
     </nav>
 
@@ -1653,13 +1688,7 @@
                 <div class="overview-section-header">
                     <div class="overview-section-title">
                         <span class="overview-icon-badge" style="background: #FEF3C7; color: #B45309;">
-                            <svg class="pixel-icon" width="22" height="22" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                                <rect x="3" y="2" width="10" height="2" fill="#D97706"/>
-                                <rect x="2" y="4" width="12" height="3" fill="#F59E0B"/>
-                                <rect x="4" y="7" width="8" height="3" fill="#B45309"/>
-                                <rect x="6" y="10" width="4" height="2" fill="#78350F"/>
-                                <rect x="4" y="12" width="8" height="2" fill="#3E2723"/>
-                            </svg>
+                            <img src="icons/stat_trophy.png" alt="All-Time" class="pixel-sprite" style="width: 28px; height: 28px;">
                         </span>
                         <div>
                             <div style="font-size: 1.02rem; font-weight: 800; color: #3E2723;">แดชบอร์ดผลรวมตลอดทุกเซสชัน (All-Time Lifetime Summary)</div>
@@ -1677,160 +1706,117 @@
                 <div class="stats-grid">
                     <!-- 1. All-Time Rounds -->
                     <div class="stat-card stat-card-lifetime">
-                        <div class="stat-header">
-                            <span>รอบวิ่งสะสมรวมทุกเซสชัน</span>
-                            <svg class="pixel-icon" width="20" height="20" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                                <rect x="6" y="2" width="4" height="3" fill="#D97706"/>
-                                <rect x="5" y="5" width="6" height="4" fill="#8B5A2B"/>
-                                <rect x="4" y="9" width="3" height="4" fill="#5C3A21"/>
-                                <rect x="9" y="9" width="3" height="4" fill="#5C3A21"/>
-                            </svg>
-                        </div>
-                        <div class="stat-value" id="valAllTimeRounds" style="color: #8B5A2B;">0</div>
-                        <div class="stat-sub">
-                            บันทึกสะสมรวม <span id="valAllTimeSessionsSub" style="color: #5C3A21; font-weight: 800;">0</span> เซสชัน
+                        <div class="stat-card-row">
+                            <img src="icons/stat_trophy.png" alt="Rounds" class="stat-sprite-lg">
+                            <div style="min-width: 0; flex: 1;">
+                                <div class="stat-value" id="valAllTimeRounds" style="color: #2B1708;">0</div>
+                                <div class="stat-header" style="justify-content: flex-start;">รอบวิ่งรวม (<span id="valAllTimeSessionsSub" style="color: #B45309; font-weight: 800;">0</span> เซสชัน)</div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- 2. All-Time Coins -->
                     <div class="stat-card stat-card-lifetime">
-                        <div class="stat-header">
-                            <span>จำนวนเงินสะสมรวม (Coins)</span>
-                            <svg class="pixel-icon" width="20" height="20" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                                <rect x="4" y="2" width="8" height="12" fill="#F59E0B"/>
-                                <rect x="2" y="4" width="12" height="8" fill="#FBBF24"/>
-                                <rect x="7" y="5" width="2" height="6" fill="#FEF3C7"/>
-                            </svg>
-                        </div>
-                        <div class="stat-value" id="valAllTimeCoins" style="color: #D97706;">0</div>
-                        <div class="stat-sub">
-                            เฉลี่ย <span id="valAllTimeCoinsAvg" style="color: #B45309; font-weight: 800;">0</span> เหรียญ/รอบ
+                        <div class="stat-card-row">
+                            <img src="icons/stat_coin.png" alt="Coins" class="stat-sprite-lg">
+                            <div style="min-width: 0; flex: 1;">
+                                <div class="stat-value" id="valAllTimeCoins" style="color: #B45309;">0</div>
+                                <div class="stat-header" style="justify-content: flex-start;">Coins (เฉลี่ย <span id="valAllTimeCoinsAvg" style="margin-left: 3px;">0</span>/รอบ)</div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- 3. All-Time EXP -->
                     <div class="stat-card stat-card-lifetime">
-                        <div class="stat-header">
-                            <span>ค่าประสบการณ์รวม (EXP)</span>
-                            <svg class="pixel-icon" width="20" height="20" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                                <rect x="7" y="1" width="2" height="14" fill="#16A34A"/>
-                                <rect x="1" y="7" width="14" height="2" fill="#16A34A"/>
-                                <rect x="4" y="4" width="8" height="8" fill="#22C55E"/>
-                                <rect x="6" y="6" width="4" height="4" fill="#DCFCE7"/>
-                            </svg>
-                        </div>
-                        <div class="stat-value" id="valAllTimeXp" style="color: #15803D;">0</div>
-                        <div class="stat-sub">
-                            เฉลี่ย <span id="valAllTimeXpAvg" style="color: #15803D; font-weight: 800;">0</span> EXP/รอบ
+                        <div class="stat-card-row">
+                            <img src="icons/stat_exp.png" alt="EXP" class="stat-sprite-lg" style="width: 56px;">
+                            <div style="min-width: 0; flex: 1;">
+                                <div class="stat-value" id="valAllTimeXp" style="color: #15803D;">0</div>
+                                <div class="stat-header" style="justify-content: flex-start;">EXP (เฉลี่ย <span id="valAllTimeXpAvg" style="margin-left: 3px;">0</span>/รอบ)</div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- 4. All-Time Mystery Boxes -->
                     <div class="stat-card stat-card-lifetime">
-                        <div class="stat-header">
-                            <span>กล่องสมบัติรวมทุกชนิด</span>
-                            <svg class="pixel-icon" width="20" height="20" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                                <rect x="2" y="4" width="12" height="10" fill="#8B5A2B"/>
-                                <rect x="2" y="7" width="12" height="2" fill="#F59E0B"/>
-                                <rect x="7" y="6" width="2" height="4" fill="#FDE68A"/>
-                            </svg>
+                        <div class="stat-card-row">
+                            <img src="icons/stat_box.png" alt="Boxes" class="stat-sprite-lg">
+                            <div style="min-width: 0; flex: 1;">
+                                <div class="stat-value" id="valAllTimeBoxes" style="color: #5C3A21;">0</div>
+                                <div class="stat-header" style="justify-content: flex-start;">Boxes (<span id="valAllTimeBoxTypes" style="font-size: 0.72rem; margin-left: 3px;">🪵0 🥈0 🥇0 🌈0</span>)</div>
+                            </div>
                         </div>
-                        <div class="stat-value" id="valAllTimeBoxes" style="color: #7C3AED;">0</div>
-                        <div class="stat-sub" id="valAllTimeBoxTypes">🪵0 🥈0 🥇0 🌈0</div>
                     </div>
                 </div>
 
                 <!-- 8-BIT TREASURE CHEST BREAKDOWN (แยกชนิดกล่องสมบัติอย่างชัดเจน 4 ชนิด) -->
                 <div style="margin-top: 14px; padding-top: 12px; border-top: 2px dashed #C89D70;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; margin-bottom: 8px;">
-                        <div style="font-size: 0.9rem; font-weight: 800; color: #5C3A21; display: flex; align-items: center; gap: 6px;">
-                            <span>🎁</span> รายละเอียดชนิดกล่องสมบัติที่ดรอปได้ (8-Bit Treasure Box Breakdown)
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;">
+                        <div style="font-size: 0.94rem; font-weight: 800; color: #3E2723; display: flex; align-items: center; gap: 6px;">
+                            <span>🎁</span> Treasure Box Breakdown (แยกชนิดกล่องสมบัติ)
                         </div>
                         <span style="font-size: 0.76rem; color: #6D4C41; font-weight: 600;">แยกแสดงยอดสะสมทุกเซสชัน และยอดในเซสชันปัจจุบัน</span>
                     </div>
 
-                    <div class="chest-breakdown-grid">
-                        <!-- Box 1: Wooden Chest (กล่องไม้) -->
-                        <div class="chest-card-8bit wood">
-                            <div style="display: flex; align-items: center; justify-content: space-between;">
-                                <span style="font-size: 0.84rem; font-weight: 800; color: #5C3A21;">🪵 กล่องไม้ (Wood)</span>
-                                <svg class="pixel-icon" width="28" height="28" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                                    <rect x="2" y="4" width="12" height="10" fill="#8B5A2B"/>
-                                    <rect x="3" y="5" width="10" height="3" fill="#A06B3B"/>
-                                    <rect x="2" y="8" width="12" height="2" fill="#4A2C17"/>
-                                    <rect x="7" y="7" width="2" height="4" fill="#D97706"/>
-                                </svg>
-                            </div>
-                            <div style="font-size: 1.5rem; font-weight: 800; font-family: var(--font-mono); color: #5C3A21;" id="valBoxWoodAllTime">0</div>
-                            <div class="chest-progress-track">
-                                <div class="chest-progress-fill" id="barBoxWood" style="background: #8B5A2B; width: 0%;"></div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: #6D4C41; font-weight: 700;">
-                                <span>เซสชันนี้: <b id="valBoxWoodSession" style="color: #3E2723;">0</b> ใบ</span>
-                                <span id="pctBoxWood">0%</span>
-                            </div>
+                    <div class="chest-showcase-box">
+                        <div class="chest-horizontal-track">
+                            <div class="chest-horizontal-track-fill"></div>
                         </div>
+                        <div class="chest-breakdown-grid">
+                            <!-- Box 1: Wooden Chest (กล่องไม้) -->
+                            <div class="chest-card-8bit wood" style="background: transparent; border: none; box-shadow: none;">
+                                <img src="icons/chest_wood.png" alt="Wooden" class="pixel-sprite" style="width: 68px; height: 64px;">
+                                <div style="font-size: 0.9rem; font-weight: 800; color: #3E2723; margin-top: 2px;">กล่องไม้ (Wooden)</div>
+                                <div style="font-size: 1.4rem; font-weight: 800; font-family: var(--font-mono); color: #5C3A21;" id="valBoxWoodAllTime">0</div>
+                                <div class="chest-progress-track" style="height: 6px;">
+                                    <div class="chest-progress-fill" id="barBoxWood" style="background: #8B5A2B; width: 0%;"></div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; width: 100%; font-size: 0.72rem; color: #6D4C41; font-weight: 700;">
+                                    <span>เซสชันนี้: <b id="valBoxWoodSession" style="color: #3E2723;">0</b></span>
+                                    <span id="pctBoxWood">0%</span>
+                                </div>
+                            </div>
 
-                        <!-- Box 2: Silver Chest (กล่องเงิน) -->
-                        <div class="chest-card-8bit silver">
-                            <div style="display: flex; align-items: center; justify-content: space-between;">
-                                <span style="font-size: 0.84rem; font-weight: 800; color: #334155;">🥈 กล่องเงิน (Silver)</span>
-                                <svg class="pixel-icon" width="28" height="28" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                                    <rect x="2" y="4" width="12" height="10" fill="#64748B"/>
-                                    <rect x="3" y="5" width="10" height="3" fill="#CBD5E1"/>
-                                    <rect x="2" y="8" width="12" height="2" fill="#334155"/>
-                                    <rect x="7" y="7" width="2" height="4" fill="#38BDF8"/>
-                                </svg>
+                            <!-- Box 2: Silver Chest (กล่องเงิน) -->
+                            <div class="chest-card-8bit silver" style="background: transparent; border: none; box-shadow: none;">
+                                <img src="icons/chest_silver.png" alt="Silver" class="pixel-sprite" style="width: 68px; height: 64px;">
+                                <div style="font-size: 0.9rem; font-weight: 800; color: #334155; margin-top: 2px;">กล่องเงิน (Silver)</div>
+                                <div style="font-size: 1.4rem; font-weight: 800; font-family: var(--font-mono); color: #334155;" id="valBoxSilverAllTime">0</div>
+                                <div class="chest-progress-track" style="height: 6px;">
+                                    <div class="chest-progress-fill" id="barBoxSilver" style="background: #64748B; width: 0%;"></div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; width: 100%; font-size: 0.72rem; color: #475569; font-weight: 700;">
+                                    <span>เซสชันนี้: <b id="valBoxSilverSession" style="color: #1E293B;">0</b></span>
+                                    <span id="pctBoxSilver">0%</span>
+                                </div>
                             </div>
-                            <div style="font-size: 1.5rem; font-weight: 800; font-family: var(--font-mono); color: #334155;" id="valBoxSilverAllTime">0</div>
-                            <div class="chest-progress-track">
-                                <div class="chest-progress-fill" id="barBoxSilver" style="background: #64748B; width: 0%;"></div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: #475569; font-weight: 700;">
-                                <span>เซสชันนี้: <b id="valBoxSilverSession" style="color: #1E293B;">0</b> ใบ</span>
-                                <span id="pctBoxSilver">0%</span>
-                            </div>
-                        </div>
 
-                        <!-- Box 3: Gold Chest (กล่องทอง) -->
-                        <div class="chest-card-8bit gold">
-                            <div style="display: flex; align-items: center; justify-content: space-between;">
-                                <span style="font-size: 0.84rem; font-weight: 800; color: #92400E;">🥇 กล่องทอง (Gold)</span>
-                                <svg class="pixel-icon" width="28" height="28" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                                    <rect x="2" y="4" width="12" height="10" fill="#D97706"/>
-                                    <rect x="3" y="5" width="10" height="3" fill="#FBBF24"/>
-                                    <rect x="2" y="8" width="12" height="2" fill="#92400E"/>
-                                    <rect x="7" y="7" width="2" height="4" fill="#EF4444"/>
-                                </svg>
+                            <!-- Box 3: Gold Chest (กล่องทอง) -->
+                            <div class="chest-card-8bit gold" style="background: transparent; border: none; box-shadow: none;">
+                                <img src="icons/chest_gold.png" alt="Gold" class="pixel-sprite" style="width: 68px; height: 64px;">
+                                <div style="font-size: 0.9rem; font-weight: 800; color: #92400E; margin-top: 2px;">กล่องทอง (Gold)</div>
+                                <div style="font-size: 1.4rem; font-weight: 800; font-family: var(--font-mono); color: #B45309;" id="valBoxGoldAllTime">0</div>
+                                <div class="chest-progress-track" style="height: 6px;">
+                                    <div class="chest-progress-fill" id="barBoxGold" style="background: #D97706; width: 0%;"></div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; width: 100%; font-size: 0.72rem; color: #92400E; font-weight: 700;">
+                                    <span>เซสชันนี้: <b id="valBoxGoldSession" style="color: #78350F;">0</b></span>
+                                    <span id="pctBoxGold">0%</span>
+                                </div>
                             </div>
-                            <div style="font-size: 1.5rem; font-weight: 800; font-family: var(--font-mono); color: #B45309;" id="valBoxGoldAllTime">0</div>
-                            <div class="chest-progress-track">
-                                <div class="chest-progress-fill" id="barBoxGold" style="background: #D97706; width: 0%;"></div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: #92400E; font-weight: 700;">
-                                <span>เซสชันนี้: <b id="valBoxGoldSession" style="color: #78350F;">0</b> ใบ</span>
-                                <span id="pctBoxGold">0%</span>
-                            </div>
-                        </div>
 
-                        <!-- Box 4: Rainbow Chest (กล่องรุ้ง) -->
-                        <div class="chest-card-8bit rainbow">
-                            <div style="display: flex; align-items: center; justify-content: space-between;">
-                                <span style="font-size: 0.84rem; font-weight: 800; color: #6B21A8;">🌈 กล่องรุ้ง (Rainbow)</span>
-                                <svg class="pixel-icon" width="28" height="28" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                                    <rect x="2" y="4" width="12" height="3" fill="#EC4899"/>
-                                    <rect x="2" y="7" width="12" height="3" fill="#8B5CF6"/>
-                                    <rect x="2" y="10" width="12" height="4" fill="#3B82F6"/>
-                                    <rect x="7" y="6" width="2" height="5" fill="#FDE047"/>
-                                </svg>
-                            </div>
-                            <div style="font-size: 1.5rem; font-weight: 800; font-family: var(--font-mono); color: #7C3AED;" id="valBoxRainbowAllTime">0</div>
-                            <div class="chest-progress-track">
-                                <div class="chest-progress-fill" id="barBoxRainbow" style="background: linear-gradient(90deg, #EC4899, #8B5CF6, #3B82F6); width: 0%;"></div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: #6B21A8; font-weight: 700;">
-                                <span>เซสชันนี้: <b id="valBoxRainbowSession" style="color: #4C1D95;">0</b> ใบ</span>
-                                <span id="pctBoxRainbow">0%</span>
+                            <!-- Box 4: Rainbow Chest (กล่องรุ้ง) -->
+                            <div class="chest-card-8bit rainbow" style="background: transparent; border: none; box-shadow: none;">
+                                <img src="icons/chest_rainbow.png" alt="Rainbow" class="pixel-sprite" style="width: 68px; height: 64px;">
+                                <div style="font-size: 0.9rem; font-weight: 800; color: #6B21A8; margin-top: 2px;">กล่องรุ้ง (Rainbow)</div>
+                                <div style="font-size: 1.4rem; font-weight: 800; font-family: var(--font-mono); color: #7C3AED;" id="valBoxRainbowAllTime">0</div>
+                                <div class="chest-progress-track" style="height: 6px;">
+                                    <div class="chest-progress-fill" id="barBoxRainbow" style="background: linear-gradient(90deg, #EC4899, #8B5CF6, #3B82F6); width: 0%;"></div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; width: 100%; font-size: 0.72rem; color: #6B21A8; font-weight: 700;">
+                                    <span>เซสชันนี้: <b id="valBoxRainbowSession" style="color: #4C1D95;">0</b></span>
+                                    <span id="pctBoxRainbow">0%</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1856,11 +1842,13 @@
                 <!-- Current Session Stats Grid -->
                 <div class="stats-grid" style="margin-bottom: 0;">
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <span>รอบวิ่งเซสชันนี้</span>
-                            <span>🏃</span>
+                        <div class="stat-card-row">
+                            <img src="icons/stat_trophy.png" alt="Rounds" class="stat-sprite-lg" style="width: 44px; height: 44px;">
+                            <div style="min-width: 0; flex: 1;">
+                                <div class="stat-value" id="valRounds" style="font-size: 1.45rem;">0</div>
+                                <div class="stat-header" style="justify-content: flex-start;">รอบวิ่งเซสชันนี้</div>
+                            </div>
                         </div>
-                        <div class="stat-value" id="valRounds">0</div>
                         <div class="stat-sub">
                             สถานะ: <span id="valStage" style="color: #B45309; font-weight: 800;">STOPPED</span>
                             <span style="margin: 0 4px; opacity: 0.4;">|</span>
@@ -1869,29 +1857,35 @@
                     </div>
 
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <span>เหรียญเซสชันนี้ (Coins)</span>
-                            <span>🪙</span>
+                        <div class="stat-card-row">
+                            <img src="icons/stat_coin.png" alt="Coins" class="stat-sprite-lg" style="width: 44px; height: 44px;">
+                            <div style="min-width: 0; flex: 1;">
+                                <div class="stat-value" id="valCoins" style="color: #B45309; font-size: 1.45rem;">0</div>
+                                <div class="stat-header" style="justify-content: flex-start;">Coins เซสชันนี้</div>
+                            </div>
                         </div>
-                        <div class="stat-value" id="valCoins" style="color: #D97706;">0</div>
                         <div class="stat-sub">ความเร็ว: <span id="valCoinsPerHr" style="font-weight: 700;">0</span>/ชม.</div>
                     </div>
 
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <span>EXP เซสชันนี้</span>
-                            <span>⭐</span>
+                        <div class="stat-card-row">
+                            <img src="icons/stat_exp.png" alt="EXP" class="stat-sprite-lg" style="width: 48px; height: 44px;">
+                            <div style="min-width: 0; flex: 1;">
+                                <div class="stat-value" id="valXp" style="color: #15803D; font-size: 1.45rem;">0</div>
+                                <div class="stat-header" style="justify-content: flex-start;">EXP เซสชันนี้</div>
+                            </div>
                         </div>
-                        <div class="stat-value" id="valXp" style="color: #15803D;">0</div>
                         <div class="stat-sub">รอบล่าสุด: 🪙 +<span id="valLastCoins">0</span> | ⭐ +<span id="valLastXp">0</span> | 📦 <span id="valLastBoxes">0</span></div>
                     </div>
 
                     <div class="stat-card">
-                        <div class="stat-header">
-                            <span>กล่องสมบัติเซสชันนี้</span>
-                            <span>📦</span>
+                        <div class="stat-card-row">
+                            <img src="icons/stat_box.png" alt="Boxes" class="stat-sprite-lg" style="width: 44px; height: 44px;">
+                            <div style="min-width: 0; flex: 1;">
+                                <div class="stat-value" id="valBoxes" style="color: #5C3A21; font-size: 1.45rem;">0</div>
+                                <div class="stat-header" style="justify-content: flex-start;">Boxes เซสชันนี้</div>
+                            </div>
                         </div>
-                        <div class="stat-value" id="valBoxes" style="color: #7C3AED;">0</div>
                         <div class="stat-sub" id="valBoxTypes">🪵0 🥈0 🥇0 🌈0</div>
                     </div>
                 </div>
@@ -5494,10 +5488,30 @@
                     if (parts.length <= 1) continue;
 
                     const frag = document.createDocumentFragment();
+                    const PIXEL_SPRITE_IMG_MAP = {
+                        '🍪': 'icons/gingerbread.png',
+                        '🏆': 'icons/stat_trophy.png',
+                        '🪙': 'icons/stat_coin.png',
+                        '📦': 'icons/stat_box.png',
+                        '🪵': 'icons/chest_wood.png',
+                        '🥈': 'icons/chest_silver.png',
+                        '🥇': 'icons/chest_gold.png',
+                        '🌈': 'icons/chest_rainbow.png',
+                        '👑': 'icons/tab_crown.png',
+                        '🛡️': 'icons/tab_shield.png',
+                        '🎮': 'icons/tab_gamepad.png'
+                    };
                     for (const part of parts) {
                         if (!part) continue;
+                        const spriteSrc = PIXEL_SPRITE_IMG_MAP[part];
                         const svgInner = PIXEL_ICON_SVG_MAP[part];
-                        if (svgInner) {
+                        if (spriteSrc) {
+                            const span = document.createElement('span');
+                            span.className = 'px-ico-wrap';
+                            span.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;vertical-align:-0.2em;margin:0 2px;line-height:1;';
+                            span.innerHTML = `<img src="${spriteSrc}" class="pixel-sprite" style="width:1.25em;height:1.25em;" alt="">`;
+                            frag.appendChild(span);
+                        } else if (svgInner) {
                             const span = document.createElement('span');
                             span.className = 'px-ico-wrap';
                             span.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;vertical-align:-0.16em;margin:0 1px;line-height:1;';
