@@ -1405,7 +1405,7 @@
                 <div class="brand-text">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <h1>CookieRunBot</h1>
-                        <span class="version-badge app-version-display" id="appVersionBadge" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 1px 7px; border-radius: 9999px;">v0.9.2</span>
+                        <span class="version-badge app-version-display" id="appVersionBadge" style="background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; font-size: 0.72rem; font-weight: 700; padding: 1px 7px; border-radius: 9999px;">v0.9.3</span>
                     </div>
                     <span>ระบบคลาวด์ฟาร์มบอทคุกกี้รัน</span>
                 </div>
@@ -1413,7 +1413,7 @@
 
             <div class="header-actions">
                 <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-download-apk" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 6px 13px; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; text-decoration: none; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35); transition: transform 0.15s ease;" title="ดาวน์โหลดแอปสำหรับมือถือ Android (APK)">
-                    <span>📲</span> <span>โหลดแอป (<span class="app-version-display">v0.9.2</span>)</span>
+                    <span>📲</span> <span>โหลดแอป (<span class="app-version-display">v0.9.3</span>)</span>
                 </a>
 
                 <div class="cloud-status-badge offline" id="cloudStatusBadge">
@@ -1906,6 +1906,38 @@
                 <button class="btn-copy-code" style="background: #5865F2; padding: 8px 16px; font-size: 0.85rem;" onclick="testDiscordWebhook()">
                     🔔 ทดสอบส่งการแจ้งเตือน Discord
                 </button>
+
+                <!-- Interactive Discord Control Panel Section -->
+                <div style="margin-top: 18px; padding-top: 16px; border-top: 1px dashed rgba(88, 101, 242, 0.45);">
+                    <div style="font-size: 0.95rem; font-weight: 700; color: #818cf8; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+                        <span>🎮</span> แผงควบคุมบอทผ่าน Discord (Interactive Discord Control Panel)
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5;">
+                        สั่ง <b>▶ เริ่มบอท / ⏹ หยุดบอท / 📷 แคปจอสด / ⚙️ สลับตั้งค่าฟาร์ม / 📁 สลับดูเซสชันตลอดกาล / 🔑 เติมคีย์ VIP</b> จากปุ่มกดในแชท Discord ได้โดยตรง (ใช้ควบคู่กับหน้าเว็บได้ 100% และไม่กินโควตา Cloud!)
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <label class="check-pill" style="width: 100%; border-color: rgba(88, 101, 242, 0.4);">
+                            <input type="checkbox" id="chkDiscordControlEnabled" onchange="autoSyncSetting()">
+                            เปิดใช้งานแผงควบคุมบอทแบบปุ่มกดใน Discord (2-Way Interactive Bot)
+                        </label>
+                    </div>
+                    <div class="config-inputs-grid" style="margin-bottom: 12px;">
+                        <div class="config-input-box" style="grid-column: 1 / -1;">
+                            <label>🤖 Discord Bot Token (จาก Discord Developer Portal → Bot → Reset Token):</label>
+                            <input type="password" id="txtDiscordBotToken" oninput="debounceAutoSync()" placeholder="วาง Bot Token ที่นี่ (เช่น MTIzNDU2Nzg5...)" class="config-text-input" style="font-family: monospace;">
+                        </div>
+                        <div class="config-input-box" style="grid-column: 1 / -1;">
+                            <label>📌 Discord Channel ID (คลิกขวาที่ห้องแชท → คัดลอก ID ช่อง):</label>
+                            <input type="text" id="txtDiscordChannelId" oninput="debounceAutoSync()" placeholder="เช่น 1234567890123456789" class="config-text-input" style="font-family: monospace;">
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                        <button class="btn-copy-code" style="background: linear-gradient(135deg, #5865F2, #4752C4); padding: 9px 18px; font-size: 0.86rem; font-weight: 700;" onclick="sendDiscordControlPanel()">
+                            🎮 บันทึก & ส่งแผงควบคุมเข้าห้อง Discord ทันที
+                        </button>
+                        <span style="font-size: 0.76rem; color: #94a3b8;">💡 หรือพิมพ์ <code>!panel</code> ในห้องแชท Discord เพื่อเรียกแผงควบคุมได้ทุกเมื่อ</span>
+                    </div>
+                </div>
             </div>
 
             <!-- Save Settings Button -->
@@ -2204,7 +2236,7 @@
         </div>
 
         <footer style="text-align: center; margin-top: 28px; padding: 18px 10px; font-size: 0.78rem; color: #64748b; border-top: 1px solid var(--border-card);">
-            CookieRunBot Cloud Dashboard • เวอร์ชันแดชบอร์ด: <span class="app-version-display" style="color: #94a3b8; font-weight: 600;">v0.9.2</span> • เวอร์ชันแอปที่เชื่อมต่อ: <span id="footerBotVersion" style="color: #60a5fa; font-weight: 600;">v0.9.2</span>
+            CookieRunBot Cloud Dashboard • เวอร์ชันแดชบอร์ด: <span class="app-version-display" style="color: #94a3b8; font-weight: 600;">v0.9.3</span> • เวอร์ชันแอปที่เชื่อมต่อ: <span id="footerBotVersion" style="color: #60a5fa; font-weight: 600;">v0.9.3</span>
         </footer>
 
     </main>
@@ -4168,6 +4200,9 @@
             setChk('chkNotifyRounds', cfg.notifyRounds);
             setChk('chkNotifyBoxes', cfg.notifyBoxes);
             setChk('chkNotifyAntibot', cfg.notifyAntibot);
+            setChk('chkDiscordControlEnabled', cfg.discordControlEnabled ?? true);
+            setVal('txtDiscordBotToken', cfg.discordBotToken || '');
+            setVal('txtDiscordChannelId', cfg.discordChannelId || '');
         }
 
         async function saveFarmSettings(silent = false) {
@@ -4194,7 +4229,10 @@
                 attachScreenshot: document.getElementById('chkAttachScreenshot').checked,
                 notifyRounds: document.getElementById('chkNotifyRounds').checked,
                 notifyBoxes: document.getElementById('chkNotifyBoxes').checked,
-                notifyAntibot: document.getElementById('chkNotifyAntibot').checked
+                notifyAntibot: document.getElementById('chkNotifyAntibot').checked,
+                discordControlEnabled: document.getElementById('chkDiscordControlEnabled').checked,
+                discordBotToken: document.getElementById('txtDiscordBotToken').value.trim(),
+                discordChannelId: document.getElementById('txtDiscordChannelId').value.trim()
             };
 
             // Save to Firebase RTDB for persistent dashboard cache
@@ -4221,6 +4259,19 @@
             }
             sendCloudCommand('TEST_DISCORD', { url: url });
             showToast('📢 ส่งคำสั่งทดสอบ Discord ไปยังบอทแล้ว!');
+        }
+
+        async function sendDiscordControlPanel() {
+            const token = document.getElementById('txtDiscordBotToken').value.trim();
+            const channelId = document.getElementById('txtDiscordChannelId').value.trim();
+            if (!token || !channelId) {
+                showToast('⚠️ กรุณากรอก Discord Bot Token และ Channel ID ให้ครบก่อนครับ');
+                return;
+            }
+            document.getElementById('chkDiscordControlEnabled').checked = true;
+            await saveFarmSettings(true);
+            sendCloudCommand('SEND_DISCORD_PANEL', { token: token, channelId: channelId });
+            showToast('🎮 สั่งบอทส่งแผงควบคุมเข้าห้อง Discord แล้ว!');
         }
 
         function renderLogs(logs) {

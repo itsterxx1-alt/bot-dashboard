@@ -1,6 +1,6 @@
 {
-  "versionCode": 29,
-  "versionName": "0.9.2",
-  "changelog": "- โหมดประหยัดโควตา Cloud สูงสุด (Quota Saver Mode): ซิงก์เฉพาะเมื่อค่าเปลี่ยนจริง (Diff-Only Sync) ลดการใช้ Bandwidth กว่า 80%\n- ตั้งเวลาพักภาพหน้าจอสดอัตโนมัติใน 60 วินาที และจำกัดประวัติบน Cloud เพื่อรองรับผู้ใช้งานบนแพ็กเกจฟรีได้มากขึ้น 5-10 เท่า",
+  "versionCode": 30,
+  "versionName": "0.9.3",
+  "changelog": "- เพิ่มระบบแผงควบคุมบอทผ่าน Discord (Interactive Discord Control Panel) ควบคู่กับหน้าเว็บ 100%\n- รองรับปุ่มกดเริ่ม/หยุดบอท, แคปหน้าจอสด, สลับตั้งค่าฟาร์ม, ดูเซสชันตลอดกาลย้อนหลัง และหน้าต่างป๊อปอัปเติมคีย์ VIP ใน Discord โดยไม่กินโควตา Cloud",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
