@@ -1,6 +1,6 @@
 {
-  "versionCode": 32,
-  "versionName": "0.9.5",
-  "changelog": "- ปรับปรุงระบบ Restart เกม (Force Stop รองรับ contentDescription + ปุ่มภาษาไทย และ Fallback ปิดผ่านหน้า Recents)\n- เพิ่ม Watchdog กู้คืนเมื่อค้าง (กด Back, Timeout PRE_GAME 2 นาที, IN_GAME 15 นาที) และ Log คะแนน Template 3 อันดับเมื่อหา Stage ไม่เจอ",
+  "versionCode": 33,
+  "versionName": "0.9.6",
+  "changelog": "- ปรับ UI ระบบกระโดดเป็นแถบเลื่อน % คำนวณอัตราส่วน Jump / Double Jump อัตโนมัติ (รวมกัน 100%) และแถบเลื่อนความถี่ %\n- จำลองการกดกระโดดแบบมนุษย์ (สุ่มระยะเวลาแตะ, ตำแหน่งปุ่ม, จังหวะ Double Jump และความถี่แบบสุ่มธรรมชาติ)",
   "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
 }
