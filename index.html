@@ -1147,7 +1147,9 @@
             }
 
             .topbar-header-row {
-                gap: 6px;
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: space-between;
             }
 
             .brand-logo {
@@ -1155,6 +1157,11 @@
                 height: 34px;
                 font-size: 18px;
                 border-radius: 8px;
+            }
+
+            .brand-logo img {
+                width: 28px !important;
+                height: 28px !important;
             }
 
             .brand-text h1 {
@@ -1166,25 +1173,33 @@
             }
 
             .header-actions {
-                gap: 5px;
+                gap: 6px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
             }
 
             .btn-download-apk {
-                padding: 4px 9px !important;
+                padding: 4px 10px !important;
                 font-size: 0.72rem !important;
                 gap: 4px !important;
+                white-space: nowrap !important;
+                flex-shrink: 0 !important;
             }
 
             .cloud-status-badge {
-                padding: 3px 8px;
-                font-size: 0.7rem;
-                gap: 4px;
+                padding: 4px 10px;
+                font-size: 0.72rem;
+                gap: 5px;
+                white-space: nowrap;
+                flex-shrink: 0;
             }
 
             .btn-google {
                 padding: 4px 8px;
                 font-size: 0.75rem;
                 gap: 4px;
+                white-space: nowrap;
+                flex-shrink: 0;
             }
 
             .btn-google #googleBtnLabel {
@@ -1192,41 +1207,53 @@
             }
 
             .btn-logout-header {
-                padding: 4px 8px !important;
+                padding: 4px 9px !important;
                 font-size: 0.72rem !important;
+                white-space: nowrap !important;
+                flex-shrink: 0 !important;
             }
 
             .topbar-action-row {
                 gap: 6px;
-                margin-top: 6px;
-                padding-top: 6px;
+                margin-top: 8px;
+                padding-top: 8px;
             }
 
             .btn-act {
                 min-height: 38px;
-                font-size: 0.82rem;
+                font-size: 0.8rem;
                 padding: 0 6px;
                 gap: 4px;
                 border-radius: 8px;
+                white-space: nowrap;
             }
 
             .nav-tabs {
-                padding: 8px 10px;
+                grid-template-columns: repeat(2, 1fr);
+                padding: 10px 10px 0 10px;
                 gap: 6px;
+                margin-bottom: 10px;
             }
 
             .nav-tab-btn {
-                padding: 8px 12px;
+                padding: 8px 10px;
                 font-size: 0.8rem;
-                border-radius: 8px;
+                border-radius: 10px 10px 0 0;
+                gap: 8px;
+                top: 2px;
             }
 
-            .nav-tab-label-full {
-                display: none;
+            .nav-tab-btn img.pixel-sprite {
+                width: 24px !important;
+                height: 24px !important;
             }
 
-            .nav-tab-label-short {
-                display: inline;
+            .nav-tab-main-lbl {
+                font-size: 0.8rem;
+            }
+
+            .nav-tab-sub-lbl {
+                font-size: 0.68rem;
             }
 
             .user-account-banner {
@@ -1291,14 +1318,47 @@
             }
 
             .stat-card {
-                padding: 10px !important;
+                padding: 10px 10px !important;
                 min-height: 76px;
-                border-radius: 8px;
-                gap: 3px;
+                border-radius: 10px;
+                gap: 6px;
+            }
+
+            .stat-card-row {
+                gap: 8px;
+            }
+
+            .stat-sprite-lg {
+                width: 36px !important;
+                height: 36px !important;
             }
 
             .stat-value {
-                font-size: 1.25rem !important;
+                font-size: 1.18rem !important;
+            }
+
+            .stat-header {
+                font-size: 0.76rem;
+            }
+
+            .stat-sub {
+                font-size: 0.7rem;
+                line-height: 1.35;
+            }
+
+            .chest-showcase-box {
+                padding: 10px 8px !important;
+            }
+
+            .chest-horizontal-track {
+                display: none;
+            }
+
+            .chest-card-8bit {
+                background: rgba(255, 253, 249, 0.85) !important;
+                border: 1.5px solid #D7B38C !important;
+                border-radius: 10px !important;
+                padding: 10px 8px !important;
             }
 
             .pills-grid {
@@ -1710,8 +1770,11 @@
                             <img src="icons/stat_trophy.png" alt="Rounds" class="stat-sprite-lg">
                             <div style="min-width: 0; flex: 1;">
                                 <div class="stat-value" id="valAllTimeRounds" style="color: #2B1708;">0</div>
-                                <div class="stat-header" style="justify-content: flex-start;">รอบวิ่งรวม (<span id="valAllTimeSessionsSub" style="color: #B45309; font-weight: 800;">0</span> เซสชัน)</div>
+                                <div class="stat-header" style="justify-content: flex-start;">รอบวิ่งรวม</div>
                             </div>
+                        </div>
+                        <div class="stat-sub">
+                            สะสมทั้งหมด <span id="valAllTimeSessionsSub" style="color: #B45309; font-weight: 800;">0</span> เซสชัน
                         </div>
                     </div>
 
@@ -1721,8 +1784,11 @@
                             <img src="icons/stat_coin.png" alt="Coins" class="stat-sprite-lg">
                             <div style="min-width: 0; flex: 1;">
                                 <div class="stat-value" id="valAllTimeCoins" style="color: #B45309;">0</div>
-                                <div class="stat-header" style="justify-content: flex-start;">Coins (เฉลี่ย <span id="valAllTimeCoinsAvg" style="margin-left: 3px;">0</span>/รอบ)</div>
+                                <div class="stat-header" style="justify-content: flex-start;">Coins สะสม</div>
                             </div>
+                        </div>
+                        <div class="stat-sub">
+                            เฉลี่ย <span id="valAllTimeCoinsAvg" style="color: #B45309; font-weight: 800;">0</span> / รอบ
                         </div>
                     </div>
 
@@ -1732,8 +1798,11 @@
                             <img src="icons/stat_exp.png" alt="EXP" class="stat-sprite-lg" style="width: 56px;">
                             <div style="min-width: 0; flex: 1;">
                                 <div class="stat-value" id="valAllTimeXp" style="color: #15803D;">0</div>
-                                <div class="stat-header" style="justify-content: flex-start;">EXP (เฉลี่ย <span id="valAllTimeXpAvg" style="margin-left: 3px;">0</span>/รอบ)</div>
+                                <div class="stat-header" style="justify-content: flex-start;">EXP สะสม</div>
                             </div>
+                        </div>
+                        <div class="stat-sub">
+                            เฉลี่ย <span id="valAllTimeXpAvg" style="color: #15803D; font-weight: 800;">0</span> / รอบ
                         </div>
                     </div>
 
@@ -1743,9 +1812,10 @@
                             <img src="icons/stat_box.png" alt="Boxes" class="stat-sprite-lg">
                             <div style="min-width: 0; flex: 1;">
                                 <div class="stat-value" id="valAllTimeBoxes" style="color: #5C3A21;">0</div>
-                                <div class="stat-header" style="justify-content: flex-start;">Boxes (<span id="valAllTimeBoxTypes" style="font-size: 0.72rem; margin-left: 3px;">🪵0 🥈0 🥇0 🌈0</span>)</div>
+                                <div class="stat-header" style="justify-content: flex-start;">Boxes รวม</div>
                             </div>
                         </div>
+                        <div class="stat-sub" id="valAllTimeBoxTypes">🪵0 🥈0 🥇0 🌈0</div>
                     </div>
                 </div>
 
