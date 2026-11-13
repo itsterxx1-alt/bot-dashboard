@@ -1003,6 +1003,102 @@
             color: #3E2723;
         }
 
+        /* Admin Only Tab Layout & Alignment */
+        #tab-admin .config-sec-title {
+            line-height: 1.45;
+            align-items: flex-start;
+        }
+
+        #tab-admin .config-input-box label {
+            line-height: 1.4;
+            min-height: 22px;
+        }
+
+        .admin-desc-text {
+            font-size: 0.84rem;
+            color: #7F1D1D;
+            font-weight: 600;
+            line-height: 1.55;
+            margin-bottom: 14px;
+        }
+
+        .admin-sub-desc {
+            font-size: 0.82rem;
+            color: #6D4C41;
+            font-weight: 600;
+            line-height: 1.55;
+            margin-bottom: 14px;
+        }
+
+        .admin-quick-btns {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .admin-quick-btns .btn-copy-code {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 12px;
+            line-height: 1.3;
+        }
+
+        .admin-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .admin-prices-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .admin-span-full {
+            grid-column: 1 / -1;
+        }
+
+        .admin-key-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        #adminKeyListContainer {
+            max-height: 280px;
+            overflow-y: auto;
+            overflow-x: auto;
+            background: #FFFDF9;
+            border: 2px solid #C89D70;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 640px) {
+            .admin-quick-btns {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .admin-quick-btns .btn-copy-code {
+                width: 100%;
+                font-size: 0.78rem;
+                padding: 9px 8px;
+                text-align: center;
+            }
+            .admin-form-grid,
+            .admin-prices-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* ===================================================================
            AUTH SCREENS (LOGIN & WAITING FOR BOT LINK) — COOKIE BAKERY STYLE
            =================================================================== */
@@ -2537,13 +2633,13 @@
                 <div class="config-sec-title" style="color: #991B1B; border-bottom-color: #FCA5A5;">
                     <span>🛡️</span> หมวดที่ 4 (เฉพาะแอดมิน): ระบบสร้าง Custom Key & จัดการรหัสสมาชิกทั้งหมด
                 </div>
-                <div style="font-size: 0.84rem; color: #7F1D1D; font-weight: 600; margin-bottom: 14px;">
+                <div class="admin-desc-text">
                     หน้านี้แสดงผลเฉพาะบัญชีผู้ดูแลระบบ (Admin) เท่านั้น — คุณสามารถออกคีย์ด่วน, กำหนดรหัส Custom Key เอง, ตั้งค่าเลขบัญชีรับโอน และแก้ไขช่องทางติดต่อแอดมินได้ทันที
                 </div>
 
                 <!-- ปุ่มออกคีย์ด่วน 1 คลิก -->
-                <div style="font-size: 0.84rem; font-weight: 800; color: #3E2723; margin-bottom: 8px;">⚡ ออกรหัสคีย์มาตรฐานด่วน (1-Click Quick Key):</div>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+                <div style="font-size: 0.84rem; font-weight: 800; color: #3E2723; margin-bottom: 8px; line-height: 1.4;">⚡ ออกรหัสคีย์มาตรฐานด่วน (1-Click Quick Key):</div>
+                <div class="admin-quick-btns">
                     <button class="btn-copy-code" style="background: #8B5A2B;" onclick="generateLicenseKey('1_DAY', 1, window._siteConfig?.price1D || 15)">
                         🍪 สร้าง Key 1 วัน
                     </button>
@@ -2554,16 +2650,16 @@
                         👑 สร้าง Key 30 วัน
                     </button>
                     <button class="btn-copy-code" style="background: #15803D;" onclick="quickAddVip(30, '30_DAYS')">
-                        ⚡ เติม VIP +30 วันให้เครื่องนี้ทันที
+                        ⚡ เติม VIP +30 วันให้เครื่องนี้
                     </button>
                 </div>
 
                 <!-- ระบบสร้าง Custom Key (กำหนดรหัสคีย์ วัน และราคาเองได้ตามต้องการ) -->
                 <div style="background: #FFFDF9; border: 2px solid #DC2626; border-radius: 12px; padding: 14px; margin-bottom: 16px;">
-                    <div style="font-size: 0.9rem; font-weight: 800; color: #991B1B; margin-bottom: 10px;">
+                    <div style="font-size: 0.9rem; font-weight: 800; color: #991B1B; margin-bottom: 12px; line-height: 1.45;">
                         🔑 สร้าง Custom License Key (กำหนดรหัสคีย์ / จำนวนวัน / ชื่อแพ็กเกจเอง)
                     </div>
-                    <div class="config-inputs-grid" style="margin-bottom: 12px;">
+                    <div class="admin-form-grid" style="margin-bottom: 12px;">
                         <div class="config-input-box">
                             <label>รหัสคีย์ที่ต้องการ (เว้นว่างเพื่อสุ่มอัตโนมัติ):</label>
                             <input type="text" id="txtAdminCustomKeyCode" placeholder="เช่น COOKIE-VIP999" style="font-family: monospace; text-transform: uppercase;">
@@ -2587,11 +2683,11 @@
                 </div>
 
                 <!-- รายการคีย์ทั้งหมดในระบบ -->
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <span style="font-size: 0.84rem; font-weight: 800; color: #3E2723;">📋 รายการ License Key ทั้งหมดในระบบ:</span>
-                    <button class="btn-copy-code" style="background: #5C3A21; padding: 4px 10px; font-size: 0.75rem;" onclick="loadAllLicenseKeys()">🔄 รีเฟรชรายการคีย์</button>
+                <div class="admin-key-list-header">
+                    <span style="font-size: 0.84rem; font-weight: 800; color: #3E2723; line-height: 1.4;">📋 รายการ License Key ทั้งหมดในระบบ:</span>
+                    <button class="btn-copy-code" style="background: #5C3A21; padding: 5px 12px; font-size: 0.76rem;" onclick="loadAllLicenseKeys()">🔄 รีเฟรชรายการคีย์</button>
                 </div>
-                <div id="adminKeyListContainer" style="max-height: 280px; overflow-y: auto; background: #FFFDF9; border: 2px solid #C89D70; border-radius: 10px; padding: 10px; font-size: 0.8rem;">
+                <div id="adminKeyListContainer">
                     <div style="color: #6D4C41; text-align: center;">กำลังโหลดรายการคีย์ทั้งหมด...</div>
                 </div>
             </div>
@@ -2601,19 +2697,22 @@
                 <div class="config-sec-title">
                     <span>🏦</span> ตั้งค่าเลขบัญชีรับโอน / พร้อมเพย์ / ราคาแพ็กเกจ & ช่องทางติดต่อแอดมิน
                 </div>
-                <div style="font-size: 0.82rem; color: #6D4C41; font-weight: 600; margin-bottom: 14px;">
+                <div class="admin-sub-desc">
                     เมื่อกดบันทึก ข้อมูลด้านล่างจะอัปเดตไปแสดงในหน้า <b>"3. ข้อมูลผู้ใช้ & ต่ออายุ VIP"</b> ของผู้ใช้งานทุกคนแบบเรียลไทม์ทันที:
                 </div>
 
-                <div class="config-inputs-grid" style="margin-bottom: 14px;">
-                    <div class="config-input-box" style="grid-column: span 2;">
+                <div class="admin-form-grid" style="margin-bottom: 12px;">
+                    <div class="config-input-box">
                         <label>💳 เลขพร้อมเพย์ (PromptPay) หรือ เลขบัญชีธนาคาร:</label>
                         <input type="text" id="txtAdminPromptPay" placeholder="เช่น 081-888-8888 หรือ กสิกรไทย 123-4-56789-0" value="081-888-8888">
                     </div>
-                    <div class="config-input-box" style="grid-column: span 2;">
+                    <div class="config-input-box">
                         <label>👤 ชื่อบัญชี / ธนาคารที่แสดงให้ลูกค้าเห็น:</label>
                         <input type="text" id="txtAdminAccountName" placeholder="เช่น (ชื่อบัญชี: บอท CookieRun อัตโนมัติ)" value="(ชื่อบัญชี: บอท CookieRun อัตโนมัติ)">
                     </div>
+                </div>
+
+                <div class="admin-prices-grid" style="margin-bottom: 16px;">
                     <div class="config-input-box">
                         <label>🍪 ราคาแพ็กเกจ 1 วัน (บาท):</label>
                         <input type="number" id="numAdminPrice1D" value="15" min="1">
@@ -2628,20 +2727,20 @@
                     </div>
                 </div>
 
-                <div style="border-top: 2px dashed #C89D70; padding-top: 14px; margin-bottom: 14px;">
-                    <div style="font-size: 0.88rem; font-weight: 800; color: #5C3A21; margin-bottom: 10px;">
+                <div style="border-top: 2px dashed #C89D70; padding-top: 14px; margin-bottom: 16px;">
+                    <div style="font-size: 0.88rem; font-weight: 800; color: #5C3A21; margin-bottom: 12px; line-height: 1.45;">
                         💬 ตั้งค่าช่องทางการติดต่อแอดมิน (เมื่อลูกค้ากดปุ่ม "ติดต่อแอดมิน / ส่งสลิป")
                     </div>
-                    <div class="config-inputs-grid">
-                        <div class="config-input-box" style="grid-column: span 2;">
+                    <div class="admin-form-grid">
+                        <div class="config-input-box">
                             <label>ชื่อช่องทางติดต่อแอดมิน (เช่น Line ID / ชื่อเพจ / Discord):</label>
                             <input type="text" id="txtAdminContactLabel" placeholder="เช่น Line: @cookierunbot หรือ Discord แอดมิน" value="ติดต่อแอดมินเพื่อส่งสลิป">
                         </div>
-                        <div class="config-input-box" style="grid-column: span 2;">
-                            <label>ลิงก์ติดต่อโดยตรง (URL เมื่อลูกค้าคลิกปุ่ม — เช่น ลิงก์ Line / Facebook / Discord):</label>
-                            <input type="text" id="txtAdminContactUrl" placeholder="เช่น https://line.me/ti/p/~yourid หรือ https://discord.gg/xxxx (เว้นว่างได้)">
+                        <div class="config-input-box">
+                            <label>ลิงก์ติดต่อโดยตรง (URL เมื่อลูกค้าคลิกปุ่ม — เว้นว่างได้):</label>
+                            <input type="text" id="txtAdminContactUrl" placeholder="เช่น https://line.me/ti/p/~yourid หรือ https://discord.gg/xxxx">
                         </div>
-                        <div class="config-input-box" style="grid-column: 1 / -1;">
+                        <div class="config-input-box admin-span-full">
                             <label>ข้อความรายละเอียดเพิ่มเติมที่แจ้งลูกค้าเมื่อกดติดต่อ:</label>
                             <input type="text" id="txtAdminContactNote" placeholder="เช่น ส่งสลิปพร้อมแจ้งอีเมล Google ของคุณ แอดมินจะส่งรหัส Key ให้ทันทีครับ" value="ส่งสลิปโอนเงินพร้อมแจ้งอีเมล Google ของคุณเพื่อรับรหัส License Key ได้ทันทีครับ">
                         </div>
@@ -4137,7 +4236,7 @@
             }
         }
 
-        // Global Site Config loaded from Firebase RTDB /site_settings/admin_config
+        // Global Site Config loaded from Firebase RTDB /bots/__site_config__/admin_config
         window._siteConfig = {
             promptPayNumber: '095-961-9989',
             accountName: 'พร้อมเพย์ (PromptPay)',
@@ -4151,7 +4250,7 @@
 
         async function loadAdminSiteConfig() {
             try {
-                const res = await fetch(`${FIREBASE_RTDB_URL}/site_settings/admin_config.json`);
+                const res = await fetch(`${FIREBASE_RTDB_URL}/bots/__site_config__/admin_config.json?t=${Date.now()}`);
                 if (res.ok) {
                     const cfg = await res.json();
                     if (cfg && typeof cfg === 'object') {
@@ -4217,11 +4316,15 @@
                 updatedBy: currentUser.email
             };
             try {
-                await fetch(`${FIREBASE_RTDB_URL}/site_settings/admin_config.json`, {
+                const res = await fetch(`${FIREBASE_RTDB_URL}/bots/__site_config__/admin_config.json`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
+                if (!res.ok) {
+                    const errBody = await res.text().catch(() => '');
+                    throw new Error(`HTTP ${res.status} ${errBody}`);
+                }
                 window._siteConfig = payload;
                 applySiteConfigToUI(payload);
                 showToast('💾 บันทึกเลขบัญชี ราคาแพ็กเกจ และช่องทางติดต่อแอดมินเรียบร้อย!');
@@ -4272,11 +4375,12 @@
             };
 
             try {
-                await fetch(`${FIREBASE_RTDB_URL}/license_keys/${customCode}.json`, {
+                const res = await fetch(`${FIREBASE_RTDB_URL}/license_keys/${customCode}.json`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 navigator.clipboard.writeText(customCode).catch(() => {});
                 showToast(`✨ สร้างและคัดลอก Custom Key สำเร็จ: ${customCode}`);
                 if (codeEl) codeEl.value = '';
@@ -4289,11 +4393,12 @@
         async function deleteLicenseKey(key) {
             if (!key) return;
             try {
-                await fetch(`${FIREBASE_RTDB_URL}/license_keys/${key}.json`, { method: 'DELETE' });
+                const res = await fetch(`${FIREBASE_RTDB_URL}/license_keys/${key}.json`, { method: 'DELETE' });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 showToast(`🗑️ ลบคีย์ ${key} เรียบร้อย`);
                 loadAllLicenseKeys();
             } catch (e) {
-                showToast('⚠️ ลบคีย์ไม่สำเร็จ');
+                showToast('⚠️ ลบคีย์ไม่สำเร็จ: ' + e.message);
             }
         }
 
@@ -4464,11 +4569,12 @@
             };
 
             try {
-                await fetch(`${FIREBASE_RTDB_URL}/license_keys/${key}.json`, {
+                const res = await fetch(`${FIREBASE_RTDB_URL}/license_keys/${key}.json`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 showToast(`✅ สร้าง Key สำเร็จ: ${key}`);
                 loadAllLicenseKeys();
 
@@ -4531,24 +4637,26 @@
                 }
 
                 const keys = Object.values(data).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-                let html = '<table style="width: 100%; border-collapse: collapse; font-size: 0.78rem;">';
-                html += '<tr style="color: #6D4C41; border-bottom: 2px solid #D7B38C;"><th style="text-align: left; padding: 6px 4px;">Key</th><th style="text-align: left; padding: 6px 4px;">แพ็กเกจ</th><th style="text-align: center; padding: 6px 4px;">สถานะ</th><th style="text-align: right; padding: 6px 4px;">การกระทำ</th></tr>';
+                let html = '<table style="width: 100%; min-width: 440px; border-collapse: collapse; font-size: 0.78rem;">';
+                html += '<tr style="color: #6D4C41; border-bottom: 2px solid #D7B38C;"><th style="text-align: left; padding: 8px 6px; white-space: nowrap;">Key</th><th style="text-align: left; padding: 8px 6px; white-space: nowrap;">แพ็กเกจ</th><th style="text-align: center; padding: 8px 6px; white-space: nowrap;">สถานะ</th><th style="text-align: right; padding: 8px 6px; white-space: nowrap;">การกระทำ</th></tr>';
                 keys.forEach(k => {
                     const statusBadge = k.used 
-                        ? `<span style="color: #8D6E63;">⚪ ใช้แล้ว (${k.usedBy || '-'})</span>` 
-                        : `<span style="color: #15803D; font-weight: 800;">🟢 ยังไม่ใช้</span>`;
+                        ? `<span style="color: #8D6E63; white-space: nowrap;">⚪ ใช้แล้ว (${k.usedBy || '-'})</span>` 
+                        : `<span style="color: #15803D; font-weight: 800; white-space: nowrap;">🟢 ยังไม่ใช้</span>`;
                     html += `
                         <tr style="border-bottom: 1px solid #EAD5B7;">
-                            <td style="padding: 6px 4px; font-family: monospace; font-weight: 800; color: #92400E;">${k.key}</td>
-                            <td style="padding: 6px 4px; color: #3E2723; font-weight: 600;">${k.planName || k.plan}</td>
-                            <td style="padding: 6px 4px; text-align: center;">${statusBadge}</td>
-                            <td style="padding: 6px 4px; text-align: right; display: flex; gap: 4px; justify-content: flex-end;">
-                                <button onclick="navigator.clipboard.writeText('${k.key}'); showToast('📋 คัดลอก Key แล้ว: ${k.key}');" style="background: #F5E6D3; border: 1px solid #8B5A2B; color: #3E2723; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; cursor: pointer;">
-                                    📋 คัดลอก
-                                </button>
-                                <button onclick="deleteLicenseKey('${k.key}')" style="background: #FEE2E2; border: 1px solid #EF4444; color: #B91C1C; padding: 3px 6px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; cursor: pointer;">
-                                    🗑️
-                                </button>
+                            <td style="padding: 8px 6px; font-family: monospace; font-weight: 800; color: #92400E; white-space: nowrap; vertical-align: middle;">${k.key}</td>
+                            <td style="padding: 8px 6px; color: #3E2723; font-weight: 600; vertical-align: middle;">${k.planName || k.plan}</td>
+                            <td style="padding: 8px 6px; text-align: center; vertical-align: middle;">${statusBadge}</td>
+                            <td style="padding: 8px 6px; text-align: right; vertical-align: middle; white-space: nowrap;">
+                                <div style="display: inline-flex; gap: 6px; align-items: center;">
+                                    <button onclick="navigator.clipboard.writeText('${k.key}'); showToast('📋 คัดลอก Key แล้ว: ${k.key}');" style="background: #F5E6D3; border: 1px solid #8B5A2B; color: #3E2723; padding: 4px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; cursor: pointer;">
+                                        📋 คัดลอก
+                                    </button>
+                                    <button onclick="deleteLicenseKey('${k.key}')" style="background: #FEE2E2; border: 1px solid #EF4444; color: #B91C1C; padding: 4px 7px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; cursor: pointer;">
+                                        🗑️
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     `;
