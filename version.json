@@ -1,6 +1,6 @@
 {
-  "versionCode": 34,
-  "versionName": "0.9.7",
-  "changelog": "- ระบบ 3-Tier Auto-Scan ปุ่ม Confirm/ตกลง สีเขียว เมื่อเกมหลุด ขาดการเชื่อมต่อ (Connection Lost) หรือ Inactive\n- เพิ่มการตรวจจับ Color Blob ตรวจจับปุ่มสีเขียว CookieRun แม้ข้อความเปลี่ยนเป็น ลองใหม่ หรือ ยืนยัน\n- เพิ่ม Smart Dual-Probe Fallback กดจุดขวา (810, 460) และจุดกึ่งกลาง (640, 456) ป้องกันการกดโดนช่องว่างระหว่างปุ่ม",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk"
+  "versionCode": 35,
+  "versionName": "0.9.8",
+  "changelog": "- ปรับปรุงการสแกนหาปุ่ม Confirm จากไฟล์ Template โดยตรงเมื่อเกิด CONNECTION_LOST_1, 2, 3 หรือ INACTIVE ด้วยความแม่นยำสูงสุด (เลือกค่า NCC Score สูงสุด + รอหน้าจอนิ่ง + ตรวจสอบซ้ำหลังกด)\n- เพิ่มระบบตรวจจับและกดปุ่ม Confirm บนหน้าต่าง Previous Game Result (ที่ไม่มีปุ่ม X) หลังจากเกมหลุดระหว่างเล่นแล้วกลับเข้าเกมใหม่อัตโนมัติ",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.8"
 }
