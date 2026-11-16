@@ -1,6 +1,6 @@
 {
-  "versionCode": 35,
-  "versionName": "0.9.8",
-  "changelog": "- ปรับปรุงการสแกนหาปุ่ม Confirm จากไฟล์ Template โดยตรงเมื่อเกิด CONNECTION_LOST_1, 2, 3 หรือ INACTIVE ด้วยความแม่นยำสูงสุด (เลือกค่า NCC Score สูงสุด + รอหน้าจอนิ่ง + ตรวจสอบซ้ำหลังกด)\n- เพิ่มระบบตรวจจับและกดปุ่ม Confirm บนหน้าต่าง Previous Game Result (ที่ไม่มีปุ่ม X) หลังจากเกมหลุดระหว่างเล่นแล้วกลับเข้าเกมใหม่อัตโนมัติ",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.8"
+  "versionCode": 36,
+  "versionName": "0.9.9",
+  "changelog": "- เพิ่มระบบตรวจจับและนับจำนวน Free Treasure Ticket (ระดับ Supreme เท่านั้น!) หลังจากบันทึกชนิดของกล่องปริศนาในแต่ละรอบ (ใช้ขอบเขตการค้นหาเดียวกับชนิดของกล่อง)\n- แสดงผลจำนวนตั๋วสมบัติฟรีระดับ Supreme ทั้งในหน้าแอปและหน้าเว็บ Dashboard (แยกยอดเซสชันปัจจุบัน, ยอดสะสมรวมทุกเซสชัน และรายละเอียดรายรอบ)\n- ปรับปรุงการสแกนปุ่ม Confirm จากไฟล์ Template เมื่อเกิด CONNECTION_LOST_1,2,3 และหน้าต่าง Previous Game Result",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.9"
 }
