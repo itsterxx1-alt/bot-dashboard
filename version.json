@@ -1,6 +1,6 @@
 {
-  "versionCode": 52,
-  "versionName": "0.9.25",
-  "changelog": "- แก้ไขกล่องประวัติการวิ่งแต่ละรอบในแอปให้สามารถเลื่อนขึ้นลงได้ปกติ (เปิด NestedScrolling และกัน NestedScrollView ด้านนอกแย่งจับการสัมผัส)",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.25"
+  "versionCode": 53,
+  "versionName": "0.9.26",
+  "changelog": "- ปรับปรุงความเร็ว stage ส่งหัวใจรายบุคคล: เลิกสแกน X_TEMP 4 ขนาดซ้ำทุกรอบการเลื่อน (สแกนเฉพาะตอนเริ่ม/เจอปัญหา/หน้าจอค้าง), ปลดล็อกดีเลย์ขั้นต่ำ 2 วินาที/คน และเพิ่มระยะเลื่อนเป็น 200px",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.26"
 }
