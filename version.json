@@ -1,6 +1,6 @@
 {
-  "versionCode": 37,
-  "versionName": "0.9.10",
-  "changelog": "- แก้ไขระบบตรวจจับ Free Treasure Ticket (ระดับ Supreme) ให้แม่นยำขึ้นจากภาพจริง: ปรับ Threshold เป็น 0.46, เพิ่มสเกลช่วง 154–180px, สแกนละเอียด ±2px และสแกนซ้ำ 3 เฟรม\n- เพิ่มการแสดงคะแนน Debug (bestScore, w, colorOk) ในหน้า Log ของแอปและหน้าเว็บ",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.10"
+  "versionCode": 38,
+  "versionName": "0.9.11",
+  "changelog": "- เพิ่มการแคปภาพความละเอียดต่ำหลังเปิดกล่องสมบัติขึ้น Cloud อัตโนมัติ พร้อมปุ่มกดดูแกลเลอรีผลเปิดกล่องบนหน้าเว็บ (50 รอบล่าสุด)\n- ขยายการแสดงผลประวัติการวิ่งย้อนหลังเป็น 50 รอบล่าสุดทั้งบนแอป Android และหน้าเว็บ Dashboard",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.11"
 }
