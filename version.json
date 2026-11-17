@@ -1,6 +1,6 @@
 {
-  "versionCode": 42,
-  "versionName": "0.9.15",
-  "changelog": "- แก้ไขอาการกดปุ่มมั่วใน Stage PRE_GAME: ห้ามสแกนปุ่ม X / Confirm ขณะที่หน้าจอยังอยู่ที่ MAINMENU หรือกำลังเปลี่ยนเข้า PURCHASE_ITEM\n- ปรับสเกลปุ่ม X เป็น 28–46px และเพิ่ม Threshold เป็น 0.58 เพื่อไม่ให้ไปจับไอคอนเล็กๆ มุมขวาบนของหน้าหลัก",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.15"
+  "versionCode": 43,
+  "versionName": "0.9.16",
+  "changelog": "- เพิ่มระบบยืนยันปุ่ม X แบบ 2 เฟรมติดกัน (ห่างกัน 150ms) และตรวจซ้ำว่าไม่ใช่หน้าเปลี่ยนฉาก (MAINMENU/PURCHASE_ITEM/GAME_COMPLETE/MYSTERY_BOX) เพื่อปิดโอกาสการกดมั่ว 100%",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.16"
 }
