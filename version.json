@@ -1,6 +1,6 @@
 {
-  "versionCode": 40,
-  "versionName": "0.9.13",
-  "changelog": "- เพิ่มประสิทธิภาพการตรวจจับปุ่มปิด (X) แบบ Multi-scale (24–47px) และปรับ Threshold เป็น 0.45 ให้ปิด Pop-up ได้แม่นยำขึ้น\n- ยกเลิกการบังคับปิด/รีสตาร์ทแอปอัตโนมัติ (Force Stop) เมื่อค้าง เปลี่ยนเป็นการปิด Pop-up / กด Confirm / Back แล้วเริ่มสแกนใหม่แทน",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.13"
+  "versionCode": 41,
+  "versionName": "0.9.14",
+  "changelog": "- แก้ไขปัญหาปุ่ม X แย่งทำงานกับ 3-Tier Auto-Scan ปุ่ม Confirm (CONNECTION_LOST, INACTIVE, Previous Game Result)\n- ปรับ Threshold ปุ่ม X Multi-scale เป็น 0.54 และให้สแกน Confirm ก่อนเมื่ออยู่หลังหลุดการเชื่อมต่อหรือเมื่อคะแนน X < 0.62",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.14"
 }
