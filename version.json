@@ -1,6 +1,6 @@
 {
-  "versionCode": 48,
-  "versionName": "0.9.21",
-  "changelog": "- แก้ปัญหาบอทค้างหน้าของรางวัลหลังเปิดกล่อง ~10 วินาที: ลดภาระ CPU ของระบบสแกนตั๋ว Supreme ลง ~10 เท่า (เปลี่ยนกริดสแกนเป็น 8px, ลดเหลือ 8 สเกล และย้ายการจูนละเอียด ±3px มาทำเฉพาะยอดคะแนนสูงสุด 6 จุดนอกลูป)",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.21"
+  "versionCode": 49,
+  "versionName": "0.9.22",
+  "changelog": "- แก้ไขปัญหาส่งคำสั่งจากหน้าเว็บไม่ทำงานหลังเปิดกฎ Firebase Auth: แนบ ?auth=... ให้ EventSource (SSE) บนหน้าเว็บ และให้แอปทำ Silent Sign-In FirebaseAuth อัตโนมัติตอนเปิดแอป",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.22"
 }
