@@ -5166,7 +5166,7 @@
             if (toastMsg) showToast(toastMsg);
         }
 
-        function toggleScreenStream() {
+        async function toggleScreenStream() {
             if (!isStreamingActive) {
                 isStreamingActive = true;
                 const label = document.getElementById('btnStreamToggleLabel');
