@@ -1,6 +1,6 @@
 {
-  "versionCode": 49,
-  "versionName": "0.9.22",
-  "changelog": "- แก้ไขปัญหาส่งคำสั่งจากหน้าเว็บไม่ทำงานหลังเปิดกฎ Firebase Auth: แนบ ?auth=... ให้ EventSource (SSE) บนหน้าเว็บ และให้แอปทำ Silent Sign-In FirebaseAuth อัตโนมัติตอนเปิดแอป",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.22"
+  "versionCode": 50,
+  "versionName": "0.9.23",
+  "changelog": "- แก้ไขปัญหาสถานะค้างที่ 'กำลังเชื่อมต่อ HTTP Cloud...': ขยาย SSE readTimeout เป็น 65 วินาที (> รอบ keep-alive 30 วิของ Firebase) และรีเฟรช Auth Token + แจ้งเตือนใน Log ทันทีเมื่อเจอ 401/403",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.23"
 }
