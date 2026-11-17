@@ -1,6 +1,6 @@
 {
-  "versionCode": 41,
-  "versionName": "0.9.14",
-  "changelog": "- แก้ไขปัญหาปุ่ม X แย่งทำงานกับ 3-Tier Auto-Scan ปุ่ม Confirm (CONNECTION_LOST, INACTIVE, Previous Game Result)\n- ปรับ Threshold ปุ่ม X Multi-scale เป็น 0.54 และให้สแกน Confirm ก่อนเมื่ออยู่หลังหลุดการเชื่อมต่อหรือเมื่อคะแนน X < 0.62",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.14"
+  "versionCode": 42,
+  "versionName": "0.9.15",
+  "changelog": "- แก้ไขอาการกดปุ่มมั่วใน Stage PRE_GAME: ห้ามสแกนปุ่ม X / Confirm ขณะที่หน้าจอยังอยู่ที่ MAINMENU หรือกำลังเปลี่ยนเข้า PURCHASE_ITEM\n- ปรับสเกลปุ่ม X เป็น 28–46px และเพิ่ม Threshold เป็น 0.58 เพื่อไม่ให้ไปจับไอคอนเล็กๆ มุมขวาบนของหน้าหลัก",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.15"
 }
