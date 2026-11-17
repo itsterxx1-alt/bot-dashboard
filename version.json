@@ -1,6 +1,6 @@
 {
-  "versionCode": 50,
-  "versionName": "0.9.23",
-  "changelog": "- แก้ไขปัญหาสถานะค้างที่ 'กำลังเชื่อมต่อ HTTP Cloud...': ขยาย SSE readTimeout เป็น 65 วินาที (> รอบ keep-alive 30 วิของ Firebase) และรีเฟรช Auth Token + แจ้งเตือนใน Log ทันทีเมื่อเจอ 401/403",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.23"
+  "versionCode": 51,
+  "versionName": "0.9.24",
+  "changelog": "- อัปเกรดระบบตรวจจับ Anti-Bot Captcha: ถ่ายภาพ 6 เฟรมต่อเนื่อง (ห่างกัน 140ms) เพื่อจับภาพการ์ดที่ขยับ/กระโดดต่างจากพวก 2 ใบ โดยใช้สี RGB เต็มรูปแบบ (ตัดขอบกรอบการ์ดออก 14%) ร่วมกับค่า Motion Outlier",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.24"
 }
