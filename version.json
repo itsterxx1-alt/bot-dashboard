@@ -1,6 +1,6 @@
 {
-  "versionCode": 53,
-  "versionName": "0.9.26",
-  "changelog": "- ปรับปรุงความเร็ว stage ส่งหัวใจรายบุคคล: เลิกสแกน X_TEMP 4 ขนาดซ้ำทุกรอบการเลื่อน (สแกนเฉพาะตอนเริ่ม/เจอปัญหา/หน้าจอค้าง), ปลดล็อกดีเลย์ขั้นต่ำ 2 วินาที/คน และเพิ่มระยะเลื่อนเป็น 200px",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.26"
+  "versionCode": 54,
+  "versionName": "0.9.27",
+  "changelog": "- แก้ไขจังหวะเลื่อนรายชื่อเพื่อนไม่ให้กดเข้าโปรไฟล์เพื่อน: ย้ายพิกัดลากไปช่วงว่าง (x=555..595) และปรับความเร็วการลากเป็น 380ms ให้เกมรับรู้เป็น Drag/Scroll เสมอ",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.27"
 }
