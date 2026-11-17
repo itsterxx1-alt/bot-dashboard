@@ -1,6 +1,6 @@
 {
-  "versionCode": 45,
-  "versionName": "0.9.18",
-  "changelog": "- เพิ่มระบบยืนยันตัวตน Firebase Auth ID Token (?auth=...) และล็อกสิทธิ์เจ้าของข้อมูล (ownerUid) ทั้งบนแอปและหน้าเว็บ พร้อมไฟล์ database.rules.json สำหรับป้องกันการโกงคีย์และข้อมูลลูกค้า",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.18"
+  "versionCode": 46,
+  "versionName": "0.9.19",
+  "changelog": "- ปรับจังหวะการทำงานช่วง POST_GAME ถึง PRE_GAME ให้ไหลลื่นและเร็วขึ้นโดยไม่เสียความแม่นยำ: ลดเวลารอค้างหน้าจอนิ่งสูงสุดจาก 10 วิ เหลือ 2.5 วิ, สลับเข้า PRE_GAME ทันทีเมื่อเจอ MAINMENU, และลดดีเลย์ระหว่างหน้าต่างหลังจบเกม",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.19"
 }
