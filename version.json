@@ -1,6 +1,6 @@
 {
-  "versionCode": 51,
-  "versionName": "0.9.24",
-  "changelog": "- อัปเกรดระบบตรวจจับ Anti-Bot Captcha: ถ่ายภาพ 6 เฟรมต่อเนื่อง (ห่างกัน 140ms) เพื่อจับภาพการ์ดที่ขยับ/กระโดดต่างจากพวก 2 ใบ โดยใช้สี RGB เต็มรูปแบบ (ตัดขอบกรอบการ์ดออก 14%) ร่วมกับค่า Motion Outlier",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.24"
+  "versionCode": 52,
+  "versionName": "0.9.25",
+  "changelog": "- แก้ไขกล่องประวัติการวิ่งแต่ละรอบในแอปให้สามารถเลื่อนขึ้นลงได้ปกติ (เปิด NestedScrolling และกัน NestedScrollView ด้านนอกแย่งจับการสัมผัส)",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.25"
 }
