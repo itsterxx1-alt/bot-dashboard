@@ -1,6 +1,6 @@
 {
-  "versionCode": 36,
-  "versionName": "0.9.9",
-  "changelog": "- เพิ่มระบบตรวจจับและนับจำนวน Free Treasure Ticket (ระดับ Supreme เท่านั้น!) หลังจากบันทึกชนิดของกล่องปริศนาในแต่ละรอบ (ใช้ขอบเขตการค้นหาเดียวกับชนิดของกล่อง)\n- แสดงผลจำนวนตั๋วสมบัติฟรีระดับ Supreme ทั้งในหน้าแอปและหน้าเว็บ Dashboard (แยกยอดเซสชันปัจจุบัน, ยอดสะสมรวมทุกเซสชัน และรายละเอียดรายรอบ)\n- ปรับปรุงการสแกนปุ่ม Confirm จากไฟล์ Template เมื่อเกิด CONNECTION_LOST_1,2,3 และหน้าต่าง Previous Game Result",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.9"
+  "versionCode": 37,
+  "versionName": "0.9.10",
+  "changelog": "- แก้ไขระบบตรวจจับ Free Treasure Ticket (ระดับ Supreme) ให้แม่นยำขึ้นจากภาพจริง: ปรับ Threshold เป็น 0.46, เพิ่มสเกลช่วง 154–180px, สแกนละเอียด ±2px และสแกนซ้ำ 3 เฟรม\n- เพิ่มการแสดงคะแนน Debug (bestScore, w, colorOk) ในหน้า Log ของแอปและหน้าเว็บ",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.10"
 }
