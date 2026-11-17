@@ -1,6 +1,6 @@
 {
-  "versionCode": 38,
-  "versionName": "0.9.11",
-  "changelog": "- เพิ่มการแคปภาพความละเอียดต่ำหลังเปิดกล่องสมบัติขึ้น Cloud อัตโนมัติ พร้อมปุ่มกดดูแกลเลอรีผลเปิดกล่องบนหน้าเว็บ (50 รอบล่าสุด)\n- ขยายการแสดงผลประวัติการวิ่งย้อนหลังเป็น 50 รอบล่าสุดทั้งบนแอป Android และหน้าเว็บ Dashboard",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.11"
+  "versionCode": 39,
+  "versionName": "0.9.12",
+  "changelog": "- ปรับลดเวลาใน Stage MYSTERY_BOX ลง ~2.2-2.7 วินาที (ตัดการสแกนตั๋วก่อนเปิดกล่อง, ลดเวลารอหลัง Open all และ Confirm) โดยยังคงสแกนตั๋ว Supreme และแคปภาพขึ้น Cloud ครบถ้วน",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.12"
 }
