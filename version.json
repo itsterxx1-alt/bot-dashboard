@@ -1,6 +1,6 @@
 {
-  "versionCode": 39,
-  "versionName": "0.9.12",
-  "changelog": "- ปรับลดเวลาใน Stage MYSTERY_BOX ลง ~2.2-2.7 วินาที (ตัดการสแกนตั๋วก่อนเปิดกล่อง, ลดเวลารอหลัง Open all และ Confirm) โดยยังคงสแกนตั๋ว Supreme และแคปภาพขึ้น Cloud ครบถ้วน",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.12"
+  "versionCode": 40,
+  "versionName": "0.9.13",
+  "changelog": "- เพิ่มประสิทธิภาพการตรวจจับปุ่มปิด (X) แบบ Multi-scale (24–47px) และปรับ Threshold เป็น 0.45 ให้ปิด Pop-up ได้แม่นยำขึ้น\n- ยกเลิกการบังคับปิด/รีสตาร์ทแอปอัตโนมัติ (Force Stop) เมื่อค้าง เปลี่ยนเป็นการปิด Pop-up / กด Confirm / Back แล้วเริ่มสแกนใหม่แทน",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.13"
 }
