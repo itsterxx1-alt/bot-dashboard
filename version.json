@@ -1,6 +1,6 @@
 {
-  "versionCode": 47,
-  "versionName": "0.9.20",
-  "changelog": "- ปรับความเร็วช่วง GAME_COMPLETE (poll ทุก 500ms, ออกทันทีเมื่อตัวเลขนิ่งหลัง 3.8s, สูงสุด 7s) เร็วขึ้น ~4-5 วินาทีต่อรอบ\n- เร่งจังหวะสแกนกล่องปริศนา, สแกนตั๋ว Supreme และย้ายการบีบอัด/อัปโหลดภาพรางวัลไปทำแบบ Async บน Background Thread",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.20"
+  "versionCode": 48,
+  "versionName": "0.9.21",
+  "changelog": "- แก้ปัญหาบอทค้างหน้าของรางวัลหลังเปิดกล่อง ~10 วินาที: ลดภาระ CPU ของระบบสแกนตั๋ว Supreme ลง ~10 เท่า (เปลี่ยนกริดสแกนเป็น 8px, ลดเหลือ 8 สเกล และย้ายการจูนละเอียด ±3px มาทำเฉพาะยอดคะแนนสูงสุด 6 จุดนอกลูป)",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.21"
 }
