@@ -1,6 +1,6 @@
 {
-  "versionCode": 43,
-  "versionName": "0.9.16",
-  "changelog": "- เพิ่มระบบยืนยันปุ่ม X แบบ 2 เฟรมติดกัน (ห่างกัน 150ms) และตรวจซ้ำว่าไม่ใช่หน้าเปลี่ยนฉาก (MAINMENU/PURCHASE_ITEM/GAME_COMPLETE/MYSTERY_BOX) เพื่อปิดโอกาสการกดมั่ว 100%",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.16"
+  "versionCode": 44,
+  "versionName": "0.9.17",
+  "changelog": "- ปรับโฉม UI แอป Android ให้เข้ากับธีม 8-Bit Bakery บนหน้าเว็บ: แถบหัวสีช็อกโกแลตเข้มพร้อมมาสคอต 8-Bit, ไอคอนกล่องสมบัติ 8-Bit, และแท็บแยก 4 หมวด (สรุปผล / ตั้งค่าบอท / Log สด / Cloud) โดยคงปุ่มควบคุมหลักไว้ใช้งานสะดวกเหมือนเดิม",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.17"
 }
