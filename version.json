@@ -1,6 +1,6 @@
 {
-  "versionCode": 46,
-  "versionName": "0.9.19",
-  "changelog": "- ปรับจังหวะการทำงานช่วง POST_GAME ถึง PRE_GAME ให้ไหลลื่นและเร็วขึ้นโดยไม่เสียความแม่นยำ: ลดเวลารอค้างหน้าจอนิ่งสูงสุดจาก 10 วิ เหลือ 2.5 วิ, สลับเข้า PRE_GAME ทันทีเมื่อเจอ MAINMENU, และลดดีเลย์ระหว่างหน้าต่างหลังจบเกม",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.19"
+  "versionCode": 47,
+  "versionName": "0.9.20",
+  "changelog": "- ปรับความเร็วช่วง GAME_COMPLETE (poll ทุก 500ms, ออกทันทีเมื่อตัวเลขนิ่งหลัง 3.8s, สูงสุด 7s) เร็วขึ้น ~4-5 วินาทีต่อรอบ\n- เร่งจังหวะสแกนกล่องปริศนา, สแกนตั๋ว Supreme และย้ายการบีบอัด/อัปโหลดภาพรางวัลไปทำแบบ Async บน Background Thread",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.20"
 }
