@@ -1,6 +1,6 @@
 {
-  "versionCode": 55,
-  "versionName": "0.9.28",
-  "changelog": "- แก้ไขปัญหาเว็บไม่เชื่อมต่อกับแอพแบบถาวรทั้งฝั่งเว็บและฝั่งแอพ: รอ FirebaseAuth พร้อมก่อนเปิด SSE, ต่ออายุ Token อัตโนมัติทุก 45 นาที/เมื่อเจอ auth_revoked หรือ 401/403 และกู้การเชื่อมต่อทันทีเมื่อสลับแท็บหรือเน็ตกลับมา",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.28"
+  "versionCode": 56,
+  "versionName": "0.9.29",
+  "changelog": "- แก้ไขจุดตรวจจบรายชื่อเพื่อนเมื่อส่งหัวใจครบทุกคน: เปรียบเทียบการขยับเฉพาะพื้นที่รายชื่อเพื่อน (x=250..610, y=270..610) เพื่อไม่ให้แอนิเมชันคุกกี้ด้านขวารบกวน ทำให้จบแล้วเข้าหน้า PRE_GAME ทันที",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.29"
 }
