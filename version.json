@@ -1,6 +1,6 @@
 {
-  "versionCode": 59,
-  "versionName": "0.9.32",
-  "changelog": "- เพิ่มระบบกันกดพลาดปุ่ม X_TEMP แบบเบา (Single-scale ไม่ใช้ Multi-scale): ปรับเกณฑ์เป็น 0.64 และยืนยันเฟรมที่ 2 ห่างกัน 80ms (±20px) เฉพาะตอนที่เจอปุ่ม X แล้วเท่านั้น",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.32"
+  "versionCode": 60,
+  "versionName": "0.9.33",
+  "changelog": "- อัปเกรดการตรวจจับ Supreme Treasure Ticket: เพิ่ม Template จากภาพในเกมจริงที่มีแสงแฟลช/เงา (FREE_TREASURE_TICKET_INGAME.png ขนาดจริง 165px) และปรับตัวกรองสีให้รองรับแสงออร่าตรงกลางหน้าจอ",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.33"
 }
