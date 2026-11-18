@@ -1,6 +1,6 @@
 {
-  "versionCode": 63,
-  "versionName": "0.9.36",
-  "changelog": "- ผสาน AI OCR (Google ML Kit Text Recognition ออฟไลน์ 100%) เข้าในแอป: ช่วยอ่านข้อความ 'Supreme Treasure Ticket' หน้าเปิดกล่องร่วมกับ Template, อ่านโจทย์ Anti-Bot และช่วยอ่านปุ่ม Confirm/OK/Retry/Close เมื่อหลุด Stage",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.36"
+  "versionCode": 64,
+  "versionName": "0.9.37",
+  "changelog": "- ปรับการกดปุ่ม X_TEMP ให้สแกนซ้ำและกดอีกครั้งหลัง 350ms หาก Pop-up ยังไม่ปิด (เช่น Fortune Bakery หรือ Pop-up ซ้อน) และลดเวลา Watchdog จาก 15 วิ เหลือ 8 วิ",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.37"
 }
