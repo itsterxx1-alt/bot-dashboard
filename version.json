@@ -1,6 +1,6 @@
 {
-  "versionCode": 62,
-  "versionName": "0.9.35",
-  "changelog": "- เพิ่มปุ่ม '🔄 ซิงก์' ในหน้าสถิติของแอปสำหรับกดดึงข้อมูลเซสชัน/สถิติ/สิทธิ์สมาชิกจาก Cloud ทันทีเมื่อหน้าแอปแสดงค่า 0 และนำระบบนับตั๋วจากภาพ 50 รอบบนหน้าเว็บออก",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.35"
+  "versionCode": 63,
+  "versionName": "0.9.36",
+  "changelog": "- ผสาน AI OCR (Google ML Kit Text Recognition ออฟไลน์ 100%) เข้าในแอป: ช่วยอ่านข้อความ 'Supreme Treasure Ticket' หน้าเปิดกล่องร่วมกับ Template, อ่านโจทย์ Anti-Bot และช่วยอ่านปุ่ม Confirm/OK/Retry/Close เมื่อหลุด Stage",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.36"
 }
