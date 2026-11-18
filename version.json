@@ -1,6 +1,6 @@
 {
-  "versionCode": 54,
-  "versionName": "0.9.27",
-  "changelog": "- แก้ไขจังหวะเลื่อนรายชื่อเพื่อนไม่ให้กดเข้าโปรไฟล์เพื่อน: ย้ายพิกัดลากไปช่วงว่าง (x=555..595) และปรับความเร็วการลากเป็น 380ms ให้เกมรับรู้เป็น Drag/Scroll เสมอ",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.27"
+  "versionCode": 55,
+  "versionName": "0.9.28",
+  "changelog": "- แก้ไขปัญหาเว็บไม่เชื่อมต่อกับแอพแบบถาวรทั้งฝั่งเว็บและฝั่งแอพ: รอ FirebaseAuth พร้อมก่อนเปิด SSE, ต่ออายุ Token อัตโนมัติทุก 45 นาที/เมื่อเจอ auth_revoked หรือ 401/403 และกู้การเชื่อมต่อทันทีเมื่อสลับแท็บหรือเน็ตกลับมา",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.28"
 }
