@@ -1,6 +1,6 @@
 {
-  "versionCode": 60,
-  "versionName": "0.9.33",
-  "changelog": "- อัปเกรดการตรวจจับ Supreme Treasure Ticket: เพิ่ม Template จากภาพในเกมจริงที่มีแสงแฟลช/เงา (FREE_TREASURE_TICKET_INGAME.png ขนาดจริง 165px) และปรับตัวกรองสีให้รองรับแสงออร่าตรงกลางหน้าจอ",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.33"
+  "versionCode": 61,
+  "versionName": "0.9.34",
+  "changelog": "- เพิ่มปุ่มนับและอัปเดตยอดตั๋ว Supreme Treasure Ticket จากภาพ 50 รอบล่าสุดบนหน้าเว็บ (สแกนอัตโนมัติหรือกด +1 🎫 รายภาพ) พร้อมซิงก์เข้ายอดตั๋วในแอปอัตโนมัติผ่าน ADD_TICKETS",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.34"
 }
