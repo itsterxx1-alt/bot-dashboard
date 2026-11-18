@@ -1,6 +1,6 @@
 {
-  "versionCode": 61,
-  "versionName": "0.9.34",
-  "changelog": "- เพิ่มปุ่มนับและอัปเดตยอดตั๋ว Supreme Treasure Ticket จากภาพ 50 รอบล่าสุดบนหน้าเว็บ (สแกนอัตโนมัติหรือกด +1 🎫 รายภาพ) พร้อมซิงก์เข้ายอดตั๋วในแอปอัตโนมัติผ่าน ADD_TICKETS",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.34"
+  "versionCode": 62,
+  "versionName": "0.9.35",
+  "changelog": "- เพิ่มปุ่ม '🔄 ซิงก์' ในหน้าสถิติของแอปสำหรับกดดึงข้อมูลเซสชัน/สถิติ/สิทธิ์สมาชิกจาก Cloud ทันทีเมื่อหน้าแอปแสดงค่า 0 และนำระบบนับตั๋วจากภาพ 50 รอบบนหน้าเว็บออก",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.35"
 }
