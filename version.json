@@ -1,6 +1,6 @@
 {
-  "versionCode": 57,
-  "versionName": "0.9.30",
-  "changelog": "- ปรับปรุงการแคปผลรางวัลหลังเปิดกล่อง: จับจังหวะทันทีเมื่อพื้นที่ของรางวัลนิ่ง (< 1.5% ติดกัน 2 เฟรม) แทนการหน่วงเวลาคงที่ เพื่อความแม่นยำสูงสุดและไม่เสียเวลารอเกินจำเป็น",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.30"
+  "versionCode": 58,
+  "versionName": "0.9.31",
+  "changelog": "- คืนค่าการตรวจจับปุ่ม X_TEMP แบบดั้งเดิม (Single-scale รวดเร็ว ไม่หน่วง 2 เฟรม) และเพิ่มประสิทธิภาพตอนหลุด Stage ให้รอพ้นเฟรมเปลี่ยนฉาก 1 เฟรม (unknownScreenCount >= 2) ก่อนสแกนหาปุ่ม X / Confirm",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.31"
 }
