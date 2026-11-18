@@ -1,6 +1,6 @@
 {
-  "versionCode": 64,
-  "versionName": "0.9.37",
-  "changelog": "- ปรับการกดปุ่ม X_TEMP ให้สแกนซ้ำและกดอีกครั้งหลัง 350ms หาก Pop-up ยังไม่ปิด (เช่น Fortune Bakery หรือ Pop-up ซ้อน) และลดเวลา Watchdog จาก 15 วิ เหลือ 8 วิ",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.37"
+  "versionCode": 65,
+  "versionName": "0.9.38",
+  "changelog": "- แก้ไขอาการบอทรวนกดเข้าหน้า Fortune Bakery หลังจบเกม: ตัดแถบ HUD ด้านบน (y<75) ออกจากพื้นที่สแกน X_TEMP, ถอดการสแกน X_TEMP ระหว่างเปลี่ยนฉากหน้า MAINMENU/PURCHASE_ITEM, รอพ้นเฟรมเปลี่ยนฉาก >= 5 รอบ และเพิ่ม Back/OCR fallback หากกด X 2 รอบแล้วยังไม่ปิด",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.38"
 }
