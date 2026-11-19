@@ -1,6 +1,6 @@
 {
-  "versionCode": 66,
-  "versionName": "0.9.39",
-  "changelog": "- แก้จุดกดซ้ำกลางจอด้านล่าง (663, 642) หลังปิดหน้า MYSTERY_BOX: เช็กก่อนว่าหน้าต่างกล่องยังค้างอยู่จริงถึงจะกดซ้ำ ไม่กดทะลุลงไปโดนปุ่ม Fortune Bakery บนหน้าหลัก",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.39"
+  "versionCode": 67,
+  "versionName": "0.9.40",
+  "changelog": "- แก้ปัญหา MYSTERY_BOX ตรวจจับซ้ำบนหน้า MAINMENU/PRE_GAME: จัดลำดับ MAINMENU/PURCHASE_ITEM มาก่อน MYSTERY_BOX ใน POST_GAME, เพิ่ม flag ป้องกันเปิดกล่องซ้ำในรอบเดิม และห้ามอัปโหลดภาพหน้า MAINMENU ขึ้น box_rewards",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.40"
 }
