@@ -1,6 +1,6 @@
 {
-  "versionCode": 69,
-  "versionName": "0.9.42",
-  "changelog": "- ป้องกันระบบตัด Accessibility Service (ลด Event เหลือเฉพาะ typeWindowStateChanged + เพิ่ม PARTIAL_WAKE_LOCK) และแก้ปัญหาบอทค้าง: สลับ Global Detection ทันทีเมื่อหลุด IN_GAME เกิน ~2.5 วิ (แทนรอ 15 นาที) และแก้ Watchdog ไม่ให้ถูกรีเซ็ตเมื่อค้างอยู่ Stage เดิม",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.42"
+  "versionCode": 70,
+  "versionName": "0.9.43",
+  "changelog": "- แก้ไข AI OCR เผลออ่านข้อความ Log ของหน้าต่างลอย (Floating Overlay) ว่าเป็นปุ่ม Confirm: จำกัดกรอบค้นหาเฉพาะกลางจอ (400..900, 380..695) และต้องเป็นข้อความปุ่มสั้น 1-2 คำตรงตัวเท่านั้น",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.43"
 }
