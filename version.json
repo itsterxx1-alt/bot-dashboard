@@ -1,6 +1,6 @@
 {
-  "versionCode": 70,
-  "versionName": "0.9.43",
-  "changelog": "- แก้ไข AI OCR เผลออ่านข้อความ Log ของหน้าต่างลอย (Floating Overlay) ว่าเป็นปุ่ม Confirm: จำกัดกรอบค้นหาเฉพาะกลางจอ (400..900, 380..695) และต้องเป็นข้อความปุ่มสั้น 1-2 คำตรงตัวเท่านั้น",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.43"
+  "versionCode": 71,
+  "versionName": "0.9.44",
+  "changelog": "- ถอดการกดปุ่มด้วย AI OCR ออกจาก Watchdog (ใช้ Template X_TEMP -> Confirm -> Back เท่านั้น) โดยคง AI OCR ไว้สำหรับอ่านตั๋ว Supreme Treasure Ticket และโจทย์ Anti-Bot อย่างเดียว",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.44"
 }
