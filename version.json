@@ -1,6 +1,6 @@
 {
-  "versionCode": 72,
-  "versionName": "0.9.45",
-  "changelog": "- แก้ไขปุ่มปิด X ขนาดใหญ่ที่ขอบบนหน้าจอ (เช่น Winter Story ที่ y=24..104, ขนาด 68x68): เพิ่ม Template X_TEMP_LARGE.png และขยายกรอบสแกนมุมขวาบนเป็น y=10..360 พร้อมการ์ดป้องกันไม่ให้ทำงานบนหน้า MAINMENU",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.45"
+  "versionCode": 73,
+  "versionName": "0.9.46",
+  "changelog": "- แก้ไขปัญหาบอทวนลูประหว่าง INITIALIZING กับ Pop-up ที่ไม่รู้จักจนไม่เข้า Stage PRE_GAME: แก้บั๊ก Frame Cache ค้างจาก Ring Buffer (เช็ค generationId), ปรับเกณฑ์ตรวจจับ MAINMENU/PURCHASE_ITEM ให้แม่นยำ (0.64), แยกกรอบสแกนปุ่ม X_TEMP (y>=72) และ X_TEMP_LARGE (y>=10) โดยไม่บล็อกการปิด Pop-up และป้องกันการยกเลิก MAINMENU กลางคัน",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.46"
 }
