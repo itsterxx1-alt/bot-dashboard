@@ -1,6 +1,6 @@
 {
-  "versionCode": 73,
-  "versionName": "0.9.46",
-  "changelog": "- แก้ไขปัญหาบอทวนลูประหว่าง INITIALIZING กับ Pop-up ที่ไม่รู้จักจนไม่เข้า Stage PRE_GAME: แก้บั๊ก Frame Cache ค้างจาก Ring Buffer (เช็ค generationId), ปรับเกณฑ์ตรวจจับ MAINMENU/PURCHASE_ITEM ให้แม่นยำ (0.64), แยกกรอบสแกนปุ่ม X_TEMP (y>=72) และ X_TEMP_LARGE (y>=10) โดยไม่บล็อกการปิด Pop-up และป้องกันการยกเลิก MAINMENU กลางคัน",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.46"
+  "versionCode": 74,
+  "versionName": "0.9.47",
+  "changelog": "- ยกเครื่องระบบตรวจจับปุ่มกากบาท X_TEMP / X_TEMP_LARGE ใหม่ทั้งหมด: ครอป X_TEMP_LARGE (44x44) ตัดพื้นหลังมุมภาพออก, เพิ่มตัวกรองระดับพิกเซลตรวจสีเทา-ขาว (Achromatic) และรูปทรงกากบาท X แท้ (Diagonal vs Cardinal Contrast), จำกัดเขตสแกน x=820..1265 เพื่อไม่ให้ไปโดนปุ่มปิดหน้า PURCHASE_ITEM (656,101) หรือหัวข้อ Stage กลางจอ และยกเลิกการกดซ้ำ 350ms ทะลุหน้าต่าง",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.47"
 }
