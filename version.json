@@ -1,6 +1,6 @@
 {
-  "versionCode": 74,
-  "versionName": "0.9.47",
-  "changelog": "- ยกเครื่องระบบตรวจจับปุ่มกากบาท X_TEMP / X_TEMP_LARGE ใหม่ทั้งหมด: ครอป X_TEMP_LARGE (44x44) ตัดพื้นหลังมุมภาพออก, เพิ่มตัวกรองระดับพิกเซลตรวจสีเทา-ขาว (Achromatic) และรูปทรงกากบาท X แท้ (Diagonal vs Cardinal Contrast), จำกัดเขตสแกน x=820..1265 เพื่อไม่ให้ไปโดนปุ่มปิดหน้า PURCHASE_ITEM (656,101) หรือหัวข้อ Stage กลางจอ และยกเลิกการกดซ้ำ 350ms ทะลุหน้าต่าง",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.47"
+  "versionCode": 75,
+  "versionName": "0.9.48",
+  "changelog": "- แก้ไขระบบส่งหัวใจรายบุคคล: ตรวจจับรายชื่อเพื่อนคนสุดท้ายด้วย Snapshot โซนชื่อเพื่อน (ป้องกัน Ring Buffer ทับภาพและรอจังหวะเด้งขอบล่างนิ่ง 300ms) เพื่อหยุดลูปทันทีเมื่อสุดรายชื่อ, ตัดการเลื่อนกลับขึ้นด้านบนหลังส่งเสร็จเพื่อเข้าเล่นเกมต่อทันที และรีเซ็ตตัวจับเวลา PRE_GAME หลังส่งหัวใจเสร็จเพื่อป้องกันการกด Back ออกเกม",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.48"
 }
