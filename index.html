@@ -3974,7 +3974,40 @@
                     if (statsEventSource !== es) return;
                     sseConnected = true;
                     sseRetryAttempt = 0;
+                    window._lastSseEventTime = Date.now();
                     console.log('✅ Connected to Google Firebase SSE (Quota Saver 1-Conn Mode)');
+                };
+
+                // Helper: apply incremental SSE put/patch directly to latestBotData in 0ms
+                const applyIncrementalPatch = (path, patchData) => {
+                    if (!latestBotData || typeof latestBotData !== 'object') {
+                        fetchInitialBotState();
+                        return;
+                    }
+                    if (!latestBotData.info) latestBotData.info = {};
+                    latestBotData.info.lastSeen = Date.now();
+                    if (path === '/stats' && patchData && typeof patchData === 'object') {
+                        latestBotData.stats = Object.assign({}, latestBotData.stats || {}, patchData);
+                        applyBotData(latestBotData);
+                    } else if (path === '/stats/isRunning') {
+                        if (!latestBotData.stats) latestBotData.stats = {};
+                        latestBotData.stats.isRunning = !!patchData;
+                        applyBotData(latestBotData);
+                    } else if (path === '/stats/currentStage') {
+                        if (!latestBotData.stats) latestBotData.stats = {};
+                        latestBotData.stats.currentStage = patchData;
+                        applyBotData(latestBotData);
+                    } else if (path === '/device' && patchData && typeof patchData === 'object') {
+                        latestBotData.device = Object.assign({}, latestBotData.device || {}, patchData);
+                        applyBotData(latestBotData);
+                    } else if (path === '/' && patchData && typeof patchData === 'object') {
+                        if (patchData.stats) latestBotData.stats = Object.assign({}, latestBotData.stats || {}, patchData.stats);
+                        if (patchData.info) latestBotData.info = Object.assign({}, latestBotData.info || {}, patchData.info);
+                        if (patchData.device) latestBotData.device = Object.assign({}, latestBotData.device || {}, patchData.device);
+                        applyBotData(latestBotData);
+                    } else {
+                        fetchInitialBotState();
+                    }
                 };
 
                 // Firebase sends 'put' and 'patch' events on every data change
@@ -3982,6 +4015,7 @@
                     if (statsEventSource !== es) return;
                     sseConnected = true;
                     sseRetryAttempt = 0;
+                    window._lastSseEventTime = Date.now();
                     try {
                         const payload = JSON.parse(event.data);
                         if (payload.path === '/' && payload.data) {
@@ -3993,23 +4027,31 @@
                             lastKnownRoundsPlayed = r;
                         } else if (payload.path === '/info/lastSeen' && payload.data) {
                             // Lightweight 13-byte heartbeat: update online timestamp without re-downloading state.json!
-                            lastBotSeenTime = Number(payload.data) || Date.now();
+                            lastBotSeenTime = Math.min(Number(payload.data) || Date.now(), Date.now());
                             updateBotOnlineStatus(true);
-                        } else if (payload.data) {
-                            fetchInitialBotState();
+                        } else if (payload.path && payload.data !== undefined) {
+                            applyIncrementalPatch(payload.path, payload.data);
                         }
                     } catch (e) {
                         console.warn('Error parsing Firebase payload:', e);
                     }
                 });
 
-                es.addEventListener('patch', () => {
+                es.addEventListener('patch', (event) => {
                     if (statsEventSource !== es) return;
                     sseConnected = true;
                     sseRetryAttempt = 0;
+                    window._lastSseEventTime = Date.now();
                     try {
+                        const payload = JSON.parse(event.data);
+                        if (payload && payload.path && payload.data !== undefined) {
+                            applyIncrementalPatch(payload.path, payload.data);
+                        } else {
+                            fetchInitialBotState();
+                        }
+                    } catch (e) {
                         fetchInitialBotState();
-                    } catch (e) {}
+                    }
                 });
 
                 // Firebase RTDB sends auth_revoked when the 1-hour ID token expires
@@ -4066,12 +4108,21 @@
                 }
             }, 45 * 60 * 1000);
 
-            // 3. Fallback polling ONLY when SSE is disconnected (Quota Saver: zero redundant polling!)
+            // 3. Smart Realtime Watchdog Polling (recovers iOS Safari silent SSE stalls & keeps Live Stream 100% in sync)
             pollingTimer = setInterval(() => {
-                if (!sseConnected && !document.hidden) {
+                if (!cloudSyncActive || document.hidden) return;
+                const now = Date.now();
+                const sseIdleMs = now - (window._lastSseEventTime || 0);
+                const shouldPoll = !sseConnected || (isStreamingActive && sseIdleMs > 3000) || (sseIdleMs > 12000);
+                if (shouldPoll && (now - (window._lastPollFetchMs || 0) >= 3000)) {
+                    window._lastPollFetchMs = now;
                     fetchInitialBotState();
                 }
-            }, 12000);
+                if (sseConnected && sseIdleMs > 30000) {
+                    window._lastSseEventTime = now;
+                    openStatsSse(true);
+                }
+            }, 3000);
 
             if (!window._heartbeatTimer) {
                 window._heartbeatTimer = setInterval(checkBotHeartbeat, 3000);
