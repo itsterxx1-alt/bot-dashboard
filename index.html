@@ -2,10 +2,11 @@
 <html lang="th" class="notranslate">
 <head>
     <meta charset="UTF-8">
+    <meta name="dashboard-build" content="2026.11.25.1">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>CookieRunBot — ระบบควบคุมบอทคุกกี้รันผ่านเว็บ (Official Dashboard)</title>
     <link rel="icon" type="image/png" href="icons/bot_robobrave.png">
     <link rel="apple-touch-icon" href="icons/bot_robobrave.png">
@@ -84,15 +85,186 @@
             flex-shrink: 0;
         }
 
+        /* App Shell: Left Sidebar + Right Workspace (Modern SaaS 8-Bit Bakery) */
+        .app-shell {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        .app-sidebar {
+            width: 268px;
+            flex-shrink: 0;
+            background: linear-gradient(180deg, #FBF2E4 0%, #F5E6D3 100%);
+            border-right: 3px solid #C89D70;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 18px 14px calc(18px + env(safe-area-inset-bottom, 0px)) 14px;
+            z-index: 150;
+            box-shadow: 4px 0 18px rgba(92, 58, 33, 0.08);
+        }
+
+        .sidebar-brand-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 4px 6px 12px 6px;
+            border-bottom: 2px dashed #D7B38C;
+        }
+
+        .btn-sidebar-close {
+            display: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 2px solid #C89D70;
+            background: #FFFDF9;
+            color: #5C3A21;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .sidebar-section-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #8D6E63;
+            text-transform: uppercase;
+            padding: 2px 10px 0 10px;
+        }
+
+        .sidebar-general-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .sidebar-util-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 11px;
+            border: 1.5px solid transparent;
+            background: transparent;
+            color: #5C3A21;
+            font-family: var(--font-main);
+            font-size: 0.86rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.14s ease;
+        }
+
+        .sidebar-util-btn:hover {
+            background: rgba(234, 213, 183, 0.65);
+            border-color: #D7B38C;
+        }
+
+        .sidebar-util-btn.danger {
+            color: #991B1B;
+        }
+
+        .sidebar-util-btn.danger:hover {
+            background: #FEE2E2;
+            border-color: #FCA5A5;
+        }
+
+        .sidebar-promo-card {
+            margin-top: auto;
+            background: linear-gradient(145deg, #3E2723 0%, #5C3A21 100%);
+            background-image:
+                radial-gradient(rgba(245, 158, 11, 0.16) 1.5px, transparent 1.5px),
+                linear-gradient(145deg, #3E2723 0%, #5C3A21 100%);
+            background-size: 18px 18px, 100% 100%;
+            border: 2px solid #8B5A2B;
+            border-radius: 16px;
+            padding: 14px;
+            color: #FFF8EE;
+            box-shadow: 0 4px 0 #271509;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-promo-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            background: linear-gradient(180deg, #22C55E 0%, #15803D 100%);
+            color: #FFFFFF !important;
+            border: 2px solid #052E16;
+            border-radius: 9999px;
+            padding: 8px 12px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-decoration: none;
+            box-shadow: 0 2px 0 #052E16;
+        }
+
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(39, 21, 9, 0.55);
+            backdrop-filter: blur(2px);
+            z-index: 140;
+            pointer-events: none;
+        }
+
+        .sidebar-backdrop.open {
+            display: block;
+            pointer-events: auto;
+        }
+
+        .app-workspace {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-sidebar-toggle {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 2px solid #C89D70;
+            background: #F5E6D3;
+            color: #3E2723;
+            font-size: 1.15rem;
+            font-weight: 800;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 0 #271509;
+        }
+
         /* Top Header — Baked Cookie Crust Bar */
         .topbar {
             background: linear-gradient(180deg, #5C3A21 0%, #4A2C17 100%);
-            border-bottom: 4px solid #3E2723;
+            border-bottom: 3px solid #3E2723;
             position: sticky;
             top: 0;
             z-index: 100;
-            padding: 10px 16px;
-            box-shadow: 0 4px 14px rgba(62, 39, 35, 0.28);
+            padding: 10px 20px;
+            box-shadow: 0 4px 14px rgba(62, 39, 35, 0.22);
             color: #FFF8EE;
         }
 
@@ -101,8 +273,17 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            max-width: 1400px;
+            max-width: 1360px;
             margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .topbar-left-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            flex-wrap: wrap;
         }
 
         .brand-box {
@@ -110,35 +291,37 @@
             align-items: center;
             gap: 10px;
             text-decoration: none;
-            color: #FFF8EE;
+            color: #3E2723;
+            min-width: 0;
         }
 
         .brand-logo {
             width: 42px;
             height: 42px;
             background: linear-gradient(135deg, #F59E0B, #B45309);
-            border: 2px solid #FFF8EE;
-            border-radius: 10px;
+            border: 2px solid #8B5A2B;
+            border-radius: 11px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 22px;
-            box-shadow: 0 3px 0 #271509;
+            box-shadow: 0 3px 0 #C89D70;
+            flex-shrink: 0;
         }
 
         .brand-text h1 {
-            font-size: 1.15rem;
+            font-size: 1.08rem;
             font-weight: 800;
             letter-spacing: 0.01em;
-            color: #FFF8EE;
-            text-shadow: 0 2px 0 #271509;
+            color: #3E2723;
             line-height: 1.2;
         }
 
         .brand-text span {
-            font-size: 0.74rem;
-            color: #EAD5B7;
+            font-size: 0.72rem;
+            color: #6D4C41;
             display: block;
+            font-weight: 600;
         }
 
         .header-actions {
@@ -280,62 +463,75 @@
             filter: drop-shadow(0 2px 0 rgba(43, 23, 8, 0.22));
         }
 
-        /* Nav Tabs — Folder-Style 8-Bit Bakery Tabs (Matching Reference Mockup) */
+        /* Nav Tabs — Left Sidebar Vertical Menu (8-Bit Bakery SaaS Style) */
         .nav-tabs {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 8px;
-            padding: 14px 16px 0 16px;
-            max-width: 1400px;
-            margin: 0 auto 14px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 0;
+            margin: 0;
             width: 100%;
-            border-bottom: 3px solid #8B5A2B;
+            border-bottom: none;
         }
 
         .nav-tab-btn {
-            background: linear-gradient(180deg, #E8CFAF 0%, #DFC099 100%);
-            border: 2px solid #8B5A2B;
-            border-bottom: none;
-            color: #4A2C17;
-            padding: 10px 16px;
-            border-radius: 14px 14px 0 0;
+            background: transparent;
+            border: 2px solid transparent;
+            color: #5C3A21;
+            padding: 10px 12px;
+            border-radius: 12px;
             font-family: var(--font-main);
-            font-size: 0.94rem;
+            font-size: 0.92rem;
             font-weight: 800;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.14s ease;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 11px;
             text-align: left;
             position: relative;
-            top: 3px;
+            width: 100%;
         }
 
         .nav-tab-btn:hover {
-            background: linear-gradient(180deg, #F5E6D3 0%, #EAD5B7 100%);
+            background: rgba(234, 213, 183, 0.55);
+            border-color: #D7B38C;
         }
 
         .nav-tab-btn.active {
-            background: linear-gradient(180deg, #FFFDF9 0%, #FBF0DF 100%);
+            background: linear-gradient(180deg, #FFFDF9 0%, #FFF8EE 100%);
             color: #3E2723 !important;
-            border: 3px solid #5C3A21;
-            border-bottom: 3px solid #FBF0DF;
+            border: 2px solid #8B5A2B;
             z-index: 2;
-            box-shadow: 0 -3px 10px rgba(92, 58, 33, 0.1);
+            box-shadow: 0 3px 0 #C89D70;
+        }
+
+        .nav-tab-btn.active::before {
+            content: '';
+            position: absolute;
+            left: -14px;
+            top: 8px;
+            bottom: 8px;
+            width: 5px;
+            border-radius: 0 6px 6px 0;
+            background: #15803D;
         }
 
         .nav-tab-btn.admin-tab-btn {
-            background: linear-gradient(180deg, #E8CFAF 0%, #DFC099 100%);
-            border-color: #8B5A2B;
-            color: #4A2C17;
+            background: transparent;
+            border-color: transparent;
+            color: #7F1D1D;
         }
 
         .nav-tab-btn.admin-tab-btn.active {
             background: linear-gradient(180deg, #FFFDF9 0%, #FEE2E2 100%);
             color: #991B1B !important;
-            border: 3px solid #991B1B;
-            border-bottom: 3px solid #FEE2E2;
+            border: 2px solid #991B1B;
+            box-shadow: 0 3px 0 #FCA5A5;
+        }
+
+        .nav-tab-btn.admin-tab-btn.active::before {
+            background: #DC2626;
         }
 
         .nav-tab-text-col {
@@ -343,10 +539,11 @@
             flex-direction: column;
             line-height: 1.2;
             min-width: 0;
+            flex: 1;
         }
 
         .nav-tab-main-lbl {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 800;
             color: inherit;
             white-space: nowrap;
@@ -355,18 +552,68 @@
         }
 
         .nav-tab-sub-lbl {
-            font-size: 0.76rem;
+            font-size: 0.72rem;
             font-weight: 600;
-            color: #6D4C41;
+            color: #8D6E63;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* Main Container */
         .main-container {
             flex: 1;
-            max-width: 1400px;
+            max-width: 1360px;
             margin: 0 auto;
             width: 100%;
-            padding: 4px 16px 36px 16px;
+            min-width: 0;
+            padding: 18px 22px 42px 22px;
+        }
+
+        .workspace-page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .workspace-page-title {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #3E2723;
+            line-height: 1.2;
+        }
+
+        .workspace-page-sub {
+            font-size: 0.84rem;
+            color: #6D4C41;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .stat-card-hero {
+            background: linear-gradient(145deg, #5C3A21 0%, #78350F 100%) !important;
+            border: 2px solid #3E2723 !important;
+            box-shadow: 0 4px 0 #271509 !important;
+            color: #FFF8EE !important;
+        }
+
+        .stat-card-hero .stat-value {
+            color: #FFF8EE !important;
+        }
+
+        .stat-card-hero .stat-header {
+            color: #FDE68A !important;
+        }
+
+        .stat-card-hero .stat-sub {
+            color: #EAD5B7 !important;
+        }
+
+        .stat-card-hero .stat-sub span {
+            color: #FCD34D !important;
         }
 
         .tab-content {
@@ -893,10 +1140,12 @@
             align-items: center;
             justify-content: center;
             padding: 16px;
+            pointer-events: none;
         }
 
         .modal-overlay.open {
             display: flex;
+            pointer-events: auto;
         }
 
         .modal-card {
@@ -1289,15 +1538,58 @@
         }
 
         /* ===================================================================
-           RESPONSIVE MOBILE VIEW (Optimized specifically for Smartphones)
+           RESPONSIVE TABLET & MOBILE VIEW (Optimized for All Devices)
            =================================================================== */
+        @media (max-width: 1023px) {
+            .app-sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: 276px;
+                max-width: 84vw;
+                transform: translateX(-105%);
+                transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+                box-shadow: 8px 0 28px rgba(39, 21, 9, 0.35);
+            }
+
+            .app-sidebar.open {
+                transform: translateX(0);
+            }
+
+            .btn-sidebar-toggle {
+                display: inline-flex;
+            }
+
+            .btn-sidebar-close {
+                display: inline-flex;
+            }
+
+            .main-container {
+                padding: 14px 14px 30px 14px;
+            }
+        }
+
         @media (max-width: 768px) {
             body {
                 font-size: 14px;
             }
 
             .main-container {
-                padding: 0 10px 24px 10px;
+                padding: 10px 10px calc(24px + env(safe-area-inset-bottom, 0px)) 10px;
+            }
+
+            .workspace-page-header {
+                margin-bottom: 12px;
+                gap: 8px;
+            }
+
+            .workspace-page-title {
+                font-size: 1.22rem;
+            }
+
+            .workspace-page-sub {
+                font-size: 0.76rem;
             }
 
             .topbar {
@@ -1324,10 +1616,6 @@
 
             .brand-text h1 {
                 font-size: 0.98rem;
-            }
-
-            .brand-text span {
-                display: none;
             }
 
             .header-actions {
@@ -1378,7 +1666,7 @@
             }
 
             .btn-act {
-                min-height: 38px;
+                min-height: 40px;
                 font-size: 0.8rem;
                 padding: 0 6px;
                 gap: 4px;
@@ -1386,32 +1674,23 @@
                 white-space: nowrap;
             }
 
-            .nav-tabs {
-                grid-template-columns: repeat(2, 1fr);
-                padding: 10px 10px 0 10px;
-                gap: 6px;
-                margin-bottom: 10px;
-            }
-
             .nav-tab-btn {
-                padding: 8px 10px;
-                font-size: 0.8rem;
-                border-radius: 10px 10px 0 0;
-                gap: 8px;
-                top: 2px;
+                padding: 9px 10px;
+                font-size: 0.84rem;
+                gap: 10px;
             }
 
             .nav-tab-btn img.pixel-sprite {
-                width: 24px !important;
-                height: 24px !important;
+                width: 26px !important;
+                height: 26px !important;
             }
 
             .nav-tab-main-lbl {
-                font-size: 0.8rem;
+                font-size: 0.85rem;
             }
 
             .nav-tab-sub-lbl {
-                font-size: 0.68rem;
+                font-size: 0.7rem;
             }
 
             .user-account-banner {
@@ -1699,32 +1978,118 @@
          VIEW 3: MAIN BOT CONTROLLER DASHBOARD (COOKIE 8-BIT BAKERY EDITION)
          =================================================================== -->
     <div id="viewDashboard" style="display: none;">
+    <div class="app-shell">
+        <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
+        <!-- ===================================================================
+             LEFT SIDEBAR NAVIGATION (Modern SaaS 8-Bit Bakery Layout)
+             =================================================================== -->
+        <aside class="app-sidebar" id="appSidebar" aria-label="เมนูหลักแดชบอร์ด">
+            <div class="sidebar-brand-row">
+                <a href="#" class="brand-box" onclick="switchTab('overview'); return false;">
+                    <div class="brand-logo" title="CookieRunBot 8-Bit Bakery" style="background: #FFF8EE; border-color: #8B5A2B; padding: 2px;">
+                        <img src="icons/bot_robobrave.png?v=8bit2" alt="CookieRunBot" class="pixel-sprite" style="width: 36px; height: 36px; object-fit: contain;">
+                    </div>
+                    <div class="brand-text">
+                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                            <h1>CookieRunBot</h1>
+                            <span class="version-badge app-version-display" id="appVersionBadge" style="background: #FEF3C7; border: 1.5px solid #F59E0B; color: #78350F; font-size: 0.68rem; font-weight: 800; padding: 1px 7px; border-radius: 9999px;">v0.9.48</span>
+                        </div>
+                        <span>🍪 8-Bit Bakery Cloud</span>
+                    </div>
+                </a>
+                <button type="button" class="btn-sidebar-close" onclick="closeSidebar()" aria-label="ปิดเมนู">✕</button>
+            </div>
+
+            <div class="sidebar-section-label">MENU</div>
+            <nav class="nav-tabs">
+                <!-- หมวดที่ 1: แดชบอร์ดผลรวมตลอดทุกเซสชัน -->
+                <button class="nav-tab-btn active" onclick="switchTab('overview')">
+                    <img src="icons/tab_trophy.png?v=8bit2" alt="Dashboard" class="pixel-sprite" style="width: 30px; height: 30px;">
+                    <div class="nav-tab-text-col">
+                        <span class="nav-tab-main-lbl">1. แดชบอร์ดผลรวม</span>
+                        <span class="nav-tab-sub-lbl">All-Time &amp; กล่องสมบัติ</span>
+                    </div>
+                </button>
+
+                <!-- หมวดที่ 2: หน้าฟังก์ชันบอทในเกมทั้งหมด + Log สดย้อนหลัง 30 นาที -->
+                <button class="nav-tab-btn" onclick="switchTab('bot')">
+                    <img src="icons/tab_gamepad.png?v=8bit2" alt="Bot & Logs" class="pixel-sprite" style="width: 32px; height: 28px;">
+                    <div class="nav-tab-text-col">
+                        <span class="nav-tab-main-lbl">2. ฟังก์ชันบอท &amp; Log สด</span>
+                        <span class="nav-tab-sub-lbl">Bot Controls &amp; Log 30 นาที</span>
+                    </div>
+                </button>
+
+                <!-- หมวดที่ 3: ข้อมูลผู้ใช้ & การต่ออายุ VIP -->
+                <button class="nav-tab-btn" onclick="switchTab('membership')">
+                    <img src="icons/tab_crown.png?v=8bit2" alt="VIP" class="pixel-sprite" style="width: 32px; height: 28px;">
+                    <div class="nav-tab-text-col">
+                        <span class="nav-tab-main-lbl">3. ข้อมูลผู้ใช้ &amp; ต่ออายุ VIP</span>
+                        <span class="nav-tab-sub-lbl">User Info &amp; Subscribe</span>
+                    </div>
+                </button>
+
+                <!-- หมวดที่ 4 (เฉพาะ Admin เท่านั้น): จัดการ Custom Key, เลขบัญชี, ช่องทางติดต่อ -->
+                <button class="nav-tab-btn admin-tab-btn" id="navTabAdmin" style="display: none;" onclick="switchTab('admin')">
+                    <img src="icons/tab_shield.png?v=8bit2" alt="Admin" class="pixel-sprite" style="width: 28px; height: 30px;">
+                    <div class="nav-tab-text-col">
+                        <span class="nav-tab-main-lbl">4. แผงควบคุมแอดมิน</span>
+                        <span class="nav-tab-sub-lbl">Admin Only</span>
+                    </div>
+                </button>
+            </nav>
+
+            <div class="sidebar-section-label">GENERAL</div>
+            <div class="sidebar-general-list">
+                <button type="button" class="sidebar-util-btn" onclick="sendCloudCommand('PING'); closeSidebar();">
+                    <span>🔔</span> <span>ทดสอบ Ping บอท</span>
+                </button>
+                <button type="button" class="sidebar-util-btn" onclick="triggerRemoteUpdate(); closeSidebar();">
+                    <span>🚀</span> <span>อัปเดตแอป (OTA)</span>
+                </button>
+                <button type="button" class="sidebar-util-btn" onclick="forceHardRefreshDashboard();" title="ล้างแคชและโหลดหน้าเว็บล่าสุดทันที">
+                    <span>🔄</span> <span>รีเฟรช / ล้างแคชเว็บ</span>
+                </button>
+                <button type="button" class="sidebar-util-btn danger" onclick="handleLogout()">
+                    <span>🚪</span> <span>ออกจากระบบ</span>
+                </button>
+            </div>
+
+            <div class="sidebar-promo-card">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                    <span style="font-size: 0.92rem; font-weight: 800; color: #FFF8EE;">📲 ดาวน์โหลดแอปมือถือ</span>
+                    <span class="app-version-display" style="background: #F59E0B; color: #271509; font-size: 0.68rem; font-weight: 800; padding: 1px 7px; border-radius: 9999px;">v0.9.48</span>
+                </div>
+                <div style="font-size: 0.74rem; color: #EAD5B7; line-height: 1.35;">
+                    ติดตั้ง APK เวอร์ชันล่าสุดสำหรับ Android เพื่อเชื่อมต่อกับแดชบอร์ดนี้
+                </div>
+                <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="sidebar-promo-btn" title="ดาวน์โหลดแอปสำหรับมือถือ Android (APK)">
+                    <span>📥</span> <span>โหลด APK (<span class="app-version-display">v0.9.48</span>)</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ===================================================================
+             RIGHT WORKSPACE (TOPBAR + MAIN CONTENT)
+             =================================================================== -->
+        <div class="app-workspace">
 
     <!-- Top Navigation Header -->
     <header class="topbar">
         <div class="topbar-header-row">
-            <a href="#" class="brand-box" onclick="switchTab('overview'); return false;">
-                <div class="brand-logo" title="CookieRunBot 8-Bit Bakery" style="background: #FFF8EE; border-color: #8B5A2B; padding: 2px;">
-                    <img src="icons/bot_robobrave.png?v=8bit2" alt="CookieRunBot" class="pixel-sprite" style="width: 40px; height: 40px; object-fit: contain;">
+            <div class="topbar-left-group">
+                <button type="button" class="btn-sidebar-toggle" onclick="toggleSidebar()" aria-label="เปิดเมนูด้านซ้าย">☰</button>
+                <div class="cloud-status-badge offline" id="cloudStatusBadge">
+                    <span class="cloud-pulse"></span>
+                    <span id="cloudStatusText">รอเชื่อมต่อบอท</span>
                 </div>
-                <div class="brand-text">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <h1>CookieRunBot</h1>
-                        <span class="version-badge app-version-display" id="appVersionBadge" style="background: #FEF3C7; border: 2px solid #F59E0B; color: #78350F; font-size: 0.72rem; font-weight: 800; padding: 1px 8px; border-radius: 9999px;">v0.9.48</span>
-                    </div>
-                    <span>🍪 ระบบควบคุมบอทคุกกี้รัน 8-Bit Bakery Cloud</span>
-                </div>
-            </a>
+            </div>
 
             <div class="header-actions">
                 <a href="CookieRunBot.apk" download="CookieRunBot.apk" class="btn-download-apk" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(180deg, #22C55E, #15803D); color: white; border: 2px solid #052E16; padding: 5px 13px; border-radius: 9999px; font-size: 0.8rem; font-weight: 700; text-decoration: none; box-shadow: 0 2px 0 #052E16;" title="ดาวน์โหลดแอปสำหรับมือถือ Android (APK)">
                     <span>📲</span> <span>โหลดแอป (<span class="app-version-display">v0.9.48</span>)</span>
                 </a>
-
-                <div class="cloud-status-badge offline" id="cloudStatusBadge">
-                    <span class="cloud-pulse"></span>
-                    <span id="cloudStatusText">รอเชื่อมต่อบอท</span>
-                </div>
 
                 <div style="display: flex; align-items: center; gap: 6px;">
                     <button class="btn-google" id="btnGoogleAuth" onclick="openGoogleAuthModal()">
@@ -1751,49 +2116,22 @@
         </div>
     </header>
 
-    <!-- ===================================================================
-         8-BIT NAVIGATION TABS (3 หมวดหลักสำหรับ User + 1 หมวดพิเศษเฉพาะ Admin)
-         =================================================================== -->
-    <nav class="nav-tabs">
-        <!-- หมวดที่ 1: แดชบอร์ดผลรวมตลอดทุกเซสชัน -->
-        <button class="nav-tab-btn active" onclick="switchTab('overview')">
-            <img src="icons/tab_trophy.png?v=8bit2" alt="Dashboard" class="pixel-sprite" style="width: 34px; height: 34px;">
-            <div class="nav-tab-text-col">
-                <span class="nav-tab-main-lbl">1. แดชบอร์ดผลรวม</span>
-                <span class="nav-tab-sub-lbl">All-Time &amp; กล่องสมบัติ</span>
-            </div>
-        </button>
-
-        <!-- หมวดที่ 2: หน้าฟังก์ชันบอทในเกมทั้งหมด + Log สดย้อนหลัง 30 นาที -->
-        <button class="nav-tab-btn" onclick="switchTab('bot')">
-            <img src="icons/tab_gamepad.png?v=8bit2" alt="Bot & Logs" class="pixel-sprite" style="width: 36px; height: 32px;">
-            <div class="nav-tab-text-col">
-                <span class="nav-tab-main-lbl">2. ฟังก์ชันบอท &amp; Log สด</span>
-                <span class="nav-tab-sub-lbl">Bot Controls &amp; Log 30 นาที</span>
-            </div>
-        </button>
-
-        <!-- หมวดที่ 3: ข้อมูลผู้ใช้ & การต่ออายุ VIP -->
-        <button class="nav-tab-btn" onclick="switchTab('membership')">
-            <img src="icons/tab_crown.png?v=8bit2" alt="VIP" class="pixel-sprite" style="width: 36px; height: 32px;">
-            <div class="nav-tab-text-col">
-                <span class="nav-tab-main-lbl">3. ข้อมูลผู้ใช้ &amp; ต่ออายุ VIP</span>
-                <span class="nav-tab-sub-lbl">User Info &amp; Subscribe</span>
-            </div>
-        </button>
-
-        <!-- หมวดที่ 4 (เฉพาะ Admin เท่านั้น): จัดการ Custom Key, เลขบัญชี, ช่องทางติดต่อ -->
-        <button class="nav-tab-btn admin-tab-btn" id="navTabAdmin" style="display: none;" onclick="switchTab('admin')">
-            <img src="icons/tab_shield.png?v=8bit2" alt="Admin" class="pixel-sprite" style="width: 32px; height: 34px;">
-            <div class="nav-tab-text-col">
-                <span class="nav-tab-main-lbl">4. แผงควบคุมแอดมิน</span>
-                <span class="nav-tab-sub-lbl">Admin Only</span>
-            </div>
-        </button>
-    </nav>
-
     <!-- Main Container -->
     <main class="main-container">
+        <div class="workspace-page-header">
+            <div>
+                <h2 class="workspace-page-title" id="workspacePageTitle">📊 แดชบอร์ดผลรวม</h2>
+                <div class="workspace-page-sub" id="workspacePageSubtitle">ภาพรวมสถิติสะสม กล่องสมบัติ และสถานะบอทแบบเรียลไทม์</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <button type="button" class="btn-copy-code" onclick="forceHardRefreshDashboard()" style="background: #FFFDF9; color: #5C3A21 !important; border: 2px solid #C89D70; box-shadow: 0 2px 0 #C89D70;" title="รีเฟรชหน้าเว็บและล้างแคชเก่า">
+                    🔄 รีเฟรชเว็บ
+                </button>
+                <button type="button" class="btn-copy-code" onclick="openBoxRewardsModal()" style="background: #8B5A2B;">
+                    📸 ภาพเปิดกล่องล่าสุด
+                </button>
+            </div>
+        </div>
 
         <!-- Google Account Status Banner -->
         <div class="user-account-banner" id="userAccountBanner">
@@ -1923,7 +2261,7 @@
                 <!-- 4 Main All-Time Cards (Rounds, Coins, EXP, Total Boxes) -->
                 <div class="stats-grid">
                     <!-- 1. All-Time Rounds -->
-                    <div class="stat-card stat-card-lifetime">
+                    <div class="stat-card stat-card-lifetime stat-card-hero">
                         <div class="stat-card-row">
                             <img src="icons/stat_trophy.png?v=8bit2" alt="Rounds" class="stat-sprite-lg">
                             <div style="min-width: 0; flex: 1;">
@@ -2872,6 +3210,8 @@
         </footer>
 
     </main>
+        </div> <!-- /.app-workspace -->
+    </div> <!-- /.app-shell -->
     </div> <!-- /#viewDashboard -->
 
     <!-- Google Auth Modal -->
@@ -3090,7 +3430,7 @@
         // ===================================================================
         function showView(viewName) {
             const preStyle = document.getElementById('prehideStyle');
-            if (preStyle && viewName !== 'dashboard') {
+            if (preStyle) {
                 preStyle.remove();
             }
             const vLogin = document.getElementById('viewLogin');
@@ -5160,13 +5500,13 @@
                     showToast('⚠️ กรุณาล็อกอิน Google ใหม่ 1 ครั้งเพื่อรับสิทธิ์ส่งคำสั่ง');
                     return;
                 }
-                const res = await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/command.json`, {
+                const res = await fetchWithTimeout(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/command.json`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json; charset=utf-8'
                     },
                     body: JSON.stringify(cmdPayload)
-                });
+                }, 10000);
 
                 if (res.ok) {
                     if (actUpper === 'UPDATE_CONFIG') {
@@ -5185,7 +5525,7 @@
                     if (actUpper === 'START') {
                         setTimeout(async () => {
                             try {
-                                const ackRes = await fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/command_ack.json`);
+                                const ackRes = await fetchWithTimeout(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/command_ack.json`, {}, 6000);
                                 if (ackRes.ok) {
                                     const ack = await ackRes.json();
                                     if (ack && ack.id === cmdPayload.id && ack.status === 'error') {
@@ -5199,12 +5539,40 @@
                         }, 700);
                     }
                 } else {
+                    pendingCommand = null;
                     showToast(`ส่งคำสั่งไม่สำเร็จ (HTTP ${res.status})`);
                     fetchInitialBotState();
                 }
             } catch (err) {
-                showToast('ส่งคำสั่งไม่สำเร็จ: ' + err.message);
+                pendingCommand = null;
+                showToast('ส่งคำสั่งไม่สำเร็จ: ' + (err && err.name === 'AbortError' ? 'การเชื่อมต่อหมดเวลา (Timeout)' : err.message));
                 fetchInitialBotState();
+            } finally {
+                // Guarantee buttons never stay locked permanently if network or auth returns early
+                if (actUpper === 'START' && btnStart && btnStart.disabled) {
+                    setTimeout(() => {
+                        if (btnStart && btnStart.disabled && !pendingCommand) {
+                            btnStart.disabled = false;
+                            btnStart.innerHTML = '<span>▶</span> เริ่มบอท';
+                        }
+                    }, 300);
+                    if (typeof fbAuth !== 'undefined' && fbAuth && !fbAuth.currentUser) {
+                        pendingCommand = null;
+                        btnStart.disabled = false;
+                        btnStart.innerHTML = '<span>▶</span> เริ่มบอท';
+                    }
+                }
+                if (actUpper === 'STOP' && btnStop && btnStop.disabled && typeof fbAuth !== 'undefined' && fbAuth && !fbAuth.currentUser) {
+                    pendingCommand = null;
+                    btnStop.disabled = false;
+                    btnStop.innerHTML = '<span>⏹</span> หยุดบอท';
+                }
+                if (actUpper === 'NEW_SESSION' && btnNew) {
+                    setTimeout(() => {
+                        btnNew.disabled = false;
+                        btnNew.innerHTML = '<span>➕</span> เริ่มเซสชันใหม่';
+                    }, 1200);
+                }
             }
         }
 
@@ -5949,6 +6317,26 @@
             showToast('🗑️ ลบเซสชันเรียบร้อยแล้ว');
         }
 
+        function openSidebar() {
+            const sb = document.getElementById('appSidebar');
+            const bd = document.getElementById('sidebarBackdrop');
+            if (sb) sb.classList.add('open');
+            if (bd) bd.classList.add('open');
+        }
+
+        function closeSidebar() {
+            const sb = document.getElementById('appSidebar');
+            const bd = document.getElementById('sidebarBackdrop');
+            if (sb) sb.classList.remove('open');
+            if (bd) bd.classList.remove('open');
+        }
+
+        function toggleSidebar() {
+            const sb = document.getElementById('appSidebar');
+            if (sb && sb.classList.contains('open')) closeSidebar();
+            else openSidebar();
+        }
+
         function switchTab(tabName) {
             if (tabName === 'admin') {
                 const isOwner = (currentUser && currentUser.email && currentUser.email.toLowerCase().trim() === 'tititada@gmail.com');
@@ -5971,6 +6359,20 @@
                 const oc = b.getAttribute('onclick') || '';
                 if (oc.includes(`'${tabName}'`)) b.classList.add('active');
             });
+
+            const tabMeta = {
+                overview: { title: '📊 แดชบอร์ดผลรวม', sub: 'ภาพรวมสถิติสะสม กล่องสมบัติ และสถานะบอทแบบเรียลไทม์' },
+                bot: { title: '🎮 ฟังก์ชันบอท & Log สด', sub: 'ควบคุมบอท ดูหน้าจอสด และตรวจสอบ Log ย้อนหลัง 30 นาที' },
+                membership: { title: '👑 ข้อมูลผู้ใช้ & ต่ออายุ VIP', sub: 'จัดการสิทธิ์สมาชิก แพ็กเกจ และเติม Redeem License Key' },
+                admin: { title: '🛡️ แผงควบคุมแอดมิน', sub: 'สร้าง License Key จัดการบัญชีรับโอน และตั้งค่าหน้าเว็บ' }
+            };
+            const meta = tabMeta[tabName] || tabMeta.overview;
+            const titleEl = document.getElementById('workspacePageTitle');
+            const subEl = document.getElementById('workspacePageSubtitle');
+            if (titleEl) titleEl.innerText = meta.title;
+            if (subEl) subEl.innerText = meta.sub;
+
+            closeSidebar();
 
             if (tabName === 'overview') {
                 syncPermanentSessions();
@@ -6262,12 +6664,84 @@
         }
 
         // ===================================================================
+        // WEB STABILITY, ANTI-FREEZE & CACHE-BUSTING LAYER
+        // ===================================================================
+        const DASHBOARD_WEB_VERSION = '2026.11.25.1';
+
+        async function fetchWithTimeout(url, options = {}, timeoutMs = 10000) {
+            const ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+            const timer = ctrl ? setTimeout(() => ctrl.abort(), timeoutMs) : null;
+            try {
+                const opts = ctrl ? Object.assign({}, options, { signal: ctrl.signal }) : options;
+                return await fetch(url, opts);
+            } finally {
+                if (timer) clearTimeout(timer);
+            }
+        }
+
+        async function cleanupStaleCachesAndSW() {
+            try {
+                if ('serviceWorker' in navigator) {
+                    const regs = await navigator.serviceWorker.getRegistrations();
+                    for (const reg of regs) {
+                        await reg.unregister().catch(() => {});
+                    }
+                }
+                if ('caches' in window) {
+                    const keys = await caches.keys();
+                    for (const k of keys) {
+                        await caches.delete(k).catch(() => {});
+                    }
+                }
+            } catch (e) {}
+        }
+
+        async function forceHardRefreshDashboard() {
+            showToast('🔄 กำลังล้างแคชเก่าและโหลดหน้าเว็บใหม่...');
+            await cleanupStaleCachesAndSW();
+            try {
+                const url = new URL(window.location.href);
+                url.searchParams.set('v', String(Date.now()));
+                window.location.replace(url.toString());
+            } catch (e) {
+                window.location.reload(true);
+            }
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSidebar();
+                document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+            }
+        });
+
+        window.addEventListener('error', (e) => {
+            console.warn('[Dashboard SafeGuard Error]', e.message || e);
+        });
+        window.addEventListener('unhandledrejection', (e) => {
+            console.warn('[Dashboard SafeGuard Promise]', e.reason || e);
+        });
+
+        // ===================================================================
         // INITIALIZATION
         // ===================================================================
         async function initDashboard() {
-            init8BitPixelIcons();
-            loadVersionInfo();
-            loadAdminSiteConfig();
+            if (window._dashboardInitialized) return;
+            window._dashboardInitialized = true;
+
+            cleanupStaleCachesAndSW();
+            try {
+                const prevWebVer = localStorage.getItem('crb_dashboard_web_ver');
+                if (prevWebVer !== DASHBOARD_WEB_VERSION) {
+                    localStorage.setItem('crb_dashboard_web_ver', DASHBOARD_WEB_VERSION);
+                    console.log('✨ Updated dashboard web shell to', DASHBOARD_WEB_VERSION);
+                }
+            } catch (e) {}
+
+            try { init8BitPixelIcons(); } catch (e) { console.warn('init8BitPixelIcons error:', e); }
+            try { loadVersionInfo(); } catch (e) {}
+            try { loadAdminSiteConfig(); } catch (e) {}
+
             // 1. Immediately restore UI shell from localStorage if exists (wait for fbAuth before starting cloud sync)
             let hasSavedUser = false;
             try {
@@ -6281,15 +6755,28 @@
                         showView('dashboard');
                         loadDeletedSessionsBlacklist();
                         hasSavedUser = true;
+                    } else {
+                        localStorage.removeItem('cookierun_auth_user');
                     }
                 }
             } catch (e) {
-                console.warn("Restore saved user error:", e);
+                console.warn("Restore saved user error (cleaned corrupted cache):", e);
+                try { localStorage.removeItem('cookierun_auth_user'); } catch (_) {}
             }
 
-            // 2. Setup Firebase Auth persistence and state change listener
+            // 2. Setup Firebase Auth persistence and state change listener (+ 6s Watchdog)
+            let authResolved = false;
+            const authWatchdog = setTimeout(() => {
+                if (!authResolved) {
+                    console.warn('⚠️ Firebase Auth watchdog triggered after 6s');
+                    const preStyle = document.getElementById('prehideStyle');
+                    if (preStyle) preStyle.remove();
+                    if (!hasSavedUser) showView('login');
+                }
+            }, 6000);
+
             try {
-                if (fbAuth) {
+                if (typeof fbAuth !== 'undefined' && fbAuth) {
                     try {
                         await fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
                     } catch (pe) {
@@ -6297,6 +6784,8 @@
                     }
 
                     fbAuth.onAuthStateChanged(async (user) => {
+                        authResolved = true;
+                        clearTimeout(authWatchdog);
                         if (user && user.email) {
                             const newEmail = user.email.toLowerCase();
                             const isAccountChange = !currentUser || currentUser.email !== newEmail;
@@ -6328,10 +6817,14 @@
                             }
                         }
                     });
-                } else if (!hasSavedUser) {
-                    showView('login');
+                } else {
+                    authResolved = true;
+                    clearTimeout(authWatchdog);
+                    if (!hasSavedUser) showView('login');
                 }
             } catch (err) {
+                authResolved = true;
+                clearTimeout(authWatchdog);
                 console.error("Dashboard init error:", err);
                 if (!hasSavedUser) showView('login');
             }
