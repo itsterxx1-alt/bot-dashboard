@@ -1,6 +1,6 @@
 {
-  "versionCode": 75,
-  "versionName": "0.9.48",
-  "changelog": "- แก้ไขระบบส่งหัวใจรายบุคคล: ตรวจจับรายชื่อเพื่อนคนสุดท้ายด้วย Snapshot โซนชื่อเพื่อน (ป้องกัน Ring Buffer ทับภาพและรอจังหวะเด้งขอบล่างนิ่ง 300ms) เพื่อหยุดลูปทันทีเมื่อสุดรายชื่อ, ตัดการเลื่อนกลับขึ้นด้านบนหลังส่งเสร็จเพื่อเข้าเล่นเกมต่อทันที และรีเซ็ตตัวจับเวลา PRE_GAME หลังส่งหัวใจเสร็จเพื่อป้องกันการกด Back ออกเกม",
-  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.48"
+  "versionCode": 76,
+  "versionName": "0.9.49",
+  "changelog": "- ซิงก์สถานะบอท (isRunning & currentStage) แบบเรียลไทม์ทันทีผ่าน Firebase PATCH โดยไม่ถูกคิวอัปโหลด Log/สถิติยกเลิก และแก้ฝั่งเว็บให้รับ SSE แบบ Incremental ทันทีพร้อม Watchdog สำหรับ iOS Safari",
+  "apkUrl": "https://itsterxx1-alt.github.io/bot-dashboard/CookieRunBot.apk?v=0.9.49"
 }
