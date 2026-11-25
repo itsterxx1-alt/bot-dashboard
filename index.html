@@ -3864,9 +3864,9 @@
             const keyAtStart = pairingKey;
             try {
                 const [resState, resMem, resCfg] = await Promise.all([
-                    fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/state.json`),
-                    fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/membership.json`).catch(() => null),
-                    fetch(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/config.json`).catch(() => null)
+                    fetchWithTimeout(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/state.json?t=${Date.now()}`, {}, 10000),
+                    fetchWithTimeout(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/membership.json`, {}, 8000).catch(() => null),
+                    fetchWithTimeout(`${FIREBASE_RTDB_URL}/bots/${pairingKey}/config.json`, {}, 8000).catch(() => null)
                 ]);
 
                 let memData = null;
@@ -4451,8 +4451,14 @@
                 return;
             }
             latestBotData = data;
-            lastBotSeenTime = Date.now();
-            updateBotOnlineStatus(true);
+            const serverSeen = Number(data.info && data.info.lastSeen) || 0;
+            if (serverSeen > 0) {
+                lastBotSeenTime = Math.min(serverSeen, Date.now());
+            } else if (!lastBotSeenTime) {
+                lastBotSeenTime = 0;
+            }
+            const isBotOnline = lastBotSeenTime > 0 && (Date.now() - lastBotSeenTime) < 45000;
+            updateBotOnlineStatus(isBotOnline);
 
             if (data.info && data.info.version) {
                 const v = data.info.version;
@@ -4543,9 +4549,13 @@
                     setTxt('valLastBoxes', s.lastRound.boxes || 0);
                 }
 
+                const isBotOnlineNow = lastBotSeenTime > 0 && (Date.now() - lastBotSeenTime) < 45000;
                 const botPill = document.getElementById('pillBotRunning');
                 if (botPill) {
-                    if (s.isRunning) {
+                    if (!isBotOnlineNow && lastBotSeenTime > 0) {
+                        botPill.style.color = '#991B1B';
+                        botPill.innerText = '⚫ แอปออฟไลน์ (สถานะล่าสุด: ' + (s.isRunning ? 'ทำงาน' : 'หยุด') + ')';
+                    } else if (s.isRunning) {
                         botPill.style.color = '#15803D';
                         botPill.innerText = '▶ กำลังทำงาน (' + (s.currentStage || 'RUNNING') + ')';
                     } else {
@@ -4559,7 +4569,7 @@
                 const btnStop = document.getElementById('btnStopBot');
                 const btnNew = document.getElementById('btnNewSession');
                 if (btnStart && btnStop) {
-                    if (s.isRunning) {
+                    if (s.isRunning && isBotOnlineNow) {
                         btnStart.disabled = true;
                         btnStart.innerHTML = '<span>▶</span> กำลังทำงาน';
                         btnStart.style.opacity = '0.6';
@@ -5400,8 +5410,24 @@
                 updateBotOnlineStatus(false);
                 return;
             }
-            const isOnline = (Date.now() - lastBotSeenTime) < 45000;
+            const isOnline = lastBotSeenTime > 0 && (Date.now() - lastBotSeenTime) < 45000;
             updateBotOnlineStatus(isOnline);
+
+            // Fallback poll if SSE silently stalled and no heartbeat arrived for >30s
+            if (!isOnline && cloudSyncActive && !document.hidden) {
+                const now = Date.now();
+                if (now - (window._lastFallbackFetchTime || 0) > 15000) {
+                    window._lastFallbackFetchTime = now;
+                    fetchInitialBotState();
+                }
+            }
+            if (!isOnline && lastBotSeenTime > 0) {
+                const botPill = document.getElementById('pillBotRunning');
+                if (botPill && botPill.innerText.startsWith('▶')) {
+                    botPill.style.color = '#991B1B';
+                    botPill.innerText = '⚫ แอปออฟไลน์ (ขาดการเชื่อมต่อ)';
+                }
+            }
         }
 
         function updateBotOnlineStatus(isOnline) {
@@ -5414,7 +5440,13 @@
                 txt.innerText = `บอทออนไลน์ (${secAgo}วิที่แล้ว)`;
             } else {
                 badge.className = 'cloud-status-badge offline';
-                txt.innerText = pairingKey ? 'รอเชื่อมต่อบอท...' : 'ยังไม่ได้เชื่อมต่อ';
+                if (pairingKey && lastBotSeenTime > 0) {
+                    const secAgo = Math.max(0, Math.floor((Date.now() - lastBotSeenTime) / 1000));
+                    const agoText = secAgo < 60 ? `${secAgo}วิ` : (secAgo < 3600 ? `${Math.floor(secAgo / 60)}น.` : `${Math.floor(secAgo / 3600)}ชม.`);
+                    txt.innerText = `บอทออฟไลน์ (ล่าสุด ${agoText} ที่แล้ว)`;
+                } else {
+                    txt.innerText = pairingKey ? 'รอเชื่อมต่อบอท...' : 'ยังไม่ได้เชื่อมต่อ';
+                }
             }
         }
 
